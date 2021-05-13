@@ -1,6 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import Image from "next/image";
+import { useFaunaUser } from "../../hooks/useFaunaUser";
 import Dropdown, {
   DropdownButton,
   DropdownItems,
@@ -18,6 +19,7 @@ import {
 
 export default function DashboardLayout({ children }) {
   const { user } = useUser();
+  const { faunaUserStatus, faunaUserData } = useFaunaUser();
 
   return (
     <div>
@@ -59,8 +61,11 @@ export default function DashboardLayout({ children }) {
             </DropdownButton>
             <DropdownItems>
               <DropdownItem link href="/profile">
-                {user?.name || "Loading..."}
-                <span>{user?.email || "Loading..."}</span>
+                {/* {(faunaUserData && faunaUserData?.name) || "Loading..."} */}
+                Profile
+                <span>
+                  {(faunaUserData && faunaUserData?.email) || "Loading..."}
+                </span>
               </DropdownItem>
               <DropdownItem link href="/onboarding">
                 Onboarding
@@ -83,8 +88,12 @@ export default function DashboardLayout({ children }) {
       <Footer></Footer>
     </div>
   );
+}
 
-  return null;
+export function withDashboardLayout(Component) {
+  Component.Layout = DashboardLayout;
+
+  return Component;
 }
 
 export const Header = styled.header`

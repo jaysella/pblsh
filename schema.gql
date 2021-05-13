@@ -1,14 +1,26 @@
-type Todo {
-  task: String!
-  completed: Boolean!
+type Folder {
+  name: String!
   owner: User!
+  pages: [Page!] @relation
+}
+
+type Page {
+  title: String!
+  published: Boolean!
+  owner: User!
+  folder: Folder
 }
 
 type User {
+  auth0Id: String! @unique
   email: String! @unique
-  todos: [Todo!] @relation
+  nickname: String
+  name: String
+  setupCompleted: Boolean!
+  pages: [Page!] @relation
 }
 
 type Query {
-  allTodos: [Todo!]
+  allPages: [Page!]
+  allUsers: [User!]
 }

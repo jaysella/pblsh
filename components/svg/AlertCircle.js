@@ -1,4 +1,4 @@
-export default function ArrowRightCircleIcon() {
+export default function AlertCircleIcon() {
   return (
     <svg
       width="22"
@@ -9,21 +9,21 @@ export default function ArrowRightCircleIcon() {
     >
       <path
         d="M11 21C16.5228 21 21 16.5228 21 11C21 5.47715 16.5228 1 11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21Z"
-        stroke="#E5E5E5"
+        stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M11 15L15 11L11 7"
-        stroke="#E5E5E5"
+        d="M11 15V11"
+        stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M7 11H15"
-        stroke="#E5E5E5"
+        d="M11 7H11.01"
+        stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

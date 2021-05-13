@@ -94,12 +94,17 @@ const useHotkey = (shortcutKeys, callback, options) => {
     } else {
       setKeys({ type: null });
     }
+
+    return () => {
+      return null;
+    };
   }, [callback, keys]);
 
   useEffect(() => {
     shortcutKeys.forEach((k) =>
       window.addEventListener("keydown", keydownListener(k))
     );
+
     return () =>
       shortcutKeys.forEach((k) =>
         window.removeEventListener("keydown", keydownListener(k))
@@ -110,6 +115,7 @@ const useHotkey = (shortcutKeys, callback, options) => {
     shortcutKeys.forEach((k) =>
       window.addEventListener("keyup", keyupListener(k))
     );
+
     return () =>
       shortcutKeys.forEach((k) =>
         window.removeEventListener("keyup", keyupListener(k))

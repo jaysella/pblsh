@@ -1,17 +1,18 @@
-import DashboardLayout from "../components/layout/DashboardLayout";
+import { Fragment } from "react";
 import { UserProvider } from "@auth0/nextjs-auth0";
 import { globalStyles } from "../shared/styles";
 
 function MyApp({ Component, pageProps }) {
   const { user } = pageProps;
 
-  const getLayout =
-    Component.getLayout || ((page) => <DashboardLayout children={page} />);
+  const Layout = Component.Layout ? Component.Layout : Fragment;
 
   return (
     <UserProvider user={user}>
       {globalStyles}
-      {getLayout(<Component {...pageProps} />)}
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </UserProvider>
   );
 }

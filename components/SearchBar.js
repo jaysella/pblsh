@@ -1,9 +1,11 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import styled from "@emotion/styled";
+import useHasMounted from "../hooks/useHasMounted";
 import useHotkey from "../hooks/useHotkey";
 import { focusStyles } from "../shared/styles";
 
 export default function SearchBar() {
+  const hasMounted = useHasMounted();
   const [focusInputs, setFocusInputs] = useState(0);
   const keys = ["/"];
 
@@ -16,9 +18,15 @@ export default function SearchBar() {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (focusInputs > 0) {
-      inputRef.current.focus();
+    if (hasMounted) {
+      if (focusInputs > 0) {
+        inputRef.current.focus();
+      }
     }
+
+    return () => {
+      return null;
+    };
   }, [focusInputs]);
 
   return (
@@ -46,7 +54,7 @@ export const Input = styled.input`
   font-size: 15px;
   font-weight: var(--font-weight-light);
   padding: 2px 20px 0 40px;
-  background-image: url("data:image/svg+xml,%0A%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z' stroke='%2390a2ab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M19 19L14.65 14.65' stroke='%2390a2ab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  background-image: url("data:image/svg+xml,%0A%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z' stroke='%2390a2ab' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/%3E%3Cpath d='M19 19L14.65 14.65' stroke='%2390a2ab' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/%3E%3C/svg%3E%0A");
   background-size: 14px;
   background-repeat: no-repeat;
   background-position: 16px 48%;

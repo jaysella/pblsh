@@ -85,6 +85,15 @@ export const globalStyles = (
         font-size: 100%;
         line-height: 1.15;
       }
+
+      :disabled {
+        cursor: not-allowed;
+      }
+
+      p {
+        padding-top: 2px;
+        line-height: 1.3;
+      }
     `}
   />
 );
@@ -103,12 +112,14 @@ export const hoverStyles = css`
 
   &:hover,
   &:focus {
-    background: var(--color-black-muted);
-    transition: background var(--base-transition-out-duration) ease-in,
-      box-shadow var(--base-transition-out-duration) ease-in;
+    &:not(:disabled) {
+      background: var(--color-black-muted);
+      transition: background var(--base-transition-out-duration) ease-in,
+        box-shadow var(--base-transition-out-duration) ease-in;
+    }
   }
 
-  &:focus {
+  &:focus:not(:disabled) {
     ${focusStyles};
   }
 `;
@@ -139,6 +150,15 @@ export const dropdownButtonStyles = css`
   ${buttonHoverStyles};
 `;
 
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 export const fadeInDown = keyframes`
   from {
     transform: translateY(-.25rem);
@@ -163,3 +183,24 @@ export const blink = keyframes`
     opacity: 1;
   }
 `;
+
+export const strokeAnimation = keyframes`
+  100% {
+    stroke-dashoffset: 0;
+  }
+}`;
+
+export const scaleAnimation = keyframes`
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}`;
+
+export const fillAnimation = keyframes`
+  100% {
+    box-shadow: inset 0px 0px 0px 30px var(--color-primary);
+  }
+}`;

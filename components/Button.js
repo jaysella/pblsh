@@ -1,9 +1,25 @@
 import React from "react";
+import Link from "next/link";
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { linkStyles, buttonHoverStyles } from "../shared/styles";
 
-export default function Button({ children }) {
-  return <ButtonWrapper>{children}</ButtonWrapper>;
+export default function Button({ children, href, fullWidth, ...props }) {
+  return (
+    <>
+      {href && href.length > 0 ? (
+        <Link href={href} passHref>
+          <LinkWrapper fullWidth={fullWidth || false} {...props}>
+            {children}
+          </LinkWrapper>
+        </Link>
+      ) : (
+        <ButtonWrapper fullWidth={fullWidth || false} {...props}>
+          {children}
+        </ButtonWrapper>
+      )}
+    </>
+  );
 }
 
 export function ButtonIcon({ children }) {
@@ -22,7 +38,7 @@ export const IconWrapper = styled.div`
   }
 `;
 
-export const ButtonWrapper = styled.button`
+export const buttonStyles = css`
   ${linkStyles};
   ${buttonHoverStyles};
 
@@ -30,54 +46,32 @@ export const ButtonWrapper = styled.button`
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.6rem 1rem calc(0.6rem - 2px);
-  /* padding: calc(0.675rem - 2px) 1rem 0.675rem; */
+  padding: 0.6rem 1rem calc(0.6rem - 1px);
   background: transparent;
   border: var(--base-border-width) solid var(--color-primary);
   border-radius: calc(var(--base-border-radius) / 1.5);
   color: var(--color-white);
   font-family: var(--font-sans-serif);
   font-size: 14px;
-  /* transition: border var(--base-transition-out-duration) ease-out; */
 
-  &:hover {
+  &:hover:not(:disabled) {
     > div {
       transition: color var(--base-transition-out-duration) ease-in;
       color: var(--color-primary);
     }
-    /* border-color: var(--color-highlight); */
-    /* transition: border var(--base-transition-in-duration) ease-in; */
   }
 
-  /* transition: all 0.15s ease; */
-
-  /*
-
-  &.full {
-    width: 100%;
+  :disabled {
+    cursor: not-allowed;
   }
+`;
 
-  &.focus {
-    border: 2px solid transparent;
+export const ButtonWrapper = styled.button`
+  ${buttonStyles};
+  width: ${(props) => (props.fullWidth ? "100%" : "max-content")};
+`;
 
-    &:active {
-      border: 2px solid var(--gold);
-    }
-  }
-
-  &.icon {
-    > span {
-      display: inline-block;
-      margin-left: 0.325rem;
-      will-change: transform;
-      transform: translateX(0);
-      transition: transform 0.375s ease;
-    }
-
-    &:hover > span,
-    &:focus-visible > span {
-      transform: translateX(0.45rem);
-      transition: transform 0.25s ease-out;
-    }
-  } */
+export const LinkWrapper = styled.a`
+  ${buttonStyles};
+  width: ${(props) => (props.fullWidth ? "100%" : "max-content")};
 `;

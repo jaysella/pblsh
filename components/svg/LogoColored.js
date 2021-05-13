@@ -12,8 +12,8 @@ export default function LogoColored() {
         fill="#F5F0F6"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M15 7.5C15 11.6421 11.6421 15 7.5 15C6.9863 15 6.48466 14.9484 6 14.85V14L6 7.55H4.25L4.25 14V14.2612C1.7354 13.0502 0 10.4778 0 7.5C0 3.35786 3.35786 0 7.5 0C11.6421 0 15 3.35786 15 7.5ZM4.25 14.2612C4.79946 14.5258 5.38611 14.7254 6 14.85V22H4.25V14.2612Z"
         fill="#39A9DB"
       />

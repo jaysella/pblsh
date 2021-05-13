@@ -54,21 +54,14 @@ export const Button = styled(MenuButton)`
   &[aria-expanded="true"] {
     background: var(--color-black-muted);
     border: var(--base-border-width) solid var(--color-primary);
-    /* border-radius: calc(var(--base-border-radius) / 1.5)
-      calc(var(--base-border-radius) / 1.5) 0 0;
-    border: var(--base-border-width) solid var(--color-primary);
-    border-bottom: none; */
   }
 `;
 
 export const List = styled(MenuList)`
   margin-top: 0.5rem;
   border-radius: calc(var(--base-border-radius) / 1.5);
-  /* border-radius: calc(var(--base-border-radius) / 1.5) 0
-    calc(var(--base-border-radius) / 1.5) calc(var(--base-border-radius) / 1.5); */
   background: var(--color-black-muted);
   border: var(--base-border-width) solid var(--color-primary);
-  /* box-shadow: 0 0 4px 0 var(--color-primary); */
   overflow: hidden;
   min-width: 150px;
 
