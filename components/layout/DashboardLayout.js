@@ -59,26 +59,32 @@ export default function DashboardLayout({ children }) {
                 />
               </NavDropdown>
             </DropdownButton>
-            <DropdownItems>
-              <DropdownItem link href="/profile">
-                {/* {(faunaUserData && faunaUserData?.name) || "Loading..."} */}
-                Profile
-                <span>
-                  {(faunaUserData && faunaUserData?.email) || "Loading..."}
-                </span>
-              </DropdownItem>
-              <DropdownItem link href="/onboarding">
-                Onboarding
-              </DropdownItem>
-              <DropdownItem link href="/settings">
-                Settings
-              </DropdownItem>
-              {user && (
+            {user ? (
+              <DropdownItems>
+                <DropdownItem link href="/profile">
+                  {/* {(faunaUserData && faunaUserData?.name) || "Loading..."} */}
+                  Profile
+                  <span>
+                    {(faunaUserData && faunaUserData?.email) || "Loading..."}
+                  </span>
+                </DropdownItem>
+                <DropdownItem link href="/onboarding">
+                  Onboarding
+                </DropdownItem>
+                <DropdownItem link href="/settings">
+                  Settings
+                </DropdownItem>
                 <DropdownItem link href="/api/auth/logout">
                   Log Out
                 </DropdownItem>
-              )}
-            </DropdownItems>
+              </DropdownItems>
+            ) : (
+              <DropdownItems>
+                <DropdownItem link href="/api/auth/login">
+                  Log In
+                </DropdownItem>
+              </DropdownItems>
+            )}
           </Dropdown>
         </Right>
       </Header>
