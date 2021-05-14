@@ -9,7 +9,11 @@ import {
 } from "@reach/menu-button";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { linkStyles, dropdownButtonStyles, fadeInDown } from "../shared/styles";
+import {
+  linkStyles,
+  dropdownButtonStyles,
+  fadeInDownAnimation,
+} from "../shared/styles";
 
 export default function Dropdown({ children }) {
   return <Menu>{children}</Menu>;
@@ -65,7 +69,7 @@ export const List = styled(MenuList)`
   overflow: hidden;
   min-width: 150px;
 
-  animation: ${fadeInDown} 0.2s forwards ease-in;
+  animation: ${fadeInDownAnimation} 0.2s forwards ease-in;
 `;
 
 export const menuItemStyles = css`

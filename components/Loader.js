@@ -11,7 +11,6 @@ export default function Loader() {
 }
 
 const Spinner = styled.div`
-  --loader-size: 1.25rem;
   position: relative;
   width: var(--loader-size);
   height: var(--loader-size);

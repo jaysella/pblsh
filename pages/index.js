@@ -1,4 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
+import { useFaunaUser } from "../hooks/useFaunaUser";
 import Head from "next/head";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 // import DashboardLayout from "../components/layout/DashboardLayout";
@@ -8,6 +9,7 @@ import styled from "@emotion/styled";
 
 export default withDashboardLayout(function Home() {
   const { user, error, isLoading } = useUser();
+  const { faunaUserStatus, faunaUserData } = useFaunaUser();
 
   return (
     <>
@@ -18,29 +20,29 @@ export default withDashboardLayout(function Home() {
       </Head>
 
       <PageWrapper>
-        {isLoading && <div>Loading...</div>}
+        {(isLoading || faunaUserStatus !== "fetched") && <div>Loading...</div>}
         {error && <div>{error.message}</div>}
-        {user ? (
+        {user && faunaUserData ? (
           <>
-            <h1>Welcome, {user.name}!</h1>
+            <h1>Welcome, {faunaUserData.name}!</h1>
 
             <br />
 
-            <Button href="/dashboard">
-              Dashboard
-              <ButtonIcon>
-                <ArrowRightCircleIcon />
-              </ButtonIcon>
-            </Button>
-
-            <br />
-
-            <Button href="/onboarding">
-              Onboard
-              <ButtonIcon>
-                <ArrowRightCircleIcon />
-              </ButtonIcon>
-            </Button>
+            {faunaUserData.setupCompleted ? (
+              <Button href="/dashboard">
+                Dashboard
+                <ButtonIcon>
+                  <ArrowRightCircleIcon />
+                </ButtonIcon>
+              </Button>
+            ) : (
+              <Button href="/onboarding">
+                Onboard
+                <ButtonIcon>
+                  <ArrowRightCircleIcon />
+                </ButtonIcon>
+              </Button>
+            )}
 
             <br />
 
@@ -50,13 +52,6 @@ export default withDashboardLayout(function Home() {
                 <ArrowRightCircleIcon />
               </ButtonIcon>
             </Button>
-
-            <br />
-            <br />
-            <br />
-
-            <h4>Rendered user info on the client</h4>
-            <pre data-testid="profile">{JSON.stringify(user, null, 2)}</pre>
           </>
         ) : (
           <Button href="/api/auth/login">

@@ -50,7 +50,7 @@ function Onboarding() {
         body: JSON.stringify({ email: user.email }),
       };
 
-      await fetch("/api/users/lookup", requestOptions)
+      await fetch("/api/user/lookup", requestOptions)
         .then((response) => response.json())
         .then((r) => {
           if (r.error) {
@@ -100,7 +100,7 @@ function Onboarding() {
         body: JSON.stringify(values),
       };
 
-      await fetch("/api/users/new", requestOptions)
+      await fetch("/api/user/new", requestOptions)
         .then((response) => response.json())
         .then((r) => {
           if (r.error) {

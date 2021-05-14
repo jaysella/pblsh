@@ -7,51 +7,53 @@ const guestClient = new faunadb.Client({
 });
 
 export default async (req, res) => {
-  const { email } = req.body;
+  const {
+    query: { id },
+  } = req;
 
-  if (!email) {
+  if (!id) {
     return res.status(400).json({
       error: {
         name: "missing_params",
-        message: "A valid email must be provided",
+        message: "A valid page id must be provided",
       },
     });
   }
 
   try {
-    const user = await guestClient.query(
-      q.Get(q.Match(q.Index("user_by_email"), email))
+    const page = await guestClient.query(
+      q.Get(q.Ref(q.Collection("Page"), id))
     );
 
-    if (!user) {
+    if (!page) {
       return res.status(400).json({
         error: {
-          name: "no_user",
-          message: "The specified user does not exist",
+          name: "no_page",
+          message: "The requested page does not exist",
         },
       });
     }
 
-    if (!user.ref) {
+    if (!page.ref) {
       return res.status(400).json({
         error: {
-          name: "no_user_ref",
-          message: "User ref not returned",
+          name: "no_page_ref",
+          message: "Page ref not returned",
         },
       });
     }
 
     res.status(200).json(
       JSON.stringify({
-        success: { name: "user_found", message: "User located", user },
+        success: { name: "page_found", message: "Page located", page },
       })
     );
   } catch (error) {
     if (error.message === "instance not found") {
       return res.status(400).json({
         error: {
-          name: "no_user",
-          message: "The specified user does not exist",
+          name: "no_page",
+          message: "The requested page does not exist",
         },
       });
     }

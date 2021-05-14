@@ -9,6 +9,16 @@ type Page {
   published: Boolean!
   owner: User!
   folder: Folder
+  contentTemporary: String
+  contentBlocks: [Block]
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Block {
+  page: Page!
+  type: String!
+  content: String
 }
 
 type User {

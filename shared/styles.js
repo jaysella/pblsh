@@ -1,4 +1,5 @@
 import { css, Global, keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
 export const globalStyles = (
   <Global
@@ -28,6 +29,8 @@ export const globalStyles = (
 
         --base-transition-in-duration: 0.1s;
         --base-transition-out-duration: 0.175s;
+
+        --loader-size: 1.25rem;
 
         /* --font-monospace: "Roboto Mono", "SFMono-Regular", Consolas,
           "Roboto Mono", "Droid Sans Mono", "Liberation Mono", Menlo, Courier,
@@ -150,7 +153,7 @@ export const dropdownButtonStyles = css`
   ${buttonHoverStyles};
 `;
 
-export const fadeIn = keyframes`
+export const fadeInAnimation = keyframes`
   from {
     opacity: 0;
   }
@@ -159,7 +162,7 @@ export const fadeIn = keyframes`
   }
 `;
 
-export const fadeInDown = keyframes`
+export const fadeInDownAnimation = keyframes`
   from {
     transform: translateY(-.25rem);
     opacity: 0;
@@ -204,3 +207,11 @@ export const fillAnimation = keyframes`
     box-shadow: inset 0px 0px 0px 30px var(--color-primary);
   }
 }`;
+
+export const LoadingWrapper = styled.div`
+  --loader-size: 2.5rem;
+  margin: 5rem 0;
+  display: flex;
+  justify-content: space-around;
+  animation: ${fadeInAnimation} 0.5s forwards ease-in;
+`;

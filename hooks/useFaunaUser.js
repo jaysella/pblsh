@@ -7,8 +7,6 @@ export const useFaunaUser = () => {
   const [faunaUserStatus, setStatus] = useState("idle");
   const [faunaUserData, setData] = useState();
 
-  // const [faunaUser, setFaunaUser] = useStickyState("", "user");
-
   useEffect(() => {
     if (!user || !user.email) return;
 
@@ -18,7 +16,7 @@ export const useFaunaUser = () => {
 
     if (storedUser) {
       setData(storedUser);
-      setStatus("finished");
+      setStatus("fetched");
       return { faunaUserStatus, faunaUserData };
     }
 
@@ -31,7 +29,7 @@ export const useFaunaUser = () => {
         body: JSON.stringify({ email }),
       };
 
-      await fetch("/api/users/lookup", requestOptions)
+      await fetch("/api/user/lookup", requestOptions)
         .then((response) => response.json())
         .then((r) => {
           if (r.success && r.success.user) {

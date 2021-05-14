@@ -8,6 +8,8 @@ import Dropdown, {
   DropdownItem,
 } from "../Dropdown";
 import SearchBar from "../SearchBar";
+import PlusCircleIcon from "../svg/PlusCircle";
+import PersonIcon from "../svg/Person";
 import Footer from "./Footer";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -50,14 +52,28 @@ export default function DashboardLayout({ children }) {
 
           <Dropdown>
             <DropdownButton>
-              <NavDropdown>
-                <Image
-                  src="/icons/person.svg"
-                  alt="User profile"
-                  width={20}
-                  height={20}
-                />
-              </NavDropdown>
+              <NavPad>
+                <PlusCircleIcon />
+              </NavPad>
+            </DropdownButton>
+            <DropdownItems>
+              <DropdownItem link href="/new">
+                Craft New
+              </DropdownItem>
+              {/* <DropdownItem link href="/new/page">
+                New Page
+              </DropdownItem>
+              <DropdownItem link href="/new/folder">
+                New Folder
+              </DropdownItem> */}
+            </DropdownItems>
+          </Dropdown>
+
+          <Dropdown>
+            <DropdownButton>
+              <NavPad>
+                <PersonIcon />
+              </NavPad>
             </DropdownButton>
             {user ? (
               <DropdownItems>
@@ -132,7 +148,7 @@ export const Right = styled.nav`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 `;
 
 export const NavButton = styled.a`
@@ -161,6 +177,12 @@ export const NavLink = styled.a`
   }
 `;
 
-export const NavDropdown = styled.div`
+export const NavPad = styled.div`
   ${navElement};
+  color: var(--color-white-muted);
+
+  svg {
+    height: 22px;
+    width: auto;
+  }
 `;

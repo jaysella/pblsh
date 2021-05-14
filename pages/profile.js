@@ -49,7 +49,7 @@ function Profile() {
         body: JSON.stringify(values),
       };
 
-      await fetch(`/api/users/${faunaUserData.id}/update`, requestOptions)
+      await fetch(`/api/user/${faunaUserData.id}/edit`, requestOptions)
         .then((response) => response.json())
         .then((r) => {
           if (r.error) {
@@ -82,7 +82,7 @@ function Profile() {
       <PageWrapper>
         <h1>Your Profile</h1>
 
-        {!isLoading && !error && user && faunaUserStatus === "finished" && (
+        {!isLoading && !error && user && faunaUserStatus === "fetched" && (
           <>
             {accountEdited && (
               <Block>
@@ -118,7 +118,10 @@ function Profile() {
                           </WarningIconWrapper>
 
                           <h2>Error Encountered</h2>
-                          <p>{faunaError || "An error was encountered"}</p>
+                          <p>
+                            {faunaError ||
+                              "An error was encountered — please try again later"}
+                          </p>
                         </ErrorBlock>
                       )}
 
