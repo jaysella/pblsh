@@ -2,20 +2,10 @@ import { useState } from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Head from "next/head";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
-// import {
-//   FormWrapper,
-//   InputGroup,
-//   InputLabel,
-//   Input,
-//   InputError,
-//   // InputInfo,
-// } from "../components/Form";
-// import { Formik } from "formik";
-// import * as Yup from "yup";
 import NewPage from "../components/NewPage";
+import NewFolder from "../components/NewFolder";
 import PageIcon from "../components/svg/Page";
 import FolderIcon from "../components/svg/Folder";
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
   linkStyles,
@@ -23,8 +13,8 @@ import {
   fadeInDownAnimation,
 } from "../shared/styles";
 
-function New() {
-  const [type, setType] = useState();
+function New({ initialType }) {
+  const [type, setType] = useState(initialType || undefined);
 
   return (
     <>
@@ -64,10 +54,7 @@ function New() {
 
         {type === "folder" && (
           <DetailsWrapper>
-            <p>
-              Unfortunately, folders aren't yet implemented. Try creating a new
-              page instead.
-            </p>
+            <NewFolder />
           </DetailsWrapper>
         )}
       </PageWrapper>

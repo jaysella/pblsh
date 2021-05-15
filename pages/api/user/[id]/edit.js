@@ -1,5 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// import faunadb, { query as q } from "faunadb";
 var faunadb = require("faunadb"),
   q = faunadb.query;
 

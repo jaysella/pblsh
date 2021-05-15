@@ -135,12 +135,12 @@ export const buttonHoverStyles = css`
 export const padStyles = css`
   border: var(--base-border-width) solid transparent;
   color: var(--color-white);
-  transition: border var(--base-transition-out-duration) ease-out;
+  transition: all var(--base-transition-out-duration) ease-out;
 
   &:hover,
   &:focus {
     border-color: var(--color-primary);
-    transition: border var(--base-transition-in-duration) ease-in;
+    transition: all var(--base-transition-in-duration) ease-in;
   }
 `;
 

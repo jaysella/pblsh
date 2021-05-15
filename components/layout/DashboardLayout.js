@@ -42,12 +42,12 @@ export default function DashboardLayout({ children }) {
         </Left>
 
         <Right>
-          <Link href="/folders" passHref>
-            <NavLink>Folders</NavLink>
-          </Link>
-
           <Link href="/pages" passHref>
             <NavLink>Pages</NavLink>
+          </Link>
+
+          <Link href="/folders" passHref>
+            <NavLink>Folders</NavLink>
           </Link>
 
           <Dropdown>
@@ -57,15 +57,12 @@ export default function DashboardLayout({ children }) {
               </NavPad>
             </DropdownButton>
             <DropdownItems>
-              <DropdownItem link href="/new">
-                Craft New
-              </DropdownItem>
-              {/* <DropdownItem link href="/new/page">
+              <DropdownItem link href="/new/page">
                 New Page
               </DropdownItem>
               <DropdownItem link href="/new/folder">
                 New Folder
-              </DropdownItem> */}
+              </DropdownItem>
             </DropdownItems>
           </Dropdown>
 
@@ -78,15 +75,16 @@ export default function DashboardLayout({ children }) {
             {user ? (
               <DropdownItems>
                 <DropdownItem link href="/profile">
-                  {/* {(faunaUserData && faunaUserData?.name) || "Loading..."} */}
                   Profile
                   <span>
                     {(faunaUserData && faunaUserData?.email) || "Loading..."}
                   </span>
                 </DropdownItem>
-                <DropdownItem link href="/onboarding">
-                  Onboarding
-                </DropdownItem>
+                {faunaUserData && !faunaUserData.setupCompleted && (
+                  <DropdownItem link href="/onboarding">
+                    Onboarding
+                  </DropdownItem>
+                )}
                 <DropdownItem link href="/settings">
                   Settings
                 </DropdownItem>

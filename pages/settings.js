@@ -20,7 +20,7 @@ function Settings() {
 
         <Block>
           <h2>Settings</h2>
-          <p>This is still in the works ;)</p>
+          <p>There's nothing to see here. At least not yet ;)</p>
         </Block>
       </PageWrapper>
     </>

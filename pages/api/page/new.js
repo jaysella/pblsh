@@ -1,5 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// import faunadb, { query as q } from "faunadb";
 var faunadb = require("faunadb"),
   q = faunadb.query;
 
@@ -20,12 +18,34 @@ export default async (req, res) => {
   }
 
   try {
+    const defaultFolder = await guestClient.query(
+      q.Paginate(
+        q.Intersection(
+          q.Match(
+            q.Index("folders_by_user"),
+            q.Ref(q.Collection("User"), userId)
+          ),
+          q.Match(q.Index("folders_by_name"), "Uncategorized")
+        )
+      )
+    );
+
+    if (!defaultFolder.data) {
+      return res.status(404).json({
+        error: {
+          name: "no_default_folder_ref",
+          message: "Default folder ref not returned",
+        },
+      });
+    }
+
     const page = await guestClient.query(
       q.Create(q.Collection("Page"), {
         data: {
           title,
           published: false,
           owner: q.Ref(q.Collection("User"), userId),
+          folder: defaultFolder.data[0],
           createdAt: q.Now(),
           updatedAt: q.Now(),
         },

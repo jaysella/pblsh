@@ -45,6 +45,23 @@ export default async (req, res) => {
       return res.status(404).json({
         error: { name: "no_user_ref", message: `User ref not returned` },
       });
+    } else {
+      const defaultFolder = await guestClient.query(
+        q.Create(q.Collection("Folder"), {
+          data: {
+            name: "Uncategorized",
+            owner: q.Ref(q.Collection("User"), user.ref["@ref"].id),
+            createdAt: q.Now(),
+            updatedAt: q.Now(),
+          },
+        })
+      );
+
+      if (!defaultFolder.ref) {
+        return res.status(404).json({
+          error: { name: "no_folder_ref", message: `Folder ref not returned` },
+        });
+      }
     }
 
     res.status(200).json(

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Form, Field } from "formik";
+import Select from "react-select";
 import AlertCircleIcon from "../components/svg/AlertCircle";
 import AlertTriangleIcon from "../components/svg/AlertTriangle";
 import { css } from "@emotion/react";
@@ -9,8 +10,55 @@ import {
   focusStyles,
 } from "../shared/styles";
 
-export function FormWrapper({ children }) {
-  return <FormElement>{children}</FormElement>;
+const customSelectStyles = {
+  control: (styles, { isDisabled, isFocused }) => ({
+    ...styles,
+    backgroundColor: "var(--color-black-muted)",
+    color: "var(--color-white)",
+    border: "var(--base-border-width) solid transparent",
+    borderColor: isFocused ? "var(--color-primary)" : "",
+    borderRadius: "calc(var(--base-border-radius) / 1.75)",
+    padding: "calc(0.25rem + 2px) .25rem 0.25rem",
+    cursor: isDisabled ? "not-allowed" : "pointer",
+
+    "&:focus": {
+      borderColor: "var(--color-primary)",
+      outline: "none",
+    },
+  }),
+  menuList: (base) => ({
+    ...base,
+    padding: "0",
+    backgroundColor: "var(--color-black-muted)",
+    borderRadius: "calc(var(--base-border-radius) / 1.75)",
+    border: "var(--base-border-width) solid var(--color-primary)",
+    outline: "none",
+  }),
+  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+    return {
+      ...styles,
+      padding: "calc(0.75rem + 2px) 1rem 0.75rem",
+      backgroundColor: isSelected
+        ? "var(--color-secondary)"
+        : "var(--color-black-muted)",
+      color: "var(--color-white)",
+      cursor: isDisabled ? "not-allowed" : "pointer",
+      outline: "none",
+
+      "&:hover, &:focus": {
+        backgroundColor: "var(--color-black)",
+      },
+    };
+  },
+  singleValue: (provided, state) => {
+    const color = "var(--color-white)";
+
+    return { ...provided, color };
+  },
+};
+
+export function FormWrapper({ children, hidden }) {
+  return <FormElement hidden={hidden || false}>{children}</FormElement>;
 }
 
 export function InputGroup({ children }) {
@@ -23,6 +71,28 @@ export function InputLabel({ children, ...props }) {
 
 export function Input({ children, ...props }) {
   return <InputWrapper {...props}>{children}</InputWrapper>;
+}
+
+export function InputSelect({ children, name, ...props }) {
+  const handleChange = (value) => {
+    // Call setFieldValue and manually update values[name]
+    props.onChange(name, [value]);
+  };
+
+  const handleBlur = () => {
+    // Call setFieldTouched
+    props.onBlur(name, true);
+  };
+
+  return (
+    <Select
+      {...props}
+      value={props.value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      styles={customSelectStyles}
+    />
+  );
 }
 
 export function InputError({ children, ...props }) {
@@ -47,6 +117,7 @@ export const FormElement = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  display: ${(props) => (props.hidden ? "none" : "flex")};
 `;
 
 export const InputGroupWrapper = styled.div`

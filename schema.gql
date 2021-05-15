@@ -2,6 +2,8 @@ type Folder {
   name: String!
   owner: User!
   pages: [Page!] @relation
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Page {

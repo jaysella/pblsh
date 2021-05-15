@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useFaunaFolders } from "../../hooks/useFaunaFolders";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
@@ -15,6 +16,8 @@ import {
   InputGroup,
   InputLabel,
   Input,
+  InputSelect,
+  InputInfo,
   InputError,
 } from "../../components/Form";
 import Button, { ButtonIcon } from "../../components/Button";
@@ -25,6 +28,16 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const pageSchema = Yup.object().shape({
+  publicLink: Yup.string().trim().required("Required"),
+  folder: Yup.array()
+    .min(1, "Pick a folder")
+    .max(1, "You can only pick one folder")
+    .of(
+      Yup.object().shape({
+        label: Yup.string().required(),
+        value: Yup.string().required(),
+      })
+    ),
   contentTemporary: Yup.string().trim().required("Required"),
 });
 
@@ -36,6 +49,12 @@ function EditPage() {
   const [pageData, setPageData] = useState();
   const [faunaEditingError, setFaunaEditingError] = useState(false);
   const [pageEdited, setPageEdited] = useState(false);
+
+  const [folderOptions, setFolderOptions] = useState([]);
+  const [currentFolder, setCurrentFolder] = useState([]);
+
+  const { faunaFoldersStatus, faunaFoldersData, faunaFoldersError } =
+    useFaunaFolders();
 
   // const content = useRef("");
   // const handleChange = (evt) => {
@@ -55,7 +74,7 @@ function EditPage() {
       .then((response) => response.json())
       .then((r) => {
         if (r.success && r.success.page) {
-          const data = r.success.page.data;
+          const data = r.success.page.data[0];
           setPageData(data);
           setPageFetched(true);
         } else if (r.error) {
@@ -73,12 +92,38 @@ function EditPage() {
   };
 
   useEffect(() => {
-    fetchPage();
-  }, []);
+    if (pageId) {
+      fetchPage();
+    }
+  }, [pageId]);
+
+  useEffect(() => {
+    if (faunaFoldersStatus === "fetched" && pageData) {
+      console.log("hooray", faunaFoldersData);
+
+      let folders = [];
+
+      faunaFoldersData.forEach((folder) => {
+        const element = {
+          value: folder.ref["@ref"].id,
+          label: folder.data.name,
+        };
+
+        folders.push(element);
+      });
+
+      setFolderOptions(folders);
+      setCurrentFolder(
+        folders.find((folder) => {
+          return folder.value === pageData.folder.ref["@ref"].id;
+        })
+      );
+    }
+  }, [faunaFoldersStatus, pageData]);
 
   let title;
   if (pageFetched) {
-    title = pageData.title;
+    title = pageData.page.data.title;
   } else if (faunaFetchingError) {
     title = "Error";
   } else {
@@ -150,12 +195,23 @@ function EditPage() {
 
             <Formik
               initialValues={{
-                contentTemporary: pageData.contentTemporary || "",
+                publicLink:
+                  `${process.env.NEXT_PUBLIC_BASE_URL}/view/${pageData.page.ref["@ref"].id}` ||
+                  "Unknown",
+                folder: [currentFolder],
+                contentTemporary: pageData.page.data.contentTemporary || "",
               }}
               validationSchema={pageSchema}
               onSubmit={(values) => handleSubmit(values)}
             >
-              {({ errors, touched, isSubmitting }) => (
+              {({
+                errors,
+                touched,
+                values,
+                setFieldValue,
+                setFieldTouched,
+                isSubmitting,
+              }) => (
                 <FormWrapper>
                   {faunaEditingError && (
                     <ErrorBlock>
@@ -170,6 +226,34 @@ function EditPage() {
                       </p>
                     </ErrorBlock>
                   )}
+
+                  <InputGroup>
+                    <InputLabel htmlFor="publicLink">Public Link</InputLabel>
+                    <Input id="publicLink" name="publicLink" disabled={true} />
+                    <InputInfo>This cannot be changed</InputInfo>
+                  </InputGroup>
+
+                  <InputGroup>
+                    <InputLabel htmlFor="folder">Folder</InputLabel>
+                    <InputSelect
+                      id="folder"
+                      name="folder"
+                      options={folderOptions}
+                      multi={false}
+                      value={values.folder}
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                      error={errors.folder}
+                      touched={touched.folder}
+                      disabled={isSubmitting}
+                      invalid={
+                        errors.folder && touched.folder ? "invalid" : null
+                      }
+                    />
+                    {errors.folder && touched.folder && (
+                      <InputError animated={true}>{errors.folder}</InputError>
+                    )}
+                  </InputGroup>
 
                   <InputGroup>
                     <InputLabel htmlFor="contentTemporary">

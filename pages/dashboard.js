@@ -1,9 +1,16 @@
 import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useFaunaUser } from "../hooks/useFaunaUser";
+import { useFaunaPages } from "../hooks/useFaunaPages";
+import { useFaunaFolders } from "../hooks/useFaunaFolders";
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
+import { timeSinceFromTimestamp } from "../helpers/timeSince";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import Button, { ButtonIcon } from "../components/Button";
+import Loader from "../components/Loader";
+import ClockIcon from "../components/svg/Clock";
+import FolderIcon from "../components/svg/Folder";
+import ArrowRightCircleIcon from "../components/svg/ArrowRightCircle";
 import PlusCircleIcon from "../components/svg/PlusCircle";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -12,11 +19,17 @@ import {
   padWithBackgroundStyles,
   padStyles,
   blink,
+  LoadingWrapper,
 } from "../shared/styles";
 
 function Dashboard() {
   const { user } = useUser();
-  const setupCompletedComplete = false;
+  const { faunaUserData } = useFaunaUser();
+  const { faunaPagesStatus, faunaPagesData, faunaPagesError } = useFaunaPages();
+  const { faunaFoldersStatus, faunaFoldersData, faunaFoldersError } =
+    useFaunaFolders();
+
+  const setupCompletedComplete = faunaUserData && faunaUserData.setupCompleted;
 
   return (
     <>
@@ -32,7 +45,7 @@ function Dashboard() {
           </AccountSetup>
         ) : (
           <Welcome>
-            <h1>Hey, {user?.name}!</h1>
+            <h1>G'day, {faunaUserData.nickname}!</h1>
           </Welcome>
         )}
 
@@ -40,145 +53,102 @@ function Dashboard() {
           <Recents>
             <h2>Pick up where you left off</h2>
             <RecentsGrid>
-              <Link href="/pages" passHref>
-                <Recent>
-                  <RecentName>8/20 Concert Signup Info</RecentName>
+              {faunaPagesStatus !== "fetched" && (
+                <>
+                  {[0, 1, 2].map((i) => (
+                    <Recent key={i}>
+                      <LoadingWrapper>
+                        <Loader />
+                      </LoadingWrapper>
+                    </Recent>
+                  ))}
+                </>
+              )}
+              {faunaPagesData &&
+                faunaPagesData.slice(0, 3).map((p) => (
+                  <Link
+                    href={`/edit/${p.page.ref["@ref"].id}`}
+                    passHref
+                    key={p.page.ref["@ref"].id}
+                  >
+                    <Recent>
+                      <RecentName>{p.page.data.title}</RecentName>
 
-                  <RecentMeta>
-                    <RecentMetaRow>
-                      <Image
-                        src="/icons/clock.svg"
-                        alt="User profile"
-                        width={14}
-                        height={14}
-                      />
-                      an hour ago
-                    </RecentMetaRow>
-                    <RecentMetaRow>
-                      <Image
-                        src="/icons/folder.svg"
-                        alt="User profile"
-                        width={14}
-                        height={14}
-                      />
-                      Concerts
-                    </RecentMetaRow>
-                  </RecentMeta>
-                </Recent>
+                      <RecentMeta>
+                        <RecentMetaRow>
+                          <ClockIcon />
+                          {timeSinceFromTimestamp(
+                            p.page.data.updatedAt["@ts"]
+                          )}{" "}
+                          ago
+                        </RecentMetaRow>
+                        <RecentMetaRow>
+                          <FolderIcon />
+                          {p.folder.data.name}
+                        </RecentMetaRow>
+                      </RecentMeta>
+                    </Recent>
+                  </Link>
+                ))}
+
+              <Link href="/new/page" passHref>
+                <CreateNewPage>
+                  <PlusCircleIcon />
+                </CreateNewPage>
               </Link>
-
-              <Link href="/pages" passHref>
-                <Recent>
-                  <RecentName>Planning Meeting Notes: 4/19</RecentName>
-
-                  <RecentMeta>
-                    <RecentMetaRow>
-                      <Image
-                        src="/icons/clock.svg"
-                        alt="User profile"
-                        width={14}
-                        height={14}
-                      />
-                      3 hours ago
-                    </RecentMetaRow>
-                    <RecentMetaRow>
-                      <Image
-                        src="/icons/folder.svg"
-                        alt="User profile"
-                        width={14}
-                        height={14}
-                      />
-                      Uncategorized
-                    </RecentMetaRow>
-                  </RecentMeta>
-                </Recent>
-              </Link>
-
-              <Link href="/pages" passHref>
-                <Recent>
-                  <RecentName>Guide: How to Update Your Password</RecentName>
-
-                  <RecentMeta>
-                    <RecentMetaRow>
-                      <Image
-                        src="/icons/clock.svg"
-                        alt="User profile"
-                        width={14}
-                        height={14}
-                      />
-                      2 days ago
-                    </RecentMetaRow>
-                    <RecentMetaRow>
-                      <Image
-                        src="/icons/folder.svg"
-                        alt="User profile"
-                        width={14}
-                        height={14}
-                      />
-                      Guides
-                    </RecentMetaRow>
-                  </RecentMeta>
-                </Recent>
-              </Link>
-
-              <RecentActions>
-                <Link href="/pages" passHref>
-                  <RecentAction>
-                    <RecentActionName>
-                      <span>8</span> more recents
-                    </RecentActionName>
-                  </RecentAction>
-                </Link>
-
-                <Link href="/pages" passHref>
-                  <RecentAction>
-                    <RecentActionName>View all</RecentActionName>
-                  </RecentAction>
-                </Link>
-              </RecentActions>
             </RecentsGrid>
+
+            <Button href="/pages">
+              View All
+              <ButtonIcon>
+                <ArrowRightCircleIcon />
+              </ButtonIcon>
+            </Button>
           </Recents>
 
           <Folders>
             <h2>Keep Organized</h2>
             <FoldersList>
-              <Link href="/folders" passHref>
-                <Folder>
-                  <p>
-                    Concerts
-                    <span>3 items</span>
-                  </p>
-                </Folder>
-              </Link>
-              <Link href="/folders" passHref>
-                <Folder>
-                  <p>
-                    Guides<span>1 item</span>
-                  </p>
-                </Folder>
-              </Link>
-              <Link href="/folders" passHref>
-                <Folder>
-                  <p>
-                    Uncategorized<span>8 items</span>
-                  </p>
-                </Folder>
-              </Link>
+              {faunaFoldersStatus !== "fetched" && (
+                <Block>
+                  <LoadingWrapper>
+                    <Loader />
+                  </LoadingWrapper>
+                </Block>
+              )}
+              {faunaFoldersData &&
+                faunaFoldersData.map((folder) => (
+                  <Link
+                    href={`/folder/${folder.ref["@ref"].id}`}
+                    passHref
+                    key={folder.ref["@ref"].id}
+                  >
+                    <Folder>
+                      <p>
+                        {folder.data.name}
+                        {/* <span>
+                          {(folder.data.pages && folder.data.pages.length) || 0}{" "}
+                          items
+                        </span> */}
+                      </p>
+                    </Folder>
+                  </Link>
+                ))}
             </FoldersList>
 
-            <Button>
-              Create New
+            <Button href="/new/folder">
+              New Folder
               <ButtonIcon>
                 <PlusCircleIcon />
               </ButtonIcon>
             </Button>
           </Folders>
 
-          <NewPage>
+          {/* <NewPage>
             <h2>Craft Your Next Page</h2>
 
             <CrafterTemp>The quick brown fox jumped over the moon.</CrafterTemp>
-          </NewPage>
+          </NewPage> */}
         </Content>
       </main>
     </>
@@ -240,6 +210,7 @@ export const Recents = styled.section`
 `;
 
 export const RecentsGrid = styled.div`
+  margin-bottom: 1rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
@@ -276,6 +247,11 @@ export const RecentMetaRow = styled.div`
   &:not(:last-of-type) {
     margin-bottom: 0.75rem;
   }
+
+  svg {
+    width: 14px;
+    height: auto;
+  }
 `;
 
 export const RecentActions = styled.div`
@@ -292,13 +268,31 @@ export const RecentAction = styled.a`
   border-radius: calc(var(--base-border-radius) / 1.5);
 `;
 
-export const RecentActionName = styled.p`
-  font-size: 1.4em;
-  line-height: 1.2;
-  text-align: left;
+const CreateNewPage = styled.a`
+  ${linkStyles};
+  ${padStyles};
 
-  span {
-    color: var(--color-primary);
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  padding: 1rem;
+  border-color: var(--color-primary);
+  border-radius: calc(var(--base-border-radius) / 1.5);
+
+  svg {
+    width: 2.5rem;
+    height: auto;
+    color: var(--color-white-muted);
+    transition: all var(--base-transition-out-duration) ease-out;
+  }
+
+  &:hover {
+    background: var(--color-black-muted);
+
+    svg {
+      color: var(--color-primary);
+      transition: all var(--base-transition-in-duration) ease-in;
+    }
   }
 `;
 
@@ -366,4 +360,8 @@ export const CrafterTemp = styled.section`
     border: 1px solid var(--color-white-muted);
     animation: ${blink} 0.5s infinite ease-in-out alternate;
   }
+`;
+
+export const Block = styled.div`
+  ${contentBlock};
 `;

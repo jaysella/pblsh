@@ -1,3 +1,5 @@
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+// import faunadb, { query as q } from "faunadb";
 var faunadb = require("faunadb"),
   q = faunadb.query;
 
@@ -6,46 +8,41 @@ const guestClient = new faunadb.Client({
 });
 
 export default async (req, res) => {
-  const {
-    query: { id },
-  } = req;
+  const { userId, name } = req.body;
 
-  const { contentTemporary, published, folder } = req.body;
-
-  if (!id || !contentTemporary || !published || !folder) {
+  if (!userId || !name) {
     return res.status(400).json({
       error: {
         name: "missing_params",
-        message: "All four parameters must be provided",
+        message: "Both parameters must be provided",
       },
     });
   }
 
-  const folderId = folder[0].value;
-
   try {
-    const page = await guestClient.query(
-      q.Update(q.Ref(q.Collection("Page"), id), {
+    const folder = await guestClient.query(
+      q.Create(q.Collection("Folder"), {
         data: {
-          contentTemporary,
-          published,
-          folder: q.Ref(q.Collection("Folder"), folderId),
+          name,
+          owner: q.Ref(q.Collection("User"), userId),
+          createdAt: q.Now(),
           updatedAt: q.Now(),
         },
       })
     );
 
-    if (!page.ref) {
+    if (!folder.ref) {
       return res.status(404).json({
-        error: { name: "no_page_ref", message: `Page ref not returned` },
+        error: { name: "no_folder_ref", message: "Folder ref not returned" },
       });
     }
 
     res.status(200).json(
       JSON.stringify({
         success: {
-          name: "page_updated",
-          message: "Page successfully updated",
+          name: "folder_created",
+          message: "Folder successfully created",
+          folder,
         },
       })
     );

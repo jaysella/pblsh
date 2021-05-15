@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 var faunadb = require("faunadb"),
   q = faunadb.query;
 
@@ -15,15 +14,17 @@ export default async (req, res) => {
     return res.status(400).json({
       error: {
         name: "missing_params",
-        message: "A valid page id must be provided",
+        message: "A valid user id must be provided",
       },
     });
   }
 
   try {
-    const page = await guestClient.query(
+    const pages = await guestClient.query(
       q.Map(
-        q.Paginate(q.Ref(q.Collection("Page"), id)),
+        q.Paginate(
+          q.Match(q.Index("pages_by_user"), q.Ref(q.Collection("User"), id))
+        ),
         q.Lambda(
           "page",
           q.Let(
@@ -40,30 +41,25 @@ export default async (req, res) => {
       )
     );
 
-    if (!page) {
+    if (!pages) {
       return res.status(400).json({
         error: {
-          name: "no_page",
-          message: "The requested page does not exist",
+          name: "no_user_pages",
+          message: "No pages for the requested user were found",
         },
       });
     }
 
     res.status(200).json(
       JSON.stringify({
-        success: { name: "page_found", message: "Page located", page },
+        success: {
+          name: "user_pages_found",
+          message: "User's pages located",
+          pages,
+        },
       })
     );
   } catch (error) {
-    if (error.message === "instance not found") {
-      return res.status(400).json({
-        error: {
-          name: "no_page",
-          message: "The requested page does not exist",
-        },
-      });
-    }
-
     console.error(error);
     res.status(error.requestResult.statusCode).json({
       error: { name: "database_error", message: error.message },
