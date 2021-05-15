@@ -50,7 +50,7 @@ export default async (req, res) => {
         q.Create(q.Collection("Folder"), {
           data: {
             name: "Uncategorized",
-            owner: q.Ref(q.Collection("User"), user.ref["@ref"].id),
+            owner: user.ref,
             createdAt: q.Now(),
             updatedAt: q.Now(),
           },

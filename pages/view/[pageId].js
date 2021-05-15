@@ -30,7 +30,7 @@ function ViewPage() {
         .then((response) => response.json())
         .then((r) => {
           if (r.success && r.success.page) {
-            const data = r.success.page.data;
+            const data = r.success.page.data[0].page.data;
             setPageData(data);
             setPageFetched(true);
           } else if (r.error) {
