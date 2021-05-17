@@ -10,10 +10,12 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta name="robots" content="noindex" />
           <link
             href="https://fonts.googleapis.com/css2?family=Farro:wght@300;500;700&display=swap"
             rel="stylesheet"
           />
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main />

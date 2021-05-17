@@ -38,15 +38,31 @@ function Dashboard() {
       </Head>
 
       <main>
-        {!setupCompletedComplete ? (
-          <AccountSetup>
-            <h1>Greetings!</h1>
-            <p>Welcome to pblsh, we're so happy to have you!</p>
-          </AccountSetup>
-        ) : (
-          <Welcome>
-            <h1>G'day, {faunaUserData.nickname}!</h1>
-          </Welcome>
+        {faunaPagesData && (
+          <>
+            {!setupCompletedComplete ? (
+              <AccountSetup>
+                <h1>Greetings!</h1>
+                <p>
+                  Welcome to pblsh, we're so happy to have you! Make sure you
+                  finish setting up your account as soon as possible.
+                </p>
+
+                <br />
+
+                <Button href="/onboarding">
+                  Complete Onboarding
+                  <ButtonIcon>
+                    <ArrowRightCircleIcon />
+                  </ButtonIcon>
+                </Button>
+              </AccountSetup>
+            ) : (
+              <Welcome>
+                <h1>G'day, {faunaUserData.nickname}!</h1>
+              </Welcome>
+            )}
+          </>
         )}
 
         <Content>
@@ -91,6 +107,16 @@ function Dashboard() {
                   </Link>
                 ))}
 
+              {faunaPagesData && faunaPagesData.length === 0 && (
+                <Link href="/new/page" passHref>
+                  <Recent>
+                    <RecentName>
+                      You haven't created any pages yet. Let's fix that.
+                    </RecentName>
+                  </Recent>
+                </Link>
+              )}
+
               <Link href="/new/page" passHref>
                 <CreateNewPage>
                   <PlusCircleIcon />
@@ -98,12 +124,14 @@ function Dashboard() {
               </Link>
             </RecentsGrid>
 
-            <Button href="/pages">
-              View All
-              <ButtonIcon>
-                <ArrowRightCircleIcon />
-              </ButtonIcon>
-            </Button>
+            {faunaPagesData && faunaPagesData.length > 3 && (
+              <Button href="/pages">
+                View All
+                <ButtonIcon>
+                  <ArrowRightCircleIcon />
+                </ButtonIcon>
+              </Button>
+            )}
           </Recents>
 
           <Folders>
@@ -324,6 +352,10 @@ export const Folder = styled.a`
 
   &:last-of-type {
     border-radius: 0 0 var(--base-border-radius) var(--base-border-radius);
+  }
+
+  &:only-of-type {
+    border-radius: calc(var(--base-border-radius) / 1.75);
   }
 
   p {

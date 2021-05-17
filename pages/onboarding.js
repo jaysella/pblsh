@@ -68,7 +68,11 @@ function Onboarding() {
             }
 
             const data = r.success.user.data;
+
+            delete data.auth0Id;
+
             data.id = r.success.user.ref["@ref"].id;
+            data.ts = new Date().getTime();
 
             localStorage.setItem("user", JSON.stringify(data));
             setFaunaUser(data);

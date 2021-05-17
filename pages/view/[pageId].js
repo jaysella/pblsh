@@ -53,9 +53,9 @@ function ViewPage() {
   }, [pageId]);
 
   let title;
-  if (pageFetched) {
+  if (pageFetched && pageData.published) {
     title = pageData.title;
-  } else if (faunaFetchingError) {
+  } else if (faunaFetchingError || (pageData && pageData.published)) {
     title = "Error";
   } else {
     title = "Loading...";
@@ -91,7 +91,7 @@ function ViewPage() {
               </FormWrapper>
             </Formik>
           </>
-        ) : faunaFetchingError ? (
+        ) : faunaFetchingError || (pageData && pageData.published) ? (
           <ErrorBlock>
             <WarningIconWrapper>
               <AlertTriangleIcon />

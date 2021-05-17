@@ -1,4 +1,3 @@
-import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import Image from "next/image";
 import { useFaunaUser } from "../../hooks/useFaunaUser";
@@ -20,7 +19,6 @@ import {
 } from "../../shared/styles";
 
 export default function DashboardLayout({ children }) {
-  const { user } = useUser();
   const { faunaUserStatus, faunaUserData } = useFaunaUser();
 
   return (
@@ -32,47 +30,47 @@ export default function DashboardLayout({ children }) {
               <Image
                 src="/logo-light.svg"
                 alt="pblsh logo"
-                width={120}
+                width={100}
                 height={40}
               />
             </NavButton>
           </Link>
 
-          <SearchBar />
+          {faunaUserData && <SearchBar />}
         </Left>
 
-        <Right>
-          <Link href="/pages" passHref>
-            <NavLink>Pages</NavLink>
-          </Link>
+        {faunaUserData ? (
+          <Right>
+            <Link href="/pages" passHref>
+              <NavLink>Pages</NavLink>
+            </Link>
 
-          <Link href="/folders" passHref>
-            <NavLink>Folders</NavLink>
-          </Link>
+            <Link href="/folders" passHref>
+              <NavLink>Folders</NavLink>
+            </Link>
 
-          <Dropdown>
-            <DropdownButton>
-              <NavPad>
-                <PlusCircleIcon />
-              </NavPad>
-            </DropdownButton>
-            <DropdownItems>
-              <DropdownItem link href="/new/page">
-                New Page
-              </DropdownItem>
-              <DropdownItem link href="/new/folder">
-                New Folder
-              </DropdownItem>
-            </DropdownItems>
-          </Dropdown>
+            <Dropdown>
+              <DropdownButton>
+                <NavPad>
+                  <PlusCircleIcon />
+                </NavPad>
+              </DropdownButton>
+              <DropdownItems>
+                <DropdownItem link href="/new/page">
+                  New Page
+                </DropdownItem>
+                <DropdownItem link href="/new/folder">
+                  New Folder
+                </DropdownItem>
+              </DropdownItems>
+            </Dropdown>
 
-          <Dropdown>
-            <DropdownButton>
-              <NavPad>
-                <PersonIcon />
-              </NavPad>
-            </DropdownButton>
-            {user ? (
+            <Dropdown>
+              <DropdownButton>
+                <NavPad>
+                  <PersonIcon />
+                </NavPad>
+              </DropdownButton>
               <DropdownItems>
                 <DropdownItem link href="/profile">
                   Profile
@@ -92,27 +90,29 @@ export default function DashboardLayout({ children }) {
                   Log Out
                 </DropdownItem>
               </DropdownItems>
-            ) : (
-              <DropdownItems>
-                <DropdownItem link href="/api/auth/login">
-                  Log In
-                </DropdownItem>
-              </DropdownItems>
-            )}
-          </Dropdown>
-        </Right>
+            </Dropdown>
+          </Right>
+        ) : (
+          <Right>
+            <Link href="/api/auth/login" passHref>
+              <NavLink>Log In</NavLink>
+            </Link>
+          </Right>
+        )}
       </Header>
 
       <div>{children}</div>
 
-      <Footer></Footer>
+      <Footer>
+        A <Link href="https://www.jaysella.dev?src=pblsh">Jay Sella</Link>{" "}
+        Project
+      </Footer>
     </div>
   );
 }
 
 export function withDashboardLayout(Component) {
   Component.Layout = DashboardLayout;
-
   return Component;
 }
 
