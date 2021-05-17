@@ -13,13 +13,31 @@ function LandingPage() {
   const { user, error, isLoading } = useUser();
   const { faunaUserStatus, faunaUserData } = useFaunaUser();
 
-  // console.log(faunaUserData);
-
   if (user && faunaUserData) {
     if (faunaUserData.setupCompleted) {
-      return Router.push(`/dashboard`);
+      Router.push(`/dashboard`);
+      return (
+        <>
+          <Head>Redirecting ...</Head>
+          <PageWrapper>
+            <LoadingWrapper>
+              <Loader />
+            </LoadingWrapper>
+          </PageWrapper>
+        </>
+      );
     } else {
-      return Router.push(`/onboarding`);
+      Router.push(`/onboarding`);
+      return (
+        <>
+          <Head>Redirecting ...</Head>
+          <PageWrapper>
+            <LoadingWrapper>
+              <Loader />
+            </LoadingWrapper>
+          </PageWrapper>
+        </>
+      );
     }
   }
 
