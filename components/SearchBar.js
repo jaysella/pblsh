@@ -32,8 +32,14 @@ export default function SearchBar() {
   return (
     <Wrapper>
       {/* <label aria-hidden="true">Search</label> */}
-      <form action="/search" method="POST">
-        <Input type="text" placeholder="Search (/)" ref={inputRef} />
+      <form action="/search" method="GET">
+        <Input
+          type="text"
+          id="query"
+          name="query"
+          placeholder="Search (/)"
+          ref={inputRef}
+        />
       </form>
     </Wrapper>
   );

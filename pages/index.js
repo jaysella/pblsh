@@ -61,15 +61,17 @@ function LandingPage() {
         {!isLoading && !error && faunaUserStatus === "no_user" && (
           <HeroSection>
             <Left>
-              <h1>Your new home for sharing</h1>
+              <h1>
+                Because <span>sharing</span> is caring
+              </h1>
               <p>
-                Welcome to pblsh&mdash;a simple, easy, fast solution for
-                organizing and publishing content.
+                Welcome to pblsh&mdash;a simple, easy, quick solution for
+                organizing and sharing notes + thoughts.
               </p>
 
               <Actions>
                 <Button href="/api/auth/login">
-                  Start Publishing
+                  Start Sharing
                   <ButtonIcon>
                     <ArrowRightCircleIcon />
                   </ButtonIcon>
@@ -94,13 +96,21 @@ const HeroSection = styled.section`
   margin: 0 5rem;
 
   h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
+
+    span {
+      background-color: var(--color-primary);
+      padding: 0.5rem;
+      border-radius: var(--base-border-radius);
+      color: var(--color-black);
+    }
   }
 
   p {
     margin-top: 1.25rem;
     font-size: 1.2em;
     font-weight: var(--font-weight-light);
+    line-height: 1.55;
   }
 `;
 
