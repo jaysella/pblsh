@@ -35,7 +35,15 @@ export default async (req, res) => {
 
     const user = await guestClient.query(
       q.Create(q.Collection("User"), {
-        data: { auth0Id, email, nickname, name, setupCompleted },
+        data: {
+          auth0Id,
+          email,
+          nickname,
+          name,
+          setupCompleted,
+          createdAt: q.Now(),
+          updatedAt: q.Now(),
+        },
       })
     );
 

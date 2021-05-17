@@ -103,10 +103,7 @@ export default function DashboardLayout({ children }) {
 
       <div>{children}</div>
 
-      <Footer>
-        A <Link href="https://www.jaysella.dev?src=pblsh">Jay Sella</Link>{" "}
-        Project
-      </Footer>
+      <Footer />
     </div>
   );
 }

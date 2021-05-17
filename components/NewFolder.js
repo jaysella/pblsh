@@ -124,7 +124,7 @@ export default function NewFolder() {
   );
 }
 
-export const sectionTitle = css`
+const sectionTitle = css`
   font-size: 0.8em;
   text-transform: uppercase;
   margin-bottom: 0.75rem;

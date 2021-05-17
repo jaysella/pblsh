@@ -1,3 +1,14 @@
+type User {
+  auth0Id: String! @unique
+  email: String! @unique
+  nickname: String
+  name: String
+  setupCompleted: Boolean!
+  pages: [Page!] @relation
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Folder {
   name: String!
   owner: User!
@@ -17,22 +28,22 @@ type Page {
   updatedAt: String!
 }
 
-type Block {
-  page: Page!
+type Block @embedded {
   type: String!
   content: String
 }
 
-type User {
-  auth0Id: String! @unique
-  email: String! @unique
-  nickname: String
+type Report {
+  type: String!
+  url: String
   name: String
-  setupCompleted: Boolean!
-  pages: [Page!] @relation
+  email: String
+  description: String
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {
-  allPages: [Page!]
   allUsers: [User!]
+  allPages: [Page!]
 }

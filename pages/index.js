@@ -87,6 +87,7 @@ export default withDashboardLayout(LandingPage);
 
 const PageWrapper = styled.main`
   margin: 5rem 0;
+  min-height: 50vh;
 `;
 
 const HeroSection = styled.section`

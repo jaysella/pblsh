@@ -68,10 +68,6 @@ export const globalStyles = (
       svg {
         user-drag: none;
         user-select: none;
-        -moz-user-select: none;
-        -webkit-user-drag: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
       }
 
       a {
@@ -81,6 +77,9 @@ export const globalStyles = (
       button {
         all: initial;
         cursor: pointer;
+        font-size: inherit;
+        font-family: var(--font-sans-serif);
+        font-weight: var(--font-weight-bold);
       }
 
       input {

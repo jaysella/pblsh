@@ -113,26 +113,30 @@ export function InputInfo({ children, ...props }) {
   );
 }
 
-export const FormElement = styled(Form)`
+export function ActionGroup({ children }) {
+  return <ActionGroupWrapper>{children}</ActionGroupWrapper>;
+}
+
+const FormElement = styled(Form)`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   display: ${(props) => (props.hidden ? "none" : "flex")};
 `;
 
-export const InputGroupWrapper = styled.div`
+const InputGroupWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 `;
 
-export const InputLabelWrapper = styled.label`
+const InputLabelWrapper = styled.label`
   font-size: 0.8em;
   text-transform: uppercase;
   color: var(--color-white-muted);
 `;
 
-export const InputWrapper = styled(Field)`
+const InputWrapper = styled(Field)`
   border: none;
   background-color: var(--color-black-muted);
   border-radius: calc(var(--base-border-radius) / 1.75);
@@ -189,7 +193,7 @@ export const InputWrapper = styled(Field)`
   }
 `;
 
-export const feedbackStyles = css`
+const feedbackStyles = css`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -207,14 +211,20 @@ const feedbackAnimation = css`
   animation: ${fadeInDownAnimation} 0.25s forwards ease-in;
 `;
 
-export const ErrorWrapper = styled.div`
+const ErrorWrapper = styled.div`
   ${feedbackStyles};
   color: var(--color-tertiary);
   ${(props) => props.animated && feedbackAnimation};
 `;
 
-export const InfoWrapper = styled.div`
+const InfoWrapper = styled.div`
   ${feedbackStyles};
   color: var(--color-secondary);
   ${(props) => props.animated && feedbackAnimation};
+`;
+
+const ActionGroupWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
 `;
