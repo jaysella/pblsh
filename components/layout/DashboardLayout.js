@@ -119,7 +119,11 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 2rem calc(5rem - 0.75rem);
+  padding: 2rem calc(2.5rem - 0.75rem);
+
+  @media only screen and (min-width: 768px) {
+    padding: 2rem calc(5rem - 0.75rem);
+  }
 `;
 
 export const Left = styled.nav`

@@ -45,7 +45,7 @@ function LandingPage() {
     <>
       <Head>
         <title>Welcome to pblsh!</title>
-        <meta name="description" content="A new way to publish" />
+        {/* <meta name="description" content="A new way to publish" /> */}
       </Head>
 
       <PageWrapper>
@@ -62,7 +62,7 @@ function LandingPage() {
           <HeroSection>
             <Left>
               <h1>
-                Because <span>sharing</span> is caring
+                Because <span>sharing</span> is caring.
               </h1>
               <p>
                 Welcome to pblsh&mdash;a simple, easy, quick solution for
@@ -88,15 +88,24 @@ function LandingPage() {
 export default withDashboardLayout(LandingPage);
 
 const PageWrapper = styled.main`
-  margin: 5rem 0;
+  margin: 2.5rem 0;
   min-height: 50vh;
+
+  @media only screen and (min-width: 768px) {
+    margin: 5rem 0;
+  }
 `;
 
 const HeroSection = styled.section`
-  margin: 0 5rem;
+  margin: 0 2.5rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 0 5rem;
+  }
 
   h1 {
     font-size: 3.5rem;
+    line-height: 1.2;
 
     span {
       background-color: var(--color-primary);

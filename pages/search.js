@@ -81,15 +81,23 @@ function Search() {
 export default withDashboardLayout(withPageAuthRequired(Search));
 
 export const PageWrapper = styled.main`
-  margin: 3rem auto;
+  margin: 3rem 2.5rem;
   max-width: 550px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 3rem auto;
+  }
 `;
 
 export const Welcome = styled.div`
-  padding: 2rem 5rem 1rem;
+  padding: 2rem 2.5rem 1rem;
+
+  @media only screen and (min-width: 768px) {
+    padding: 2rem 5rem 1rem;
+  }
 `;
 
 export const sectionTitle = css`

@@ -186,10 +186,14 @@ function Dashboard() {
 export default withDashboardLayout(withPageAuthRequired(Dashboard));
 
 export const AccountSetup = styled.div`
-  margin: 2rem 5rem 1rem;
+  margin: 2rem 2.5rem 1rem;
   padding: 2rem;
   background: var(--color-secondary);
   border-radius: var(--base-border-radius);
+
+  @media only screen and (min-width: 768px) {
+    margin: 2rem 5rem 1rem;
+  }
 
   p {
     margin-top: 0.75rem;
@@ -198,16 +202,26 @@ export const AccountSetup = styled.div`
 `;
 
 export const Welcome = styled.div`
-  padding: 2rem 5rem 1rem;
+  padding: 2rem 2.5rem 1rem;
+
+  @media only screen and (min-width: 768px) {
+    padding: 2rem 5rem 1rem;
+  }
 `;
 
 export const Content = styled.div`
-  margin: 2rem 5rem;
+  margin: 2rem 2.5rem;
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  /* grid-auto-rows: auto; */
-  grid-template-areas: "recents folders" "newPage .";
+  grid-template-columns: 100%;
+  grid-template-areas: "recents" "folders" "newPage";
   grid-gap: 2rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 2rem 5rem;
+    grid-template-columns: 3fr 1fr;
+    /* grid-auto-rows: auto; */
+    grid-template-areas: "recents folders" "newPage .";
+  }
 `;
 
 export const sectionTitle = css`
@@ -240,8 +254,12 @@ export const Recents = styled.section`
 export const RecentsGrid = styled.div`
   margin-bottom: 1rem;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
+
+  @media only screen and (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 export const Recent = styled.a`

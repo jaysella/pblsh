@@ -291,17 +291,21 @@ export default function Layout() {
 }
 
 const FooterWrapper = styled.footer`
-  padding: 2rem 5rem;
+  padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  @media only screen and (min-width: 768px) {
+    padding: 2rem 5rem;
+  }
 `;
 
 const Text = styled.p`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.25rem;
   text-align: center;
   font-size: 0.8rem;
   font-weight: var(--font-weight-medium);

@@ -152,10 +152,14 @@ function Pages() {
 export default withDashboardLayout(withPageAuthRequired(Pages));
 
 const PageWrapper = styled.main`
-  margin: 2rem 5rem;
+  margin: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 2rem 5rem;
+  }
 `;
 
 export const sectionTitle = css`
@@ -209,8 +213,13 @@ const WarningIconWrapper = styled.div`
 
 const PagesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 2rem 5rem;
+    grid-template-columns: repeat(5, 1fr);
+  }
 `;
 
 const Page = styled.a`

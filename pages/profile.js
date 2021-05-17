@@ -266,11 +266,15 @@ function Profile() {
 export default withDashboardLayout(withPageAuthRequired(Profile));
 
 export const PageWrapper = styled.main`
-  margin: 3rem auto;
+  margin: 2rem 2.5rem;
   max-width: 550px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 2rem auto;
+  }
 `;
 
 export const LogoBox = styled.div`

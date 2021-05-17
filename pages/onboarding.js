@@ -311,10 +311,15 @@ export default withSimpleLayout(withPageAuthRequired(Onboarding));
 
 export const PageWrapper = styled.main`
   margin: 5rem auto 3rem;
+  padding: 0 2.5rem;
   max-width: 550px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media only screen and (min-width: 768px) {
+    padding: 0;
+  }
 `;
 
 export const LogoBox = styled.div`

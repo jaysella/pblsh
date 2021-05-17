@@ -132,15 +132,24 @@ function Folders() {
 export default withDashboardLayout(withPageAuthRequired(Folders));
 
 const Header = styled.div`
-  padding: 2rem 5rem 1rem;
+  padding: 2rem 2.5rem 1rem;
+
+  @media only screen and (min-width: 768px) {
+    padding: 2rem 5rem 1rem;
+  }
 `;
 
 const Content = styled.section`
-  margin: 2rem 5rem;
+  margin: 2rem 2.5rem;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: auto;
   grid-gap: 1rem;
+
+  @media only screen and (min-width: 768px) {
+    margin: 2rem 5rem;
+    grid-template-columns: repeat(6, 1fr);
+  }
 `;
 
 const sectionTitle = css`
