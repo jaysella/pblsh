@@ -56,7 +56,7 @@ export default function NewPage() {
             console.log(r);
             setPageCreated(true);
 
-            Router.push(`/edit/${newPageId}`);
+            Router.push(`/p/${newPageId}`);
           }
         })
         .catch((error) => {

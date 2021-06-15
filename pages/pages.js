@@ -108,9 +108,9 @@ function Pages() {
           <>
             <PagesGrid>
               {pagesData &&
-                pagesData.map((p) => (
+                pagesData.reverse().map((p) => (
                   <Link
-                    href={`/edit/${p.page.ref["@ref"].id}`}
+                    href={`/p/${p.page.ref["@ref"].id}`}
                     passHref
                     key={p.page.ref["@ref"].id}
                   >
@@ -217,7 +217,6 @@ const PagesGrid = styled.div`
   grid-gap: 1rem;
 
   @media only screen and (min-width: 768px) {
-    margin: 2rem 5rem;
     grid-template-columns: repeat(5, 1fr);
   }
 `;

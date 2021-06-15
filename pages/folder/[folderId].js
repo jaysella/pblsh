@@ -224,9 +224,9 @@ function ViewFolder() {
             <RecentsGrid>
               {folderPagesData &&
                 folderPagesData.data &&
-                folderPagesData.data.map((page) => (
+                folderPagesData.data.reverse().map((page) => (
                   <Link
-                    href={`/edit/${page.ref["@ref"].id}`}
+                    href={`/p/${page.ref["@ref"].id}`}
                     passHref
                     key={page.ref["@ref"].id}
                   >

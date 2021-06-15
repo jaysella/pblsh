@@ -83,7 +83,7 @@ function Dashboard() {
               {faunaPagesData &&
                 faunaPagesData.slice(0, 3).map((p) => (
                   <Link
-                    href={`/edit/${p.page.ref["@ref"].id}`}
+                    href={`/p/${p.page.ref["@ref"].id}`}
                     passHref
                     key={p.page.ref["@ref"].id}
                   >

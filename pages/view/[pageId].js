@@ -71,10 +71,7 @@ function ViewPage() {
             <h1>{title}</h1>
 
             {pageData.contentTiptap && (
-              <Tiptap
-                editable={false}
-                initialContent={pageData.contentTiptap}
-              />
+              <Tiptap editable={false} initialJson={pageData.contentTiptap} />
             )}
           </>
         ) : faunaFetchingError || (pageData && pageData.published) ? (

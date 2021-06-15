@@ -10,26 +10,26 @@ const request = async (req, res) => {
     query: { id },
   } = req;
 
-  const { contentTiptap, published, folder } = req.body;
+  const { contentTiptap } = req.body;
 
-  if (!id || (!contentTiptap && !published && !folder)) {
+  if (!id || !contentTiptap) {
     return res.status(400).json({
       error: {
         name: "missing_params",
-        message: "All four parameters must be provided",
+        message: "All parameters must be provided",
       },
     });
   }
 
-  const folderId = folder[0].value;
+  // const folderId = folder[0].value;
 
   try {
     const page = await guestClient.query(
       q.Update(q.Ref(q.Collection("Page"), id), {
         data: {
           contentTiptap,
-          published,
-          folder: q.Ref(q.Collection("Folder"), folderId),
+          // published,
+          // folder: q.Ref(q.Collection("Folder"), folderId),
           updatedAt: q.Now(),
         },
       })

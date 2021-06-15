@@ -1,14 +1,28 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "./editor/MenuBar";
 import styled from "@emotion/styled";
 
-export default function Tiptap({ editable, initialContent, sendTiptapData }) {
+export default function Tiptap({
+  editable,
+  initialHtml,
+  initialJson,
+  sendTiptapData,
+}) {
+  const extensions = [StarterKit];
+
+  let initialContent = "";
+  if (initialHtml) {
+    initialContent = initialHtml;
+  } else if (initialJson) {
+    initialContent = generateHTML(initialJson, extensions);
+  }
+
   const isEditable = editable == true;
   const editor = useEditor({
     editable: isEditable,
-    extensions: [StarterKit],
-    content: initialContent || "",
+    extensions,
+    content: initialContent,
     onUpdate() {
       const json = this.getJSON();
       if (sendTiptapData) {

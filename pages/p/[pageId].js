@@ -32,7 +32,8 @@ function Page() {
   const [pageFetch, setPageFetch] = useState({
     isLoading: true,
   });
-  const [isEditing, setIsEditing] = useState();
+
+  // const [isEditing, setIsEditing] = useState();
 
   const [tiptapData, setTiptapData] = useState();
   const [pageSave, setPageSave] = useState({
@@ -66,9 +67,7 @@ function Page() {
           .catch((error) => {
             console.error(error);
             setPageFetch({
-              error: {
-                error: error.message,
-              },
+              error: error.message,
               isLoading: false,
             });
           });
@@ -81,6 +80,7 @@ function Page() {
   // Check if currently logged in user owns this page
   let userSub;
   let pageOwnerSub;
+  let isEditing;
 
   // Confirm user is logged in
   if (user) {
@@ -94,15 +94,10 @@ function Page() {
     pageOwnerSub = pageData.owner.data.auth0Id;
   }
 
-  useEffect(() => {
-    if (userSub && pageOwnerSub && userSub === pageOwnerSub) {
-      return setIsEditing(true);
-    }
-
-    if (!isLoading && userSub !== pageOwnerSub) {
-      return setIsEditing(false);
-    }
-  }, [userSub, pageOwnerSub, isLoading]);
+  if (userSub === pageOwnerSub) {
+    // setIsEditing(true);
+    isEditing = true;
+  }
 
   if (pageFetch.isLoading) {
     return (
@@ -172,9 +167,7 @@ function Page() {
         .catch((error) => {
           console.error(error);
           setPageSave({
-            error: {
-              error: error.message,
-            },
+            error: error.message,
             isSaving: false,
           });
         });
@@ -190,48 +183,45 @@ function Page() {
       <PageWrapper>
         <h1>{title}</h1>
 
-        {pageSave?.error ||
-          (pageSave?.response?.error && (
-            <ErrorBlock>
-              <WarningIconWrapper>
-                <AlertTriangleIcon />
-              </WarningIconWrapper>
+        {(pageSave?.error || pageSave?.response?.error) && (
+          <ErrorBlock>
+            <WarningIconWrapper>
+              <AlertTriangleIcon />
+            </WarningIconWrapper>
 
-              <h2>Error Encountered</h2>
-              <p>
-                {pageSave.error.message ||
-                  pageSave.response.error.message ||
-                  "An error was encountered — please try again later"}
-              </p>
-            </ErrorBlock>
-          ))}
+            <h2>Error Encountered</h2>
+            <p>
+              {pageSave?.error.message ||
+                pageSave?.response?.error.message ||
+                "An error was encountered — please try again later"}
+            </p>
+          </ErrorBlock>
+        )}
 
-        {pageData &&
-          pageData?.page?.data?.contentTiptap &&
-          typeof isEditing !== "undefined" && (
-            <>
-              <Tiptap
-                editable={isEditing}
-                initialContent={pageData.page.data.contentTiptap}
-                sendTiptapData={sendTiptapData}
-              />
+        {!isLoading && pageData && pageData?.page?.data?.contentTiptap && (
+          <>
+            <Tiptap
+              editable={isEditing}
+              initialJson={pageData.page.data.contentTiptap}
+              sendTiptapData={sendTiptapData}
+            />
 
-              {isEditing && (
-                <Button onClick={handlePageSave} disabled={pageSave.isSaving}>
-                  Save
-                  <ButtonIcon>
-                    {pageSave.isSaving ? (
-                      <Loader />
-                    ) : pageSave.saved ? (
-                      <CheckCircleIcon />
-                    ) : (
-                      <ArrowRightCircleIcon />
-                    )}
-                  </ButtonIcon>
-                </Button>
-              )}
-            </>
-          )}
+            {isEditing && (
+              <Button onClick={handlePageSave} disabled={pageSave.isSaving}>
+                Save
+                <ButtonIcon>
+                  {pageSave.isSaving ? (
+                    <Loader />
+                  ) : pageSave.saved ? (
+                    <CheckCircleIcon />
+                  ) : (
+                    <ArrowRightCircleIcon />
+                  )}
+                </ButtonIcon>
+              </Button>
+            )}
+          </>
+        )}
       </PageWrapper>
     </>
   );

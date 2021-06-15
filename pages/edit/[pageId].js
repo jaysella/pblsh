@@ -256,7 +256,7 @@ function EditPage() {
 
                   <Tiptap
                     editable={true}
-                    initialContent={pageData.page.data.contentTiptap}
+                    initialJson={pageData.page.data.contentTiptap}
                     sendTiptapData={sendTiptapData}
                   />
 

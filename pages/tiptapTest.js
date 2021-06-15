@@ -37,7 +37,7 @@ function TiptapTest() {
 
           <Tiptap
             editable={true}
-            initialContent="
+            initialHtml="
               <h2>
                 Hi there,
               </h2>
