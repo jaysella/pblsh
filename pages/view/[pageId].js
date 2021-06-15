@@ -105,7 +105,7 @@ function ViewPage() {
 
             {pageData.contentTiptap && (
               <Tiptap
-                editable={false}
+                editable="false"
                 initialContent={pageData.contentTiptap}
               />
             )}
