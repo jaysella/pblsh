@@ -36,6 +36,7 @@ function TiptapTest() {
           </Block>
 
           <Tiptap
+            editable={true}
             initialContent="
               <h2>
                 Hi there,

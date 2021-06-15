@@ -254,6 +254,7 @@ function EditPage() {
                   </InputGroup>
 
                   <Tiptap
+                    editable={true}
                     initialContent={pageData.page.data.contentTiptap}
                     sendTiptapData={sendTiptapData}
                   />
