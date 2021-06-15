@@ -52,14 +52,6 @@ const CustomLink = forwardRef(function customLink(
   );
 });
 
-// const CustomLink = forwardRef(({ children, onClick, href }, ref) => {
-//   return (
-//     <LinkedItem href={href} onClick={onClick} ref={ref}>
-//       {children}
-//     </LinkedItem>
-//   );
-// });
-
 export const Button = styled(MenuButton)`
   ${dropdownButtonStyles};
   display: flex;

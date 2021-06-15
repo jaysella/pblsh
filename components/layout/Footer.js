@@ -88,7 +88,9 @@ export default function Layout() {
                 <span>
                   A{" "}
                   <Link href="https://www.jaysella.dev?src=pblsh" passHref>
-                    <a target="_blank">Jay Sella</a>
+                    <a target="_blank" rel="noopener">
+                      Jay Sella
+                    </a>
                   </Link>{" "}
                   Project
                 </span>
@@ -277,7 +279,9 @@ export default function Layout() {
                 <span>
                   A{" "}
                   <Link href="https://www.jaysella.dev?src=pblsh" passHref>
-                    <a target="_blank">Jay Sella</a>
+                    <a target="_blank" rel="noopener">
+                      Jay Sella
+                    </a>
                   </Link>{" "}
                   Project
                 </span>
