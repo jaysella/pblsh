@@ -4,7 +4,7 @@ import MenuBar from "./editor/MenuBar";
 import styled from "@emotion/styled";
 
 export default function Tiptap({ editable, initialContent, sendTiptapData }) {
-  const isEditable = editable || true;
+  const isEditable = editable === true;
   const editor = useEditor({
     editable: isEditable,
     extensions: [StarterKit],
