@@ -23,15 +23,8 @@ type Page {
   owner: User!
   folder: Folder
   contentTiptap: String
-  contentTemporary: String
-  contentBlocks: [Block]
   createdAt: String!
   updatedAt: String!
-}
-
-type Block @embedded {
-  type: String!
-  content: String
 }
 
 type Report {

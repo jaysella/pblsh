@@ -9,9 +9,6 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { LoadingWrapper } from "../../shared/styles";
 
-import { FormWrapper, InputGroup, Input } from "../../components/Form";
-import { Formik } from "formik";
-
 function ViewPage() {
   const router = useRouter();
   const { pageId } = router.query;
@@ -73,36 +70,6 @@ function ViewPage() {
           <>
             <h1>{title}</h1>
 
-            {pageData.contentTemporary && (
-              <>
-                <ArchivedMessage>
-                  <p>
-                    <u>Heads up!</u> This page was created using an early
-                    version of our editor which is no longer supported.
-                  </p>
-                </ArchivedMessage>
-
-                <Formik
-                  initialValues={{
-                    contentTemporary: pageData.contentTemporary,
-                  }}
-                >
-                  <FormWrapper>
-                    <InputGroup>
-                      <Input
-                        as="textarea"
-                        id="contentTemporary"
-                        name="contentTemporary"
-                        placeholder="The quick brown fox jumped over the moon."
-                        rows="10"
-                        disabled={true}
-                      />
-                    </InputGroup>
-                  </FormWrapper>
-                </Formik>
-              </>
-            )}
-
             {pageData.contentTiptap && (
               <Tiptap
                 editable={false}
@@ -139,15 +106,6 @@ const PageWrapper = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-`;
-
-const ArchivedMessage = styled.div`
-  padding: 1.25rem;
-  box-shadow: 0 0 0 calc(var(--base-border-width) * 2)
-    var(--color-tertiary-opacity);
-  border-radius: calc(var(--base-border-radius) / 1.5);
-  background: var(--color-tertiary);
-  color: var(--color-black);
 `;
 
 export const sectionTitle = css`

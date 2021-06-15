@@ -34,7 +34,6 @@ import * as Yup from "yup";
 
 const pageSchema = Yup.object().shape({
   publicLink: Yup.string().trim().required("Required"),
-  contentTemporary: Yup.string().trim().required("Required"),
 });
 
 function ViewFolder() {

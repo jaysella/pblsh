@@ -10,10 +10,8 @@ export default async (req, res) => {
     query: { id },
   } = req;
 
-  // const { contentTemporary, published, folder } = req.body;
   const { contentTiptap, published, folder } = req.body;
 
-  // if (!id || !contentTemporary || !published || !folder) {
   if (!id || !contentTiptap || !published || !folder) {
     return res.status(400).json({
       error: {
@@ -30,7 +28,6 @@ export default async (req, res) => {
       q.Update(q.Ref(q.Collection("Page"), id), {
         data: {
           contentTiptap,
-          // contentTemporary,
           published,
           folder: q.Ref(q.Collection("Folder"), folderId),
           updatedAt: q.Now(),
