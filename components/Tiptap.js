@@ -4,21 +4,22 @@ import MenuBar from "./editor/MenuBar";
 import styled from "@emotion/styled";
 
 export default function Tiptap({ editable, initialContent, sendTiptapData }) {
-  const isEditable = editable === true;
+  const isEditable = editable == true;
   const editor = useEditor({
     editable: isEditable,
     extensions: [StarterKit],
     content: initialContent || "",
     onUpdate() {
       const json = this.getJSON();
-      console.log("abc", json);
-      sendTiptapData(json);
+      if (sendTiptapData) {
+        sendTiptapData(json);
+      }
     },
   });
 
   return (
     <EditorWrapper>
-      {isEditable === true && <MenuBar editor={editor} />}
+      {isEditable == true && <MenuBar editor={editor} />}
       <Editor editor={editor} />
     </EditorWrapper>
   );

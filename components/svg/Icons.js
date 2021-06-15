@@ -6,4 +6,20 @@ import QuoteRight from "./QuoteRight";
 import Undo from "./Undo";
 import Redo from "./Redo";
 
-export { Bold, Italic, ListOrdered, ListUnordered, QuoteRight, Undo, Redo };
+import AlertTriangleIcon from "./AlertTriangle";
+import CheckCircleIcon from "./CheckCircle";
+
+import ArrowRightCircleIcon from "./ArrowRightCircle";
+
+export {
+  Bold,
+  Italic,
+  ListOrdered,
+  ListUnordered,
+  QuoteRight,
+  Undo,
+  Redo,
+  AlertTriangleIcon,
+  ArrowRightCircleIcon,
+  CheckCircleIcon,
+};

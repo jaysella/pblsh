@@ -12,7 +12,7 @@ export default async (req, res) => {
 
   const { contentTiptap, published, folder } = req.body;
 
-  if (!id || !contentTiptap || !published || !folder) {
+  if (!id || (!contentTiptap && !published && !folder)) {
     return res.status(400).json({
       error: {
         name: "missing_params",

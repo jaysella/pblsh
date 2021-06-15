@@ -19,6 +19,15 @@ export default async (req, res) => {
     });
   }
 
+  if (isNaN(id)) {
+    return res.status(400).json({
+      error: {
+        name: "invalid_id",
+        message: "The requested page does not exist",
+      },
+    });
+  }
+
   try {
     const page = await guestClient.query(
       q.Map(
@@ -29,10 +38,12 @@ export default async (req, res) => {
             {
               page: q.Get(q.Var("page")),
               folder: q.Get(q.Select(["data", "folder"], q.Var("page"))),
+              owner: q.Get(q.Select(["data", "owner"], q.Var("page"))),
             },
             {
               page: q.Var("page"),
               folder: q.Var("folder"),
+              owner: q.Var("owner"),
             }
           )
         )

@@ -208,10 +208,51 @@ export const fillAnimation = keyframes`
   }
 }`;
 
+export const sectionTitle = css`
+  font-size: 0.8em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  color: var(--color-white-muted);
+`;
+
 export const LoadingWrapper = styled.div`
   --loader-size: 2.5rem;
   margin: 5rem 0;
   display: flex;
   justify-content: space-around;
   animation: ${fadeInAnimation} 0.5s forwards ease-in;
+`;
+
+export const contentBlock = css`
+  padding: 1.5rem;
+  border-radius: var(--base-border-radius);
+  border: var(--base-border-width) solid var(--color-black-muted);
+  transition: border calc(var(--base-transition-out-duration) * 2) 0.5s ease-out;
+
+  &:hover {
+    transition: border calc(var(--base-transition-in-duration) * 2) ease-in;
+  }
+
+  h2 {
+    ${sectionTitle};
+  }
+`;
+
+export const Block = styled.section`
+  ${contentBlock};
+`;
+
+export const ErrorBlock = styled.section`
+  ${contentBlock};
+  border-color: var(--color-tertiary);
+`;
+
+export const WarningIconWrapper = styled.div`
+  margin-bottom: 1.25rem;
+  color: var(--color-tertiary);
+
+  svg {
+    width: 2.5rem;
+    height: auto;
+  }
 `;
