@@ -15,7 +15,7 @@ function Custom404() {
 
         <Block>
           <h2>Ruh Roh</h2>
-          <p>We couldn't find what you were looking for.</p>
+          <p>We couldn&apos;t find what you were looking for.</p>
         </Block>
       </PageWrapper>
     </>

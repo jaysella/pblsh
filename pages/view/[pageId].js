@@ -17,36 +17,36 @@ function ViewPage() {
   const [pageFetched, setPageFetched] = useState(false);
   const [pageData, setPageData] = useState();
 
-  const fetchPage = async () => {
-    if (pageId) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      };
-
-      await fetch(`/api/page/${pageId}`, requestOptions)
-        .then((response) => response.json())
-        .then((r) => {
-          if (r.success && r.success.page) {
-            const data = r.success.page.data[0].page.data;
-            setPageData(data);
-            setPageFetched(true);
-          } else if (r.error) {
-            console.log("Error:", r.error);
-            const errorMessage =
-              r.error.name === "database_error"
-                ? "An error was encountered — please try again later"
-                : r.error.message;
-            setFaunaFetchingError(errorMessage);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
-
   useEffect(() => {
+    const fetchPage = async () => {
+      if (pageId) {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        };
+
+        await fetch(`/api/page/${pageId}`, requestOptions)
+          .then((response) => response.json())
+          .then((r) => {
+            if (r.success && r.success.page) {
+              const data = r.success.page.data[0].page.data;
+              setPageData(data);
+              setPageFetched(true);
+            } else if (r.error) {
+              console.log("Error:", r.error);
+              const errorMessage =
+                r.error.name === "database_error"
+                  ? "An error was encountered — please try again later"
+                  : r.error.message;
+              setFaunaFetchingError(errorMessage);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    };
+
     fetchPage();
   }, [pageId]);
 

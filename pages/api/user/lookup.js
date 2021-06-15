@@ -5,7 +5,7 @@ const guestClient = new faunadb.Client({
   secret: process.env.FAUNA_GUEST_SECRET,
 });
 
-export default async (req, res) => {
+const request = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
@@ -61,3 +61,5 @@ export default async (req, res) => {
     });
   }
 };
+
+export default request;

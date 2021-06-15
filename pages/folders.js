@@ -24,37 +24,37 @@ function Folders() {
   const [foldersFetched, setFoldersFetched] = useState(false);
   const [foldersData, setFoldersData] = useState();
 
-  const fetchFolders = async () => {
-    if (faunaUserData && faunaUserData.id) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      };
-
-      await fetch(`/api/user/${faunaUserData.id}/folders`, requestOptions)
-        .then((response) => response.json())
-        .then((r) => {
-          if (r.success && r.success.folders) {
-            const data = r.success.folders.data;
-            console.log(data);
-            setFoldersData(data);
-            setFoldersFetched(true);
-          } else if (r.error) {
-            console.log("Error:", r.error);
-            const errorMessage =
-              r.error.name === "database_error"
-                ? "An error was encountered — please try again later"
-                : r.error.message;
-            setFaunaFetchingError(errorMessage);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
-
   useEffect(() => {
+    const fetchFolders = async () => {
+      if (faunaUserData && faunaUserData.id) {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        };
+
+        await fetch(`/api/user/${faunaUserData.id}/folders`, requestOptions)
+          .then((response) => response.json())
+          .then((r) => {
+            if (r.success && r.success.folders) {
+              const data = r.success.folders.data;
+              console.log(data);
+              setFoldersData(data);
+              setFoldersFetched(true);
+            } else if (r.error) {
+              console.log("Error:", r.error);
+              const errorMessage =
+                r.error.name === "database_error"
+                  ? "An error was encountered — please try again later"
+                  : r.error.message;
+              setFaunaFetchingError(errorMessage);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    };
+
     fetchFolders();
   }, [faunaUserData]);
 
@@ -100,8 +100,8 @@ function Folders() {
             <Block>
               <h2>No Folders</h2>
               <p>
-                You don't yet have any folders. Let's fix that by creating one
-                now.
+                You don&apos;t yet have any folders. Let&apos;s fix that by
+                creating one now.
               </p>
             </Block>
           )}

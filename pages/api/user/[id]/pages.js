@@ -5,7 +5,7 @@ const guestClient = new faunadb.Client({
   secret: process.env.FAUNA_GUEST_SECRET,
 });
 
-export default async (req, res) => {
+const request = async (req, res) => {
   const {
     query: { id },
   } = req;
@@ -66,3 +66,5 @@ export default async (req, res) => {
     });
   }
 };
+
+export default request;

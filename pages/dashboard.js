@@ -44,8 +44,8 @@ function Dashboard() {
               <AccountSetup>
                 <h1>Greetings!</h1>
                 <p>
-                  Welcome to pblsh, we're so happy to have you! Make sure you
-                  finish setting up your account as soon as possible.
+                  Welcome to pblsh, we&apos;re so happy to have you! Make sure
+                  you finish setting up your account as soon as possible.
                 </p>
 
                 <br />
@@ -59,7 +59,7 @@ function Dashboard() {
               </AccountSetup>
             ) : (
               <Welcome>
-                <h1>G'day, {faunaUserData.nickname}!</h1>
+                <h1>G&apos;day, {faunaUserData.nickname}!</h1>
               </Welcome>
             )}
           </>
@@ -111,7 +111,8 @@ function Dashboard() {
                 <Link href="/new/page" passHref>
                   <Recent>
                     <RecentName>
-                      You haven't created any pages yet. Let's fix that.
+                      You haven&apos;t created any pages yet. Let&apos;s fix
+                      that.
                     </RecentName>
                   </Recent>
                 </Link>

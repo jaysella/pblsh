@@ -26,36 +26,36 @@ function Pages() {
   const [pagesFetched, setPagesFetched] = useState(false);
   const [pagesData, setPagesData] = useState();
 
-  const fetchPages = async () => {
-    if (faunaUserData && faunaUserData.id) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      };
-
-      await fetch(`/api/user/${faunaUserData.id}/pages`, requestOptions)
-        .then((response) => response.json())
-        .then((r) => {
-          if (r.success && r.success.pages) {
-            const data = r.success.pages.data;
-            setPagesData(data);
-            setPagesFetched(true);
-          } else if (r.error) {
-            console.log("Error:", r.error);
-            const errorMessage =
-              r.error.name === "database_error"
-                ? "An error was encountered — please try again later"
-                : r.error.message;
-            setFaunaFetchingError(errorMessage);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
-
   useEffect(() => {
+    const fetchPages = async () => {
+      if (faunaUserData && faunaUserData.id) {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        };
+
+        await fetch(`/api/user/${faunaUserData.id}/pages`, requestOptions)
+          .then((response) => response.json())
+          .then((r) => {
+            if (r.success && r.success.pages) {
+              const data = r.success.pages.data;
+              setPagesData(data);
+              setPagesFetched(true);
+            } else if (r.error) {
+              console.log("Error:", r.error);
+              const errorMessage =
+                r.error.name === "database_error"
+                  ? "An error was encountered — please try again later"
+                  : r.error.message;
+              setFaunaFetchingError(errorMessage);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    };
+
     fetchPages();
   }, [faunaUserData]);
 
@@ -98,8 +98,8 @@ function Pages() {
           <Block>
             <h2>No Pages</h2>
             <p>
-              It's lonely in here: you haven't created any pages yet. Let's fix
-              that.
+              It&apos;s lonely in here: you haven&apos;t created any pages yet.
+              Let&apos;s fix that.
             </p>
           </Block>
         )}

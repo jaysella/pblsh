@@ -5,8 +5,7 @@ const guestClient = new faunadb.Client({
   secret: process.env.FAUNA_GUEST_SECRET,
 });
 
-export default async (req, res) => {
-  // res.status(200).json(JSON.stringify(req.body));
+const request = async (req, res) => {
   const { auth0Id, email, nickname, name, setupCompleted } = req.body;
 
   if (!auth0Id || !email || !nickname || !name || !setupCompleted) {
@@ -85,3 +84,5 @@ export default async (req, res) => {
       .json({ error: "database_error", message: error.message });
   }
 };
+
+export default request;

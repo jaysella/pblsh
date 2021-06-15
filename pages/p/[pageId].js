@@ -40,41 +40,41 @@ function Page() {
   });
 
   // Fetch page
-  const fetchPage = async () => {
-    if (pageId) {
-      const requestOptions = {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      };
-
-      await fetch(`/api/page/${pageId}`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-          if (res.status >= 400) {
-            setPageFetch({
-              error: res,
-              isLoading: false,
-            });
-          } else {
-            setPageFetch({
-              response: res,
-              isLoading: false,
-            });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          setPageFetch({
-            error: {
-              error: error.message,
-            },
-            isLoading: false,
-          });
-        });
-    }
-  };
-
   useEffect(() => {
+    const fetchPage = async () => {
+      if (pageId) {
+        const requestOptions = {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        };
+
+        await fetch(`/api/page/${pageId}`, requestOptions)
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.status >= 400) {
+              setPageFetch({
+                error: res,
+                isLoading: false,
+              });
+            } else {
+              setPageFetch({
+                response: res,
+                isLoading: false,
+              });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            setPageFetch({
+              error: {
+                error: error.message,
+              },
+              isLoading: false,
+            });
+          });
+      }
+    };
+
     fetchPage();
   }, [pageId]);
 
@@ -102,7 +102,7 @@ function Page() {
     if (!isLoading && userSub !== pageOwnerSub) {
       return setIsEditing(false);
     }
-  }, [userSub, pageOwnerSub]);
+  }, [userSub, pageOwnerSub, isLoading]);
 
   if (pageFetch.isLoading) {
     return (

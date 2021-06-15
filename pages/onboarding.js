@@ -42,49 +42,53 @@ function Onboarding() {
   const [faunaUser, setFaunaUser] = useState();
   const [faunaError, setFaunaError] = useState(false);
 
-  useEffect(async () => {
-    if (user && user.email) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user && user.email) {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        };
 
-      await fetch("/api/user/lookup", requestOptions)
-        .then((response) => response.json())
-        .then((r) => {
-          if (r.error) {
-            if (r.error.name !== "no_user") {
-              console.log("Error:", r.error);
-              const errorMessage =
-                r.error.name === "database_error"
-                  ? "An error was encountered — please try again later"
-                  : r.error.message;
-              setFaunaError(errorMessage);
+        await fetch("/api/user/lookup", requestOptions)
+          .then((response) => response.json())
+          .then((r) => {
+            if (r.error) {
+              if (r.error.name !== "no_user") {
+                console.log("Error:", r.error);
+                const errorMessage =
+                  r.error.name === "database_error"
+                    ? "An error was encountered — please try again later"
+                    : r.error.message;
+                setFaunaError(errorMessage);
+              }
+            } else {
+              if (localStorage.getItem("user")) {
+                localStorage.removeItem("user");
+              }
+
+              const data = r.success.user.data;
+
+              delete data.auth0Id;
+
+              data.id = r.success.user.ref["@ref"].id;
+              data.ts = new Date().getTime();
+
+              localStorage.setItem("user", JSON.stringify(data));
+              setFaunaUser(data);
             }
-          } else {
-            if (localStorage.getItem("user")) {
-              localStorage.removeItem("user");
-            }
 
-            const data = r.success.user.data;
+            setFetchingFaunaUser(false);
+          })
+          .catch((error) => {
+            console.error(error);
+            setFaunaError(error.message);
+          });
+      }
+    };
 
-            delete data.auth0Id;
-
-            data.id = r.success.user.ref["@ref"].id;
-            data.ts = new Date().getTime();
-
-            localStorage.setItem("user", JSON.stringify(data));
-            setFaunaUser(data);
-          }
-
-          setFetchingFaunaUser(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setFaunaError(error.message);
-        });
-    }
+    fetchData();
   }, [user]);
 
   const setupCompleted = faunaUser && faunaUser.setupCompleted;
@@ -166,7 +170,9 @@ function Onboarding() {
                     <>
                       <AccountSetup>
                         <h1>Greetings!</h1>
-                        <p>Welcome to pblsh, we're so happy to have you!</p>
+                        <p>
+                          Welcome to pblsh, we&apos;re so happy to have you!
+                        </p>
                       </AccountSetup>
                       <Block>
                         <h2>Finalize Your Account</h2>

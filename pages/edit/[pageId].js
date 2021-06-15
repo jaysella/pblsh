@@ -57,34 +57,35 @@ function EditPage() {
   const { faunaFoldersStatus, faunaFoldersData, faunaFoldersError } =
     useFaunaFolders();
 
-  const fetchPage = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+  // Fetch page
+  useEffect(() => {
+    const fetchPage = async () => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      };
+
+      await fetch(`/api/page/${pageId}`, requestOptions)
+        .then((response) => response.json())
+        .then((r) => {
+          if (r.success && r.success.page) {
+            const data = r.success.page.data[0];
+            setPageData(data);
+            setPageFetched(true);
+          } else if (r.error) {
+            console.log("Error:", r.error);
+            const errorMessage =
+              r.error.name === "database_error"
+                ? "An error was encountered — please try again later"
+                : r.error.message;
+            setFaunaFetchingError(errorMessage);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
-    await fetch(`/api/page/${pageId}`, requestOptions)
-      .then((response) => response.json())
-      .then((r) => {
-        if (r.success && r.success.page) {
-          const data = r.success.page.data[0];
-          setPageData(data);
-          setPageFetched(true);
-        } else if (r.error) {
-          console.log("Error:", r.error);
-          const errorMessage =
-            r.error.name === "database_error"
-              ? "An error was encountered — please try again later"
-              : r.error.message;
-          setFaunaFetchingError(errorMessage);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  useEffect(() => {
     if (pageId) {
       fetchPage();
     }
@@ -112,7 +113,7 @@ function EditPage() {
         })
       );
     }
-  }, [faunaFoldersStatus, pageData]);
+  }, [faunaFoldersData, faunaFoldersStatus, pageData]);
 
   let title;
   if (pageFetched) {

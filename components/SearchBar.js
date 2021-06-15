@@ -27,7 +27,7 @@ export default function SearchBar() {
     return () => {
       return null;
     };
-  }, [focusInputs]);
+  }, [focusInputs, hasMounted]);
 
   return (
     <Wrapper>

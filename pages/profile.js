@@ -97,7 +97,7 @@ function Profile() {
 
             <Block>
               <h2>Update Your Account</h2>
-              <p>Let's keep your info up-to-date.</p>
+              <p>Let&apos;s keep your info up-to-date.</p>
 
               <FormSection>
                 <Formik
@@ -228,8 +228,8 @@ function Profile() {
                     created your account.
                   </p>
                   <p>
-                    Make sure to check your junk/spam folder if you don't see
-                    it.
+                    Make sure to check your junk/spam folder if you don&apos;t
+                    see it.
                   </p>
                 </>
               )}

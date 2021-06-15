@@ -24,7 +24,7 @@ function Search() {
 
         <Block>
           <p>
-            Unfortunately search functionality hasn't yet been implemented.
+            Unfortunately search functionality hasn&apos;t yet been implemented.
             Maybe the links below will help you out anyways?
           </p>
 

@@ -20,14 +20,14 @@ function Settings() {
 
         <Block>
           <h2>Settings</h2>
-          <p>Let's make this account yours. More to come!</p>
+          <p>Let&apos;s make this account yours. More to come!</p>
         </Block>
 
         <Block>
           <h2>Password</h2>
           <p>
             To change your password, please log out. When logging back in, click
-            "Forgot password?"
+            &ldquo;Forgot password?&rdquo;
           </p>
         </Block>
       </PageWrapper>

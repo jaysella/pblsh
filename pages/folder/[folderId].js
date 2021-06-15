@@ -50,64 +50,68 @@ function ViewFolder() {
   const [faunaEditingError, setFaunaEditingError] = useState(false);
   const [folderEdited, setFolderEdited] = useState(false);
 
-  const fetchFolder = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+  useEffect(() => {
+    const fetchFolder = async () => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      };
+
+      await fetch(`/api/folder/${folderId}`, requestOptions)
+        .then((response) => response.json())
+        .then((r) => {
+          if (r.success && r.success.folder) {
+            const data = r.success.folder;
+            setFolderData(data);
+            setFolderFetched(true);
+          } else if (r.error) {
+            console.log("Error:", r.error);
+            const errorMessage =
+              r.error.name === "database_error"
+                ? "An error was encountered — please try again later"
+                : r.error.message;
+            setFaunaFetchingError(errorMessage);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
-    await fetch(`/api/folder/${folderId}`, requestOptions)
-      .then((response) => response.json())
-      .then((r) => {
-        if (r.success && r.success.folder) {
-          const data = r.success.folder;
-          setFolderData(data);
-          setFolderFetched(true);
-        } else if (r.error) {
-          console.log("Error:", r.error);
-          const errorMessage =
-            r.error.name === "database_error"
-              ? "An error was encountered — please try again later"
-              : r.error.message;
-          setFaunaFetchingError(errorMessage);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    const fetchPages = async () => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      };
 
-  const fetchPages = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      await fetch(`/api/folder/${folderId}/pages`, requestOptions)
+        .then((response) => response.json())
+        .then((r) => {
+          if (r.success && r.success.pages) {
+            const data = r.success.pages;
+            setFolderPagesData(data);
+            setFolderPagesFetched(true);
+          } else if (r.error) {
+            console.log("Error:", r.error);
+            const errorMessage =
+              r.error.name === "database_error"
+                ? "An error was encountered — please try again later"
+                : r.error.message;
+            setFaunaFetchingError(errorMessage);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
-    await fetch(`/api/folder/${folderId}/pages`, requestOptions)
-      .then((response) => response.json())
-      .then((r) => {
-        if (r.success && r.success.pages) {
-          const data = r.success.pages;
-          setFolderPagesData(data);
-          setFolderPagesFetched(true);
-        } else if (r.error) {
-          console.log("Error:", r.error);
-          const errorMessage =
-            r.error.name === "database_error"
-              ? "An error was encountered — please try again later"
-              : r.error.message;
-          setFaunaFetchingError(errorMessage);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    async function fetchData() {
+      await fetchFolder();
+      await fetchPages();
+    }
 
-  useEffect(async () => {
-    await fetchFolder();
-    await fetchPages();
-  }, []);
+    fetchData();
+  }, [folderId]);
 
   let title;
   if (folderFetched) {
@@ -198,7 +202,8 @@ function ViewFolder() {
             <Block>
               <h2>No Pages</h2>
               <p>
-                It's lonely in here. No pages have been added to this folder.
+                It&apos;s lonely in here. No pages have been added to this
+                folder.
               </p>
             </Block>
           )}
