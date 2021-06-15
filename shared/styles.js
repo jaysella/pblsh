@@ -10,6 +10,7 @@ export const globalStyles = (
         --color-primary: #85ffc7;
         --color-secondary: #39a9db;
         --color-tertiary: #ff8552;
+        --color-tertiary-opacity: rgba(255, 133, 82, 0.5);
         --color-highlight: #ffdf64;
 
         --color-black-muted: #20323b;

@@ -4,7 +4,7 @@ import { useFaunaFolders } from "../../hooks/useFaunaFolders";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
-import Tiptap from "../../components/Tiptap";
+// import ContentEditable from "react-contenteditable";
 import Loader from "../../components/Loader";
 import AlertTriangleIcon from "../../components/svg/AlertTriangle";
 import { css } from "@emotion/react";
@@ -38,6 +38,7 @@ const pageSchema = Yup.object().shape({
         value: Yup.string().required(),
       })
     ),
+  contentTemporary: Yup.string().trim().required("Required"),
 });
 
 function EditPage() {
@@ -49,13 +50,19 @@ function EditPage() {
   const [faunaEditingError, setFaunaEditingError] = useState(false);
   const [pageEdited, setPageEdited] = useState(false);
 
-  const [tiptapData, setTiptapData] = useState();
-
   const [folderOptions, setFolderOptions] = useState([]);
   const [currentFolder, setCurrentFolder] = useState([]);
 
   const { faunaFoldersStatus, faunaFoldersData, faunaFoldersError } =
     useFaunaFolders();
+
+  // const content = useRef("");
+  // const handleChange = (evt) => {
+  //   content.current = evt.target.value;
+  // };
+  // const handleBlur = () => {
+  //   console.log(content.current);
+  // };
 
   const fetchPage = async () => {
     const requestOptions = {
@@ -126,7 +133,6 @@ function EditPage() {
   async function handleSubmit(values) {
     if (pageId) {
       values.published = true;
-      values.contentTiptap = tiptapData;
 
       const requestOptions = {
         method: "POST",
@@ -155,11 +161,6 @@ function EditPage() {
         });
     }
   }
-
-  const sendTiptapData = (data) => {
-    // the callback
-    setTiptapData(data);
-  };
 
   return (
     <>
@@ -198,6 +199,7 @@ function EditPage() {
                   `${process.env.NEXT_PUBLIC_BASE_URL}/view/${pageData.page.ref["@ref"].id}` ||
                   "Unknown",
                 folder: [currentFolder],
+                contentTemporary: pageData.page.data.contentTemporary || "",
               }}
               validationSchema={pageSchema}
               onSubmit={(values) => handleSubmit(values)}
@@ -253,10 +255,29 @@ function EditPage() {
                     )}
                   </InputGroup>
 
-                  <Tiptap
-                    initialContent={pageData.page.data.contentTiptap}
-                    sendTiptapData={sendTiptapData}
-                  />
+                  <InputGroup>
+                    <InputLabel htmlFor="contentTemporary">
+                      Page Content
+                    </InputLabel>
+                    <Input
+                      as="textarea"
+                      id="contentTemporary"
+                      name="contentTemporary"
+                      placeholder="The quick brown fox jumped over the moon."
+                      rows="10"
+                      disabled={isSubmitting}
+                      invalid={
+                        errors.contentTemporary && touched.contentTemporary
+                          ? "invalid"
+                          : null
+                      }
+                    />
+                    {errors.contentTemporary && touched.contentTemporary && (
+                      <InputError animated={true}>
+                        {errors.contentTemporary}
+                      </InputError>
+                    )}
+                  </InputGroup>
 
                   <InputGroup>
                     <Button type="submit" disabled={isSubmitting}>
@@ -275,6 +296,12 @@ function EditPage() {
                 </FormWrapper>
               )}
             </Formik>
+
+            {/* <PageContent
+              html={content.current}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            /> */}
           </>
         ) : faunaFetchingError ? (
           <ErrorBlock>
@@ -359,3 +386,38 @@ const WarningIconWrapper = styled.div`
 const CheckmarkWrapper = styled.div`
   margin-bottom: 1.5rem;
 `;
+
+// const editableFieldStyles = css`
+//   padding: calc(0.5rem + 2px) 1.25rem 0.5rem;
+//   border: var(--base-border-width) solid transparent;
+//   border-left-color: var(--color-black-muted);
+//   border-radius: var(--base-border-width) var(--base-border-radius)
+//     var(--base-border-radius) var(--base-border-width);
+//   transition: border var(--base-transition-out-duration) ease-out,
+//     border-radius var(--base-transition-out-duration) ease-out,
+//     background var(--base-transition-out-duration) ease-out;
+
+//   &:hover,
+//   &:focus {
+//     transition: border var(--base-transition-in-duration) ease-in,
+//       border-radius var(--base-transition-in-duration) ease-in,
+//       background var(--base-transition-in-duration) ease-in;
+//   }
+
+//   &:hover {
+//     border-left-color: var(--color-highlight);
+//     background: var(--color-black-muted);
+//   }
+
+//   &:focus {
+//     /* border-left-color: var(--color-highlight); */
+//     border: var(--base-border-width) solid var(--color-white-muted);
+//     border-radius: var(--base-border-radius);
+//     background: var(--color-black-muted);
+//   }
+// `;
+
+// const PageContent = styled(ContentEditable)`
+//   ${editableFieldStyles};
+//   margin: 1rem 0;
+// `;

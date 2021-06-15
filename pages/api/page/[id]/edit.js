@@ -10,9 +10,11 @@ export default async (req, res) => {
     query: { id },
   } = req;
 
-  const { contentTemporary, published, folder } = req.body;
+  // const { contentTemporary, published, folder } = req.body;
+  const { contentTiptap, published, folder } = req.body;
 
-  if (!id || !contentTemporary || !published || !folder) {
+  // if (!id || !contentTemporary || !published || !folder) {
+  if (!id || !contentTiptap || !published || !folder) {
     return res.status(400).json({
       error: {
         name: "missing_params",
@@ -27,7 +29,8 @@ export default async (req, res) => {
     const page = await guestClient.query(
       q.Update(q.Ref(q.Collection("Page"), id), {
         data: {
-          contentTemporary,
+          contentTiptap,
+          // contentTemporary,
           published,
           folder: q.Ref(q.Collection("Folder"), folderId),
           updatedAt: q.Now(),

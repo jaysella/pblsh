@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { withSimpleLayout } from "../../components/layout/SimpleLayout";
+import Tiptap from "../../components/Tiptap";
 import Loader from "../../components/Loader";
 import AlertTriangleIcon from "../../components/svg/AlertTriangle";
 import { css } from "@emotion/react";
@@ -72,24 +73,42 @@ function ViewPage() {
           <>
             <h1>{title}</h1>
 
-            <Formik
-              initialValues={{
-                contentTemporary: pageData.contentTemporary,
-              }}
-            >
-              <FormWrapper>
-                <InputGroup>
-                  <Input
-                    as="textarea"
-                    id="contentTemporary"
-                    name="contentTemporary"
-                    placeholder="The quick brown fox jumped over the moon."
-                    rows="10"
-                    disabled={true}
-                  />
-                </InputGroup>
-              </FormWrapper>
-            </Formik>
+            {pageData.contentTemporary && (
+              <>
+                <ArchivedMessage>
+                  <p>
+                    <u>Heads up!</u> This page was created using an early
+                    version of our editor which is no longer supported.
+                  </p>
+                </ArchivedMessage>
+
+                <Formik
+                  initialValues={{
+                    contentTemporary: pageData.contentTemporary,
+                  }}
+                >
+                  <FormWrapper>
+                    <InputGroup>
+                      <Input
+                        as="textarea"
+                        id="contentTemporary"
+                        name="contentTemporary"
+                        placeholder="The quick brown fox jumped over the moon."
+                        rows="10"
+                        disabled={true}
+                      />
+                    </InputGroup>
+                  </FormWrapper>
+                </Formik>
+              </>
+            )}
+
+            {pageData.contentTiptap && (
+              <Tiptap
+                editable={false}
+                initialContent={pageData.contentTiptap}
+              />
+            )}
           </>
         ) : faunaFetchingError || (pageData && pageData.published) ? (
           <ErrorBlock>
@@ -120,6 +139,15 @@ const PageWrapper = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+`;
+
+const ArchivedMessage = styled.div`
+  padding: 1.25rem;
+  box-shadow: 0 0 0 calc(var(--base-border-width) * 2)
+    var(--color-tertiary-opacity);
+  border-radius: calc(var(--base-border-radius) / 1.5);
+  background: var(--color-tertiary);
+  color: var(--color-black);
 `;
 
 export const sectionTitle = css`

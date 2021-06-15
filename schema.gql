@@ -22,6 +22,7 @@ type Page {
   published: Boolean!
   owner: User!
   folder: Folder
+  contentTiptap: String
   contentTemporary: String
   contentBlocks: [Block]
   createdAt: String!
