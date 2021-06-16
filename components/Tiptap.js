@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useEditor, EditorContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "./editor/MenuBar";
@@ -23,6 +24,12 @@ export default function Tiptap({
     editable: isEditable,
     extensions,
     content: initialContent,
+    onCreate() {
+      const json = this.getJSON();
+      if (sendTiptapData) {
+        sendTiptapData(json);
+      }
+    },
     onUpdate() {
       const json = this.getJSON();
       if (sendTiptapData) {

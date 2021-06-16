@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import { useUser, isLoading } from "@auth0/nextjs-auth0";
 import { useFaunaUser } from "../../hooks/useFaunaUser";
 import Head from "next/head";
 import toast from "react-hot-toast";
 import styled from "@emotion/styled";
 
+import { isEquivalent } from "../../helpers/utilities";
+
 import Custom404 from "../404";
 import Tiptap from "../../components/Tiptap";
 import { Sidebar, SidebarButton } from "../../components/Sidebar";
 import Button, { ButtonIcon } from "../../components/Button";
-import Tooltip from "../../components/Tooltip";
+import Tooltip, { TooltipIcon } from "../../components/Tooltip";
 import Popover, {
   PopoverTrigger,
   PopoverContent,
@@ -26,6 +28,7 @@ import {
   RocketIcon,
   ShareIcon,
   TrashCanIcon,
+  LockIcon,
   XCircleIcon,
 } from "../../components/svg/Icons";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
@@ -48,6 +51,7 @@ function Page() {
     isLoading: true,
   });
   const [tiptapData, setTiptapData] = useState();
+  const [previousTiptapData, setPreviousTiptapData] = useState();
   const [pageSave, setPageSave] = useState({
     isSaving: false,
   });
@@ -70,18 +74,25 @@ function Page() {
         };
 
         await fetch(`/api/page/${pageId}`, requestOptions)
-          .then((response) => response.json())
-          .then((res) => {
+          .then(async (res) => {
             if (res.status >= 400) {
+              let json = await res.json();
+              if (json.error) {
+                json = json.error;
+              }
               setPageFetch({
-                error: res,
+                error: json,
                 isLoading: false,
               });
             } else {
+              const json = await res.json();
               setPageFetch({
-                response: res,
+                response: json,
                 isLoading: false,
               });
+              setPreviousTiptapData(
+                json.success.page.data[0].page.data.contentTiptap
+              );
             }
           })
           .catch((error) => {
@@ -141,7 +152,6 @@ function Page() {
   }
 
   let title = "";
-  console.log(pageData, isEditing);
   if (pageData && (pageData.page.data.published === true || isEditing)) {
     title = pageData.page.data.title;
   } else if (pageFetch.error) {
@@ -158,6 +168,7 @@ function Page() {
   const handlePageSave = async () => {
     const loadingToast = toast.loading("Saving...");
     let values = {};
+    values.published = true;
     values.contentTiptap = tiptapData;
 
     if (pageId) {
@@ -170,18 +181,24 @@ function Page() {
       await fetch(`/api/page/${pageId}/edit`, requestOptions)
         .then(async (res) => {
           if (res.status >= 400) {
+            let json = await res.json();
+            if (json.error) {
+              json = json.error;
+            }
             setPageSave({
-              error: await res.json(),
+              error: json,
               isSaving: false,
             });
             toast.dismiss(loadingToast);
             toast.error("Unable to save");
           } else {
+            const json = await res.json();
             setPageSave({
-              response: await res.json(),
+              response: json,
               isSaving: false,
-              saved: res.success ? true : false,
+              saved: json.success ? true : false,
             });
+            setPreviousTiptapData(tiptapData);
             toast.dismiss(loadingToast);
             toast.success("Page saved!");
           }
@@ -203,8 +220,9 @@ function Page() {
     const loadingToast = toast.loading("Deleting page...");
     let values = {};
 
-    if (pageId && isEditing && faunaUserData && faunaUserData.id) {
+    if (pageId && isEditing && user && faunaUserData && faunaUserData.id) {
       values.userId = faunaUserData.id;
+      values.userSub = user.sub;
 
       const requestOptions = {
         method: "POST",
@@ -215,22 +233,26 @@ function Page() {
       await fetch(`/api/page/${pageId}/delete`, requestOptions)
         .then(async (res) => {
           if (res.status >= 400) {
+            let json = await res.json();
+            if (json.error) {
+              json = json.error;
+            }
             setPageDelete({
-              error: await res.json(),
+              error: json,
               isDeleting: false,
             });
-            console.log(res);
             toast.dismiss(loadingToast);
             toast.error("Unable to delete");
           } else {
+            const json = await res.json();
             setPageDelete({
-              response: await res.json(),
+              response: json,
               isDeleting: false,
-              saved: res.success ? true : false,
+              saved: json.success ? true : false,
             });
-            console.log(res);
             toast.dismiss(loadingToast);
             toast.success("Page deleted");
+            router.push({ pathname: "/pages", query: { pageDeleted: true } });
           }
         })
         .catch((error) => {
@@ -326,10 +348,38 @@ function Page() {
                 </SidebarButton>
               </Tooltip>
 
-              <Tooltip content="Save changes" placement="left">
+              <Tooltip
+                content={
+                  <>
+                    {!tiptapData ||
+                    isEquivalent(
+                      JSON.stringify(tiptapData),
+                      JSON.stringify(previousTiptapData)
+                    ) ||
+                    pageSave.isSaving ? (
+                      <>
+                        Save changes
+                        <TooltipIcon>
+                          <LockIcon />
+                        </TooltipIcon>
+                      </>
+                    ) : (
+                      <>Save changes</>
+                    )}
+                  </>
+                }
+                placement="left"
+              >
                 <SidebarButton
                   onClick={handlePageSave}
-                  disabled={!tiptapData || pageSave.isSaving}
+                  disabled={
+                    !tiptapData ||
+                    isEquivalent(
+                      JSON.stringify(tiptapData),
+                      JSON.stringify(previousTiptapData)
+                    ) ||
+                    pageSave.isSaving
+                  }
                 >
                   <RocketIcon />
                 </SidebarButton>

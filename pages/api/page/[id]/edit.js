@@ -12,7 +12,7 @@ const request = async (req, res) => {
     query: { id },
   } = req;
 
-  const { contentTiptap } = req.body;
+  const { published, contentTiptap } = req.body;
 
   if (!id || !contentTiptap) {
     return res.status(400).json({
@@ -30,7 +30,7 @@ const request = async (req, res) => {
       q.Update(q.Ref(q.Collection("Page"), id), {
         data: {
           contentTiptap,
-          // published,
+          published,
           // folder: q.Ref(q.Collection("Folder"), folderId),
           updatedAt: q.Now(),
         },

@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useFaunaUser } from "../hooks/useFaunaUser";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import { timeSinceFromTimestamp } from "../helpers/timeSince";
 import Loader from "../components/Loader";
@@ -19,12 +21,26 @@ import {
   LoadingWrapper,
 } from "../shared/styles";
 
-function Pages() {
+function Pages({ referrer }) {
   const { faunaUserStatus, faunaUserData } = useFaunaUser();
+
+  const router = useRouter();
 
   const [faunaFetchingError, setFaunaFetchingError] = useState(false);
   const [pagesFetched, setPagesFetched] = useState(false);
   const [pagesData, setPagesData] = useState();
+
+  useEffect(() => {
+    const pageRegex = /^(\S+(\/p\/[0-9]+)([\/]?))$/g;
+
+    if (pageRegex.test(referrer) && router.query.pageDeleted) {
+      toast.success("Page deleted");
+    }
+
+    // () => {
+    //   return;
+    // }
+  }, [referrer, router.query.pageDeleted]);
 
   useEffect(() => {
     const fetchPages = async () => {
@@ -147,6 +163,17 @@ function Pages() {
       </PageWrapper>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const referrer = context.req.headers.referer;
+  console.log(referrer);
+
+  return {
+    props: {
+      referrer,
+    }, // will be passed to the page component as props
+  };
 }
 
 export default withDashboardLayout(withPageAuthRequired(Pages));

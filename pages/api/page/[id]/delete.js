@@ -1,4 +1,4 @@
-import { withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
 
 var faunadb = require("faunadb"),
   q = faunadb.query;
@@ -9,16 +9,29 @@ const guestClient = new faunadb.Client({
 
 const request = async (req, res) => {
   const {
+    user: { sub },
+  } = await getSession(req, res);
+
+  const {
     query: { id },
   } = req;
 
-  const { userId } = req.body;
+  const { userId, userSub } = req.body;
 
-  if (!id || !userId) {
+  if (!sub || !id || !userId || !userSub) {
     return res.status(400).json({
       error: {
         name: "missing_params",
         message: "All parameters must be provided",
+      },
+    });
+  }
+
+  if (userSub != sub) {
+    return res.status(401).json({
+      error: {
+        name: "unauthorized",
+        message: "This user is not authorized to perform the requested action",
       },
     });
   }
