@@ -97,6 +97,13 @@ export const globalStyles = (
         padding-top: 2px;
         line-height: 1.3;
       }
+
+      .tippy-box[data-theme~="pblsh"] {
+        background-color: var(--color-white);
+        color: var(--color-black);
+        padding: 0.625rem 0.625rem calc(0.625rem - 1px);
+        border-radius: calc(var(--base-border-radius) / 1.5);
+      }
     `}
   />
 );

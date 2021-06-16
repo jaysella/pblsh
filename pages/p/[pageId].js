@@ -10,7 +10,8 @@ import Custom404 from "../404";
 import Tiptap from "../../components/Tiptap";
 import { Sidebar, SidebarButton } from "../../components/Sidebar";
 import Button, { ButtonIcon } from "../../components/Button";
-import { Modal, ModalHeader } from "../../components/Modal";
+import Tooltip from "../../components/Tooltip";
+import Modal, { ModalHeader } from "../../components/Modal";
 import Loader from "../../components/Loader";
 import {
   AlertTriangleIcon,
@@ -256,24 +257,38 @@ function Page() {
         {isEditing && (
           <Right>
             <Sidebar>
-              <SidebarButton disabled>
-                <AlertCircleIcon />
-              </SidebarButton>
-              <SidebarButton disabled>
-                <FolderIcon />
-              </SidebarButton>
-              <SidebarButton
-                onClick={handlePageSave}
-                disabled={!tiptapData || pageSave.isSaving}
-              >
-                <RocketIcon />
-              </SidebarButton>
-              <SidebarButton onClick={openShareModal}>
-                <ShareIcon />
-              </SidebarButton>
-              <SidebarButton>
-                <TrashCanIcon />
-              </SidebarButton>
+              <Tooltip content="Details" placement="left">
+                <SidebarButton disabled>
+                  <AlertCircleIcon />
+                </SidebarButton>
+              </Tooltip>
+
+              <Tooltip content="Folder" placement="left">
+                <SidebarButton disabled>
+                  <FolderIcon />
+                </SidebarButton>
+              </Tooltip>
+
+              <Tooltip content="Save changes" placement="left">
+                <SidebarButton
+                  onClick={handlePageSave}
+                  disabled={!tiptapData || pageSave.isSaving}
+                >
+                  <RocketIcon />
+                </SidebarButton>
+              </Tooltip>
+
+              <Tooltip content="Share" placement="left">
+                <SidebarButton onClick={openShareModal}>
+                  <ShareIcon />
+                </SidebarButton>
+              </Tooltip>
+
+              <Tooltip content="Delete" placement="left">
+                <SidebarButton>
+                  <TrashCanIcon />
+                </SidebarButton>
+              </Tooltip>
             </Sidebar>
           </Right>
         )}

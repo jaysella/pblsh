@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.3.0",
     "@reach/dialog": "^0.15.0",
     "@reach/menu-button": "^0.15.1",
+    "@tippyjs/react": "^4.2.5",
     "@tiptap/html": "^2.0.0-beta.82",
     "@tiptap/react": "^2.0.0-beta.48",
     "@tiptap/starter-kit": "^2.0.0-beta.78",
@@ -24,6 +25,7 @@
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.0.0",
     "react-select": "^4.3.1",
+    "tippy.js": "^6.3.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {

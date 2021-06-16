@@ -18,7 +18,7 @@ import XCircleIcon from "../svg/XCircle";
 import AlertTriangleIcon from "../svg/AlertTriangle";
 import CheckmarkCircle from "../CheckmarkCircle";
 import Loader from "../Loader";
-import { Modal, ModalHeader } from "../Modal";
+import Modal, { ModalHeader } from "../Modal";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { UserProvider } from "@auth0/nextjs-auth0";
-import { toast, Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { globalStyles } from "../shared/styles";
 
 function MyApp({ Component, pageProps }) {

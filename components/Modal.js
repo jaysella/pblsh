@@ -2,7 +2,7 @@ import { DialogOverlay, DialogContent } from "@reach/dialog";
 import { fadeInDownAnimation } from "../shared/styles";
 import styled from "@emotion/styled";
 
-export function Modal({ label, children, ...props }) {
+export default function Modal({ label, children, ...props }) {
   return (
     <Overlay {...props}>
       <Content aria-label={label}>{children}</Content>
