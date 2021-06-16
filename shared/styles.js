@@ -182,6 +182,28 @@ export const fadeInDownAnimation = keyframes`
   }
 `;
 
+export const fadeInLeftAnimation = keyframes`
+  from {
+    transform: translateX(-.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+export const fadeInRightAnimation = keyframes`
+  from {
+    transform: translateX(.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
 export const blink = keyframes`
   0% {
     opacity: 0;

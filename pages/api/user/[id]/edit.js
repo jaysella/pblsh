@@ -1,3 +1,5 @@
+import { withApiAuthRequired } from "@auth0/nextjs-auth0";
+
 var faunadb = require("faunadb"),
   q = faunadb.query;
 
@@ -50,4 +52,4 @@ const request = async (req, res) => {
   }
 };
 
-export default request;
+export default withApiAuthRequired(request);

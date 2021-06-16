@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-
 import { useRouter } from "next/router";
 import { useUser, isLoading } from "@auth0/nextjs-auth0";
+import { useFaunaUser } from "../../hooks/useFaunaUser";
 import Head from "next/head";
 import toast from "react-hot-toast";
 import styled from "@emotion/styled";
@@ -11,12 +11,16 @@ import Tiptap from "../../components/Tiptap";
 import { Sidebar, SidebarButton } from "../../components/Sidebar";
 import Button, { ButtonIcon } from "../../components/Button";
 import Tooltip from "../../components/Tooltip";
+import Popover, {
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  PopoverActions,
+} from "../../components/Popover";
 import Modal, { ModalHeader } from "../../components/Modal";
 import Loader from "../../components/Loader";
 import {
   AlertTriangleIcon,
-  // ArrowRightCircleIcon,
-  // CheckCircleIcon,
   AlertCircleIcon,
   FolderIcon,
   RocketIcon,
@@ -33,6 +37,7 @@ import {
 
 function Page() {
   const { user } = useUser();
+  const { faunaUserData } = useFaunaUser();
 
   // Grab pageId from route
   const {
@@ -46,15 +51,14 @@ function Page() {
   const [pageSave, setPageSave] = useState({
     isSaving: false,
   });
+  const [pageDelete, setPageDelete] = useState({
+    isDeleting: false,
+  });
 
   // MODALS
   const [showShareModal, setShowShareModal] = useState(false);
   const openShareModal = () => setShowShareModal(true);
   const closeShareModal = () => setShowShareModal(false);
-
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const openDeleteModal = () => setShowDeleteModal(true);
-  const closeDeleteModal = () => setShowDeleteModal(false);
 
   // Fetch page
   useEffect(() => {
@@ -131,7 +135,7 @@ function Page() {
   // Page does not exist or is not editing AND not published, return 404 page
   if (
     !pageFetch.isLoading &&
-    (pageFetch.error || (!isEditing && !pageData.page.data.published))
+    (pageFetch.error || (!isEditing && !pageData?.page?.data?.published))
   ) {
     return <Custom404 />;
   }
@@ -194,6 +198,53 @@ function Page() {
     }
   };
 
+  // Delete page
+  const handlePageDelete = async () => {
+    const loadingToast = toast.loading("Deleting page...");
+    let values = {};
+
+    if (pageId && isEditing && faunaUserData && faunaUserData.id) {
+      values.userId = faunaUserData.id;
+
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      };
+
+      await fetch(`/api/page/${pageId}/delete`, requestOptions)
+        .then(async (res) => {
+          if (res.status >= 400) {
+            setPageDelete({
+              error: await res.json(),
+              isDeleting: false,
+            });
+            console.log(res);
+            toast.dismiss(loadingToast);
+            toast.error("Unable to delete");
+          } else {
+            setPageDelete({
+              response: await res.json(),
+              isDeleting: false,
+              saved: res.success ? true : false,
+            });
+            console.log(res);
+            toast.dismiss(loadingToast);
+            toast.success("Page deleted");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setPageDelete({
+            error: error.message,
+            isDeleting: false,
+          });
+          toast.dismiss(loadingToast);
+          toast.error(`Unable to delete: ${error.message}`);
+        });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -203,6 +254,21 @@ function Page() {
       <PageWrapper>
         <Left className={isEditing ? "isEditing" : ""}>
           <h1>{title}</h1>
+
+          {(pageDelete?.error || pageDelete?.response?.error) && (
+            <ErrorBlock>
+              <WarningIconWrapper>
+                <AlertTriangleIcon />
+              </WarningIconWrapper>
+
+              <h2>Error Encountered</h2>
+              <p>
+                {pageDelete?.error?.message ||
+                  pageDelete?.response?.error?.message ||
+                  "An error was encountered — please try again later"}
+              </p>
+            </ErrorBlock>
+          )}
 
           {(pageSave?.error || pageSave?.response?.error) && (
             <ErrorBlock>
@@ -219,10 +285,10 @@ function Page() {
             </ErrorBlock>
           )}
 
-          {!isLoading && pageData && pageData?.page?.data?.contentTiptap && (
+          {!isLoading && pageData && pageData?.page?.data && (
             <Tiptap
               editable={isEditing}
-              initialJson={pageData.page.data.contentTiptap}
+              initialJson={pageData.page.data.contentTiptap || ""}
               sendTiptapData={sendTiptapData}
             />
           )}
@@ -276,9 +342,41 @@ function Page() {
               </Tooltip>
 
               <Tooltip content="Delete" placement="left">
-                <SidebarButton onClick={openDeleteModal}>
-                  <TrashCanIcon />
-                </SidebarButton>
+                <Popover>
+                  <PopoverTrigger>
+                    <TrashCanIcon />
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    theme="warning"
+                    side="left"
+                    align="center"
+                    sideOffset={9}
+                  >
+                    <h2>Are you sure you want to delete this page?</h2>
+                    <p>This action is irreversible.</p>
+
+                    <PopoverActions>
+                      <PopoverClose
+                        as={Button}
+                        color="warning"
+                        onClick={handlePageDelete}
+                        disabled={pageDelete.isDeleting}
+                      >
+                        Yes, Delete
+                        <ButtonIcon>
+                          <TrashCanIcon />
+                        </ButtonIcon>
+                      </PopoverClose>
+                      <PopoverClose as={Button} borderless>
+                        Cancel
+                        <ButtonIcon>
+                          <XCircleIcon />
+                        </ButtonIcon>
+                      </PopoverClose>
+                    </PopoverActions>
+                  </PopoverContent>
+                </Popover>
               </Tooltip>
             </Sidebar>
           </Right>
@@ -303,39 +401,6 @@ function Page() {
             <XCircleIcon />
           </ButtonIcon>
         </Button>
-      </Modal>
-
-      {/* Delete Modal */}
-      <Modal
-        isOpen={showDeleteModal}
-        onDismiss={closeDeleteModal}
-        label="Delete Page"
-      >
-        <ModalHeader>
-          <h2>Delete Page</h2>
-          <p>
-            This is not yet implemented{" "}
-            <span role="img" aria-label="sad face">
-              🙁
-            </span>
-          </p>
-        </ModalHeader>
-
-        <Actions>
-          <Button color="warning" disabled>
-            Yes, Delete
-            <ButtonIcon>
-              <TrashCanIcon />
-            </ButtonIcon>
-          </Button>
-
-          <Button onClick={closeDeleteModal} borderless>
-            Cancel
-            <ButtonIcon>
-              <XCircleIcon />
-            </ButtonIcon>
-          </Button>
-        </Actions>
       </Modal>
     </>
   );

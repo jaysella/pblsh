@@ -12,9 +12,9 @@ const request = async (req, res) => {
     query: { id },
   } = req;
 
-  const { contentTiptap } = req.body;
+  const { userId } = req.body;
 
-  if (!id || !contentTiptap) {
+  if (!id || !userId) {
     return res.status(400).json({
       error: {
         name: "missing_params",
@@ -23,18 +23,9 @@ const request = async (req, res) => {
     });
   }
 
-  // const folderId = folder[0].value;
-
   try {
     const page = await guestClient.query(
-      q.Update(q.Ref(q.Collection("Page"), id), {
-        data: {
-          contentTiptap,
-          // published,
-          // folder: q.Ref(q.Collection("Folder"), folderId),
-          updatedAt: q.Now(),
-        },
-      })
+      q.Delete(q.Ref(q.Collection("Page"), id))
     );
 
     if (!page.ref) {
@@ -46,8 +37,8 @@ const request = async (req, res) => {
     res.status(200).json(
       JSON.stringify({
         success: {
-          name: "page_updated",
-          message: "Page successfully updated",
+          name: "page_deleted",
+          message: "Page successfully deleted",
         },
       })
     );

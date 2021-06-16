@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-
+import { css } from "@emotion/react";
 import { linkStyles, focusStyles } from "../shared/styles";
 
 export function Sidebar({ children }) {
@@ -10,18 +10,12 @@ export function SidebarButton({ children, ...props }) {
   return <SidebarButtonWrapper {...props}>{children}</SidebarButtonWrapper>;
 }
 
-const SidebarWrapper = styled.div`
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: var(--base-border-width);
-  border-radius: var(--base-border-radius) 0 0 var(--base-border-radius);
-  background: var(--color-black-muted);
-`;
+// export function SidebarPad({ children, ...props }) {
+//   return <SidebarPadWrapper {...props}>{children}</SidebarPadWrapper>;
+// }
 
-const SidebarButtonWrapper = styled.button`
+const sidebarPadStyles = css`
   ${linkStyles};
-
   --color-outline: var(--color-primary);
 
   transition: background var(--base-transition-in-duration) ease-out,
@@ -51,3 +45,24 @@ const SidebarButtonWrapper = styled.button`
     width: 20px;
   }
 `;
+
+const SidebarWrapper = styled.div`
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-border-width);
+  border-radius: var(--base-border-radius) 0 0 var(--base-border-radius);
+  background: var(--color-black-muted);
+
+  button {
+    ${sidebarPadStyles}
+  }
+`;
+
+const SidebarButtonWrapper = styled.button`
+  ${sidebarPadStyles};
+`;
+
+// const SidebarPadWrapper = styled.div`
+//   ${sidebarPadStyles};
+// `;

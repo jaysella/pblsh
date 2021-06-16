@@ -94,7 +94,7 @@ export const ButtonWrapper = styled.button`
 `;
 
 export const LinkWrapper = styled.a`
-  --color: ${(props) =>
+  --button-color: ${(props) =>
     props.color === "warning"
       ? "var(--color-tertiary)"
       : "var(--color-primary)"};
