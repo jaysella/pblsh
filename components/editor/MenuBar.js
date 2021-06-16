@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Tooltip from "../Tooltip";
 import {
   BoldIcon,
   ItalicIcon,
@@ -18,18 +19,23 @@ function MenuBar({ editor }) {
   return (
     <Wrapper>
       <Left>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is-active" : ""}
-        >
-          <BoldIcon />
-        </MenuButton>
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
-        >
-          <ItalicIcon />
-        </MenuButton>
+        <Tooltip content="Bold">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={editor.isActive("bold") ? "is-active" : ""}
+          >
+            <BoldIcon />
+          </MenuButton>
+        </Tooltip>
+
+        <Tooltip content="Italic">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={editor.isActive("italic") ? "is-active" : ""}
+          >
+            <ItalicIcon />
+          </MenuButton>
+        </Tooltip>
         {/* <MenuButton
         onClick={() => editor.chain().focus().toggleStrike().run()}
         className={editor.isActive("strike") ? "is-active" : ""}
@@ -114,12 +120,15 @@ function MenuBar({ editor }) {
         >
           h6
         </MenuButton> */}
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
-        >
-          <ListUnorderedIcon />
-        </MenuButton>
+
+        <Tooltip content="Bulleted List">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={editor.isActive("bulletList") ? "is-active" : ""}
+          >
+            <ListUnorderedIcon />
+          </MenuButton>
+        </Tooltip>
         {/* <MenuButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={editor.isActive("orderedList") ? "is-active" : ""}
@@ -132,12 +141,14 @@ function MenuBar({ editor }) {
       >
         code block
       </MenuButton> */}
-        <MenuButton
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive("blockquote") ? "is-active" : ""}
-        >
-          <QuoteRightIcon />
-        </MenuButton>
+        <Tooltip content="Blockquote">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            className={editor.isActive("blockquote") ? "is-active" : ""}
+          >
+            <QuoteRightIcon />
+          </MenuButton>
+        </Tooltip>
         {/* <MenuButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       >
@@ -148,12 +159,17 @@ function MenuBar({ editor }) {
       </MenuButton> */}
       </Left>
       <Right>
-        <MenuButton onClick={() => editor.chain().focus().undo().run()}>
-          <UndoIcon />
-        </MenuButton>
-        <MenuButton onClick={() => editor.chain().focus().redo().run()}>
-          <RedoIcon />
-        </MenuButton>
+        <Tooltip content="Undo">
+          <MenuButton onClick={() => editor.chain().focus().undo().run()}>
+            <UndoIcon />
+          </MenuButton>
+        </Tooltip>
+
+        <Tooltip content="Redo">
+          <MenuButton onClick={() => editor.chain().focus().redo().run()}>
+            <RedoIcon />
+          </MenuButton>
+        </Tooltip>
       </Right>
     </Wrapper>
   );
