@@ -7,6 +7,7 @@ import { linkStyles, buttonHoverStyles } from "../shared/styles";
 export default function Button({
   children,
   href,
+  color,
   fullWidth,
   borderless,
   ...props
@@ -16,6 +17,7 @@ export default function Button({
       {href && href.length > 0 ? (
         <Link href={href} passHref>
           <LinkWrapper
+            color={color || "default"}
             fullWidth={fullWidth || false}
             borderless={borderless || false}
             {...props}
@@ -25,6 +27,7 @@ export default function Button({
         </Link>
       ) : (
         <ButtonWrapper
+          color={color || "default"}
           fullWidth={fullWidth || false}
           borderless={borderless || false}
           {...props}
@@ -71,7 +74,7 @@ export const buttonStyles = css`
   &:hover:not(:disabled) {
     > div {
       transition: color var(--base-transition-out-duration) ease-in;
-      color: var(--color-primary);
+      color: var(--button-color);
     }
   }
 
@@ -81,13 +84,21 @@ export const buttonStyles = css`
 `;
 
 export const ButtonWrapper = styled.button`
+  --button-color: ${(props) =>
+    props.color === "warning"
+      ? "var(--color-tertiary)"
+      : "var(--color-primary)"};
   ${buttonStyles};
-  border-color: ${(props) => (props.borderless ? "" : "var(--color-primary)")};
+  border-color: ${(props) => (props.borderless ? "" : "var(--button-color)")};
   width: ${(props) => (props.fullWidth ? "100%" : "max-content")};
 `;
 
 export const LinkWrapper = styled.a`
+  --color: ${(props) =>
+    props.color === "warning"
+      ? "var(--color-tertiary)"
+      : "var(--color-primary)"};
   ${buttonStyles};
-  border-color: ${(props) => (props.borderless ? "" : "var(--color-primary)")};
+  border-color: ${(props) => (props.borderless ? "" : "var(--button-color)")};
   width: ${(props) => (props.fullWidth ? "100%" : "max-content")};
 `;

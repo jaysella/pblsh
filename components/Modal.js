@@ -15,7 +15,7 @@ export function ModalHeader({ children }) {
 }
 
 const Overlay = styled(DialogOverlay)`
-  background: hsla(0, 0%, 0%, 0.5);
+  background: hsla(0, 0%, 0%, 0.75);
   position: fixed;
   top: 0;
   right: 0;

@@ -52,6 +52,10 @@ function Page() {
   const openShareModal = () => setShowShareModal(true);
   const closeShareModal = () => setShowShareModal(false);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const openDeleteModal = () => setShowDeleteModal(true);
+  const closeDeleteModal = () => setShowDeleteModal(false);
+
   // Fetch page
   useEffect(() => {
     const fetchPage = async () => {
@@ -132,9 +136,10 @@ function Page() {
     return <Custom404 />;
   }
 
-  let title = "PLACEHOLDER";
-  if (pageData && (pageData.published === true || isEditing)) {
-    title = pageData?.page?.data.title;
+  let title = "";
+  console.log(pageData, isEditing);
+  if (pageData && (pageData.page.data.published === true || isEditing)) {
+    title = pageData.page.data.title;
   } else if (pageFetch.error) {
     title = "Error";
   }
@@ -196,7 +201,7 @@ function Page() {
       </Head>
 
       <PageWrapper>
-        <Left>
+        <Left className={isEditing ? "isEditing" : ""}>
           <h1>{title}</h1>
 
           {(pageSave?.error || pageSave?.response?.error) && (
@@ -230,20 +235,6 @@ function Page() {
               </h2>
               <p>
                 this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-              </p>
-              <ul>
-                <li>
-                  That’s a bullet list with one …
-                </li>
-                <li>
-                  … or two list items.
-                </li>
-              </ul>
-              <p>
-                Isn’t that great? And all of that is editable.
-              </p>
-              <p>
-                I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
               </p>
               <blockquote>
                 Wow, that’s amazing. Good work! 👏
@@ -285,7 +276,7 @@ function Page() {
               </Tooltip>
 
               <Tooltip content="Delete" placement="left">
-                <SidebarButton>
+                <SidebarButton onClick={openDeleteModal}>
                   <TrashCanIcon />
                 </SidebarButton>
               </Tooltip>
@@ -294,6 +285,7 @@ function Page() {
         )}
       </PageWrapper>
 
+      {/* Share Modal */}
       <Modal isOpen={showShareModal} onDismiss={closeShareModal} label="Share">
         <ModalHeader>
           <h2>Share</h2>
@@ -312,6 +304,39 @@ function Page() {
           </ButtonIcon>
         </Button>
       </Modal>
+
+      {/* Delete Modal */}
+      <Modal
+        isOpen={showDeleteModal}
+        onDismiss={closeDeleteModal}
+        label="Delete Page"
+      >
+        <ModalHeader>
+          <h2>Delete Page</h2>
+          <p>
+            This is not yet implemented{" "}
+            <span role="img" aria-label="sad face">
+              🙁
+            </span>
+          </p>
+        </ModalHeader>
+
+        <Actions>
+          <Button color="warning" disabled>
+            Yes, Delete
+            <ButtonIcon>
+              <TrashCanIcon />
+            </ButtonIcon>
+          </Button>
+
+          <Button onClick={closeDeleteModal} borderless>
+            Cancel
+            <ButtonIcon>
+              <XCircleIcon />
+            </ButtonIcon>
+          </Button>
+        </Actions>
+      </Modal>
     </>
   );
 }
@@ -319,7 +344,6 @@ function Page() {
 export default withDashboardLayout(Page);
 
 const PageWrapper = styled.div`
-  /* margin: 1.5rem 5rem; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -327,16 +351,25 @@ const PageWrapper = styled.div`
 `;
 
 const Left = styled.main`
-  margin: 1.5rem 0 1.5rem 5rem;
+  margin: 1.5rem 5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   width: 100%;
+
+  &.isEditing {
+    margin: 1.5rem 0 1.5rem 5rem;
+  }
 `;
 
 const Right = styled.div`
-  /* margin: 1.5rem 0; */
   height: min-content;
   position: sticky;
   top: 2rem;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
 `;
