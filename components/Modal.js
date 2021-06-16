@@ -2,12 +2,16 @@ import { DialogOverlay, DialogContent } from "@reach/dialog";
 import { fadeInDownAnimation } from "../shared/styles";
 import styled from "@emotion/styled";
 
-export default function Modal({ label, children, ...props }) {
+export function Modal({ label, children, ...props }) {
   return (
     <Overlay {...props}>
       <Content aria-label={label}>{children}</Content>
     </Overlay>
   );
+}
+
+export function ModalHeader({ children }) {
+  return <HeaderWrapper>{children}</HeaderWrapper>;
 }
 
 const Overlay = styled(DialogOverlay)`
@@ -29,4 +33,13 @@ const Content = styled(DialogContent)`
   border-radius: var(--base-border-radius);
   outline: none;
   animation: ${fadeInDownAnimation} 0.25s forwards ease-in;
+`;
+
+const HeaderWrapper = styled.header`
+  margin-bottom: 2.5rem;
+
+  p {
+    margin-top: 0.5rem;
+    font-weight: var(--font-weight-light);
+  }
 `;

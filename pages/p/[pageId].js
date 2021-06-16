@@ -1,26 +1,28 @@
 import { useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
-import { useUser } from "@auth0/nextjs-auth0";
+import { useUser, isLoading } from "@auth0/nextjs-auth0";
 import Head from "next/head";
+import toast from "react-hot-toast";
 import styled from "@emotion/styled";
 
 import Custom404 from "../404";
 import Tiptap from "../../components/Tiptap";
 import { Sidebar, SidebarButton } from "../../components/Sidebar";
 import Button, { ButtonIcon } from "../../components/Button";
+import { Modal, ModalHeader } from "../../components/Modal";
+import Loader from "../../components/Loader";
 import {
   AlertTriangleIcon,
-  ArrowRightCircleIcon,
-  CheckCircleIcon,
-} from "../../components/svg/Icons";
-import {
+  // ArrowRightCircleIcon,
+  // CheckCircleIcon,
   AlertCircleIcon,
+  FolderIcon,
   RocketIcon,
   ShareIcon,
   TrashCanIcon,
+  XCircleIcon,
 } from "../../components/svg/Icons";
-import Loader from "../../components/Loader";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
 import {
   LoadingWrapper,
@@ -39,13 +41,15 @@ function Page() {
   const [pageFetch, setPageFetch] = useState({
     isLoading: true,
   });
-
-  // const [isEditing, setIsEditing] = useState();
-
   const [tiptapData, setTiptapData] = useState();
   const [pageSave, setPageSave] = useState({
     isSaving: false,
   });
+
+  // MODALS
+  const [showShareModal, setShowShareModal] = useState(false);
+  const openShareModal = () => setShowShareModal(true);
+  const closeShareModal = () => setShowShareModal(false);
 
   // Fetch page
   useEffect(() => {
@@ -81,8 +85,8 @@ function Page() {
       }
     };
 
-    // fetchPage();
-    setPageFetch({ isLoading: false });
+    fetchPage();
+    // setPageFetch({ isLoading: false });
   }, [pageId]);
 
   // Check if currently logged in user owns this page
@@ -97,13 +101,12 @@ function Page() {
 
   // Parse successful response
   let pageData = {};
-  // if (pageFetch && pageFetch.response && pageFetch.response.success) {
-  //   pageData = pageFetch.response.success.page.data[0];
-  //   pageOwnerSub = pageData.owner.data.auth0Id;
-  // }
+  if (pageFetch && pageFetch.response && pageFetch.response.success) {
+    pageData = pageFetch.response.success.page.data[0];
+    pageOwnerSub = pageData.owner.data.auth0Id;
+  }
 
   if (userSub === pageOwnerSub) {
-    // setIsEditing(true);
     isEditing = true;
   }
 
@@ -113,22 +116,20 @@ function Page() {
         <Head>
           <title>Loading... | pblsh</title>
         </Head>
-        <PageWrapper>
-          <LoadingWrapper>
-            <Loader />
-          </LoadingWrapper>
-        </PageWrapper>
+        <LoadingWrapper>
+          <Loader />
+        </LoadingWrapper>
       </>
     );
   }
 
   // Page does not exist or is not editing AND not published, return 404 page
-  // if (
-  //   !pageFetch.isLoading &&
-  //   (pageFetch.error || (!isEditing && !pageData.page.data.published))
-  // ) {
-  //   return <Custom404 />;
-  // }
+  if (
+    !pageFetch.isLoading &&
+    (pageFetch.error || (!isEditing && !pageData.page.data.published))
+  ) {
+    return <Custom404 />;
+  }
 
   let title = "PLACEHOLDER";
   if (pageData && (pageData.published === true || isEditing)) {
@@ -145,6 +146,7 @@ function Page() {
 
   // Save page
   const handlePageSave = async () => {
+    const loadingToast = toast.loading("Saving...");
     let values = {};
     values.contentTiptap = tiptapData;
 
@@ -156,28 +158,32 @@ function Page() {
       };
 
       await fetch(`/api/page/${pageId}/edit`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
+        .then(async (res) => {
           if (res.status >= 400) {
             setPageSave({
-              error: res,
+              error: await res.json(),
               isSaving: false,
             });
+            toast.dismiss(loadingToast);
+            toast.error("Unable to save");
           } else {
             setPageSave({
-              response: res,
+              response: await res.json(),
               isSaving: false,
               saved: res.success ? true : false,
             });
+            toast.dismiss(loadingToast);
+            toast.success("Page saved!");
           }
         })
-        .then(console.log(pageSave))
         .catch((error) => {
           console.error(error);
           setPageSave({
             error: error.message,
             isSaving: false,
           });
+          toast.dismiss(loadingToast);
+          toast.error(`Unable to save: ${error.message}`);
         });
     }
   };
@@ -200,24 +206,24 @@ function Page() {
 
               <h2>Error Encountered</h2>
               <p>
-                {pageSave?.error.message ||
-                  pageSave?.response?.error.message ||
+                {pageSave?.error?.message ||
+                  pageSave?.response?.error?.message ||
                   "An error was encountered — please try again later"}
               </p>
             </ErrorBlock>
           )}
 
-          {/* {!isLoading && pageData && pageData?.page?.data?.contentTiptap && ( */}
-          <>
-            {/* <Tiptap
-                editable={isEditing}
-                initialJson={pageData.page.data.contentTiptap}
-                sendTiptapData={sendTiptapData}
-              /> */}
-
+          {!isLoading && pageData && pageData?.page?.data?.contentTiptap && (
             <Tiptap
-              editable={true}
-              initialHtml="
+              editable={isEditing}
+              initialJson={pageData.page.data.contentTiptap}
+              sendTiptapData={sendTiptapData}
+            />
+          )}
+
+          {/* <Tiptap
+            editable={true}
+            initialHtml="
               <h2>
                 Hi there,
               </h2>
@@ -244,33 +250,53 @@ function Page() {
                 — Someone
               </blockquote>
             "
-            />
-          </>
-          {/* )} */}
+          /> */}
         </Left>
 
-        {/* {isEditing && ( */}
-        <Right>
-          <Sidebar>
-            <SidebarButton>
-              <AlertCircleIcon />
-            </SidebarButton>
-            <SidebarButton>
-              <RocketIcon
+        {isEditing && (
+          <Right>
+            <Sidebar>
+              <SidebarButton disabled>
+                <AlertCircleIcon />
+              </SidebarButton>
+              <SidebarButton disabled>
+                <FolderIcon />
+              </SidebarButton>
+              <SidebarButton
                 onClick={handlePageSave}
-                disabled={pageSave.isSaving}
-              />
-            </SidebarButton>
-            <SidebarButton>
-              <ShareIcon />
-            </SidebarButton>
-            <SidebarButton>
-              <TrashCanIcon />
-            </SidebarButton>
-          </Sidebar>
-        </Right>
-        {/* )} */}
+                disabled={!tiptapData || pageSave.isSaving}
+              >
+                <RocketIcon />
+              </SidebarButton>
+              <SidebarButton onClick={openShareModal}>
+                <ShareIcon />
+              </SidebarButton>
+              <SidebarButton>
+                <TrashCanIcon />
+              </SidebarButton>
+            </Sidebar>
+          </Right>
+        )}
       </PageWrapper>
+
+      <Modal isOpen={showShareModal} onDismiss={closeShareModal} label="Share">
+        <ModalHeader>
+          <h2>Share</h2>
+          <p>
+            This is not yet implemented{" "}
+            <span role="img" aria-label="sad face">
+              🙁
+            </span>
+          </p>
+        </ModalHeader>
+
+        <Button onClick={closeShareModal} style={{ marginTop: `2rem` }}>
+          Close
+          <ButtonIcon>
+            <XCircleIcon />
+          </ButtonIcon>
+        </Button>
+      </Modal>
     </>
   );
 }
@@ -290,6 +316,7 @@ const Left = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
 `;
 
 const Right = styled.div`

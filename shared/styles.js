@@ -102,7 +102,9 @@ export const globalStyles = (
 );
 
 export const linkStyles = css`
-  cursor: pointer;
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 `;
 
 export const focusStyles = css`

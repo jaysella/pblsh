@@ -6,15 +6,15 @@ export function Sidebar({ children }) {
   return <SidebarWrapper>{children}</SidebarWrapper>;
 }
 
-export function SidebarButton({ children }) {
-  return <SidebarButtonWrapper>{children}</SidebarButtonWrapper>;
+export function SidebarButton({ children, ...props }) {
+  return <SidebarButtonWrapper {...props}>{children}</SidebarButtonWrapper>;
 }
 
 const SidebarWrapper = styled.div`
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
-  /* gap: var(--base-border-width); */
+  gap: var(--base-border-width);
   border-radius: var(--base-border-radius) 0 0 var(--base-border-radius);
   background: var(--color-black-muted);
 `;

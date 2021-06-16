@@ -1,11 +1,12 @@
-import Bold from "./Bold";
-import Italic from "./Italic";
-import ListOrdered from "./ListOrdered";
-import ListUnordered from "./ListUnordered";
-import QuoteRight from "./QuoteRight";
-import Undo from "./Undo";
-import Redo from "./Redo";
+import BoldIcon from "./Bold";
+import ItalicIcon from "./Italic";
+import ListOrderedIcon from "./ListOrdered";
+import ListUnorderedIcon from "./ListUnordered";
+import QuoteRightIcon from "./QuoteRight";
+import UndoIcon from "./Undo";
+import RedoIcon from "./Redo";
 
+import FolderIcon from "./Folder";
 import RocketIcon from "./Rocket";
 import ShareIcon from "./Share";
 import TrashCanIcon from "./TrashCan";
@@ -15,15 +16,17 @@ import AlertTriangleIcon from "./AlertTriangle";
 import CheckCircleIcon from "./CheckCircle";
 
 import ArrowRightCircleIcon from "./ArrowRightCircle";
+import XCircleIcon from "./XCircle";
 
 export {
-  Bold,
-  Italic,
-  ListOrdered,
-  ListUnordered,
-  QuoteRight,
-  Undo,
-  Redo,
+  BoldIcon,
+  ItalicIcon,
+  ListOrderedIcon,
+  ListUnorderedIcon,
+  QuoteRightIcon,
+  UndoIcon,
+  RedoIcon,
+  FolderIcon,
   RocketIcon,
   ShareIcon,
   TrashCanIcon,
@@ -31,4 +34,5 @@ export {
   AlertTriangleIcon,
   CheckCircleIcon,
   ArrowRightCircleIcon,
+  XCircleIcon,
 };

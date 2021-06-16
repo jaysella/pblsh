@@ -18,7 +18,7 @@ import XCircleIcon from "../svg/XCircle";
 import AlertTriangleIcon from "../svg/AlertTriangle";
 import CheckmarkCircle from "../CheckmarkCircle";
 import Loader from "../Loader";
-import Modal from "../Modal";
+import { Modal, ModalHeader } from "../Modal";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
@@ -100,13 +100,13 @@ export default function Layout() {
               </Text>
 
               <Modal isOpen={showModal} onDismiss={close} label="Report Abuse">
-                <Header>
+                <ModalHeader>
                   <h2>Report Abuse</h2>
                   <p>
                     Do you think the content on this page violates our rules?
                     Please let us know by reporting it below.
                   </p>
-                </Header>
+                </ModalHeader>
 
                 {reportSubmitted ? (
                   <Block>
@@ -331,15 +331,6 @@ const Text = styled.p`
     &:focus {
       outline: var(--base-border-width) solid var(--color-highlight);
     }
-  }
-`;
-
-const Header = styled.div`
-  margin-bottom: 2.5rem;
-
-  p {
-    margin-top: 0.5rem;
-    font-weight: var(--font-weight-light);
   }
 `;
 

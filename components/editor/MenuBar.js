@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import {
-  Bold,
-  Italic,
-  ListOrdered,
-  ListUnordered,
-  QuoteRight,
-  Undo,
-  Redo,
+  BoldIcon,
+  ItalicIcon,
+  // ListOrderedIcon,
+  ListUnorderedIcon,
+  QuoteRightIcon,
+  UndoIcon,
+  RedoIcon,
 } from "../svg/Icons";
 import { linkStyles, focusStyles } from "../../shared/styles";
 
@@ -15,8 +15,6 @@ function MenuBar({ editor }) {
     return null;
   }
 
-  console.log(editor.getJSON());
-
   return (
     <Wrapper>
       <Left>
@@ -24,13 +22,13 @@ function MenuBar({ editor }) {
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={editor.isActive("bold") ? "is-active" : ""}
         >
-          <Bold />
+          <BoldIcon />
         </MenuButton>
         <MenuButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={editor.isActive("italic") ? "is-active" : ""}
         >
-          <Italic />
+          <ItalicIcon />
         </MenuButton>
         {/* <MenuButton
         onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -120,7 +118,7 @@ function MenuBar({ editor }) {
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive("bulletList") ? "is-active" : ""}
         >
-          <ListUnordered />
+          <ListUnorderedIcon />
         </MenuButton>
         {/* <MenuButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
@@ -138,7 +136,7 @@ function MenuBar({ editor }) {
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editor.isActive("blockquote") ? "is-active" : ""}
         >
-          <QuoteRight />
+          <QuoteRightIcon />
         </MenuButton>
         {/* <MenuButton
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
@@ -151,10 +149,10 @@ function MenuBar({ editor }) {
       </Left>
       <Right>
         <MenuButton onClick={() => editor.chain().focus().undo().run()}>
-          <Undo />
+          <UndoIcon />
         </MenuButton>
         <MenuButton onClick={() => editor.chain().focus().redo().run()}>
-          <Redo />
+          <RedoIcon />
         </MenuButton>
       </Right>
     </Wrapper>
