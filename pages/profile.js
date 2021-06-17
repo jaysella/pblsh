@@ -26,6 +26,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const profileSchema = Yup.object().shape({
+  avatar: Yup.string().url("Please enter a valid URL").trim(),
   name: Yup.string()
     .min(2, "Too short! Please enter at least 2 characters")
     .max(50, "Too long! Please truncate your name to 50 characters")
@@ -104,6 +105,7 @@ function Profile() {
               <FormSection>
                 <Formik
                   initialValues={{
+                    avatar: faunaUserData?.avatar,
                     email: user?.email,
                     name: faunaUserData?.name,
                     nickname: faunaUserData?.nickname,
@@ -126,6 +128,29 @@ function Profile() {
                           </p>
                         </ErrorBlock>
                       )}
+
+                      <InputGroup>
+                        <InputLabel htmlFor="avatar">Avatar</InputLabel>
+                        <Input
+                          type="url"
+                          id="avatar"
+                          name="avatar"
+                          placeholder="https://example.com/avatar.jpg"
+                          disabled={isSubmitting}
+                          invalid={
+                            errors.avatar && touched.avatar ? "invalid" : null
+                          }
+                        />
+                        {errors.avatar && touched.avatar && (
+                          <InputError animated={true}>
+                            {errors.avatar}
+                          </InputError>
+                        )}
+                        <InputInfo animated={false}>
+                          Note that you may need to log out and back into your
+                          account for your avatar to update
+                        </InputInfo>
+                      </InputGroup>
 
                       <InputGroup>
                         <InputLabel htmlFor="email">Email</InputLabel>
