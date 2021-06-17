@@ -99,6 +99,7 @@ function Onboarding() {
     if (user) {
       values.auth0Id = user?.sub;
       values.email = user?.email;
+      values.avatar = user?.picture;
       values.nickname = user?.nickname;
       values.setupCompleted = true;
 

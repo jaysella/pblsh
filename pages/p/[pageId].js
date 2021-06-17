@@ -462,7 +462,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 2rem;
+  gap: 1.35rem;
 `;
 
 const Left = styled.main`

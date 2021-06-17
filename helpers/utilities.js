@@ -30,3 +30,16 @@ export function isEquivalent(a, b) {
     }
   }
 }
+
+// Thanks to https://stackoverflow.com/a/33076482
+export function getInitials(string) {
+  let regex = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+
+  let initials = [...string.matchAll(regex)] || [];
+
+  initials = (
+    (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
+  ).toUpperCase();
+
+  return initials;
+}

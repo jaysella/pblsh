@@ -12,7 +12,7 @@ const request = async (req, res) => {
     query: { id },
   } = req;
 
-  const { email, nickname, name } = req.body;
+  const { email, avatar, nickname, name } = req.body;
 
   if (!id || !email || !nickname || !name) {
     return res.status(400).json({
@@ -26,7 +26,7 @@ const request = async (req, res) => {
   try {
     const user = await guestClient.query(
       q.Update(q.Ref(q.Collection("User"), id), {
-        data: { email, nickname, name },
+        data: { email, avatar, nickname, name },
       })
     );
 

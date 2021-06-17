@@ -6,6 +6,7 @@ import Dropdown, {
   DropdownItems,
   DropdownItem,
 } from "../Dropdown";
+import Avatar from "../Avatar";
 import SearchBar from "../SearchBar";
 import PlusCircleIcon from "../svg/PlusCircle";
 import PersonIcon from "../svg/Person";
@@ -68,7 +69,8 @@ export default function DashboardLayout({ children }) {
             <Dropdown>
               <DropdownButton>
                 <NavPad>
-                  <PersonIcon />
+                  <Avatar />
+                  {/* <PersonIcon /> */}
                 </NavPad>
               </DropdownButton>
               <DropdownItems>
