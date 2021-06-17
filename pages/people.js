@@ -5,7 +5,9 @@ import Head from "next/head";
 // import Link from "next/link";
 // import toast from "react-hot-toast";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
+import Button from "../components/Button";
 import Loader from "../components/Loader";
+import toast from "react-hot-toast";
 import { AlertTriangleIcon } from "../components/Icons";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -23,6 +25,8 @@ function Pages() {
   const [faunaFetchingError, setFaunaFetchingError] = useState(false);
   const [peopleFetched, setPeopleFetched] = useState(false);
   const [peopleData, setPeopleData] = useState();
+
+  const [connection, setConnection] = useState();
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -54,6 +58,54 @@ function Pages() {
 
     fetchPeople();
   }, [faunaUserData]);
+
+  const handleFollow = async (followeeId, followeeName) => {
+    const loadingToast = toast.loading(`Following ${followeeName}...`);
+    let values = {};
+    values.followerId = faunaUserData.id;
+
+    if (followeeId && values.followerId) {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      };
+
+      await fetch(`/api/user/${followeeId}/follow`, requestOptions)
+        .then(async (res) => {
+          if (res.status >= 400) {
+            let json = await res.json();
+            if (json.error) {
+              json = json.error;
+            }
+            setConnection({
+              error: json,
+              isConnecting: false,
+            });
+            toast.dismiss(loadingToast);
+            toast.error("Unable to connect");
+          } else {
+            const json = await res.json();
+            setConnection({
+              response: json,
+              isConnecting: false,
+              connected: json.success ? true : false,
+            });
+            toast.dismiss(loadingToast);
+            toast.success(`You now follow ${followeeName}!`);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setConnection({
+            error: error.message,
+            isConnecting: false,
+          });
+          toast.dismiss(loadingToast);
+          toast.error(`Unable to follow ${followeeName}: ${error.message}`);
+        });
+    }
+  };
 
   return (
     <>
@@ -97,7 +149,14 @@ function Pages() {
               <List>
                 {peopleData.map((p) => (
                   <li key={p.ref["@ref"].id}>
-                    {p.data.name} (@{p.data.nickname})
+                    {p.data.name} (@{p.data.nickname}) &mdash;{" "}
+                    <Button
+                      onClick={() =>
+                        handleFollow(p.ref["@ref"].id, p.data.name)
+                      }
+                    >
+                      Connect
+                    </Button>
                   </li>
                 ))}
               </List>
