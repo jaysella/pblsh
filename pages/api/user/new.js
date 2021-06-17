@@ -8,7 +8,7 @@ const guestClient = new faunadb.Client({
 });
 
 const request = async (req, res) => {
-  const { auth0Id, email, nickname, name, setupCompleted } = req.body;
+  const { auth0Id, email, avatar, nickname, name, setupCompleted } = req.body;
 
   if (!auth0Id || !email || !nickname || !name || !setupCompleted) {
     return res.status(400).json({
@@ -38,6 +38,7 @@ const request = async (req, res) => {
         data: {
           auth0Id,
           email,
+          avatar,
           nickname,
           name,
           setupCompleted,
