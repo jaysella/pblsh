@@ -23,7 +23,7 @@ const request = async (req, res) => {
 
   try {
     const folder = await guestClient.query(
-      q.Get(q.Ref(q.Collection("Folder"), id))
+      q.Get(q.Ref(q.Collection("Folders"), id))
     );
 
     if (!folder) {

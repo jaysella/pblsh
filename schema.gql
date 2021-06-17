@@ -1,4 +1,4 @@
-type User {
+type People {
   auth0Id: String! @unique
   email: String! @unique
   avatar: String
@@ -6,30 +6,36 @@ type User {
   name: String
   visible: Boolean!
   setupCompleted: Boolean!
-  pages: [Page!] @relation
+  pages: [Pages!] @relation
   createdAt: String!
   updatedAt: String!
 }
 
-type Folder {
+type Relationships {
+  followee: People! @relation
+  follower: People! @relation
+  followedAt: String!
+}
+
+type Folders {
   name: String!
-  owner: User!
-  pages: [Page!] @relation
+  owner: People!
+  pages: [Pages!] @relation
   createdAt: String!
   updatedAt: String!
 }
 
-type Page {
+type Pages {
   title: String!
   published: Boolean!
-  owner: User!
-  folder: Folder
+  owner: People!
+  folder: Folders
   contentTiptap: String
   createdAt: String!
   updatedAt: String!
 }
 
-type Report {
+type Reports {
   type: String!
   url: String
   name: String
@@ -37,9 +43,4 @@ type Report {
   description: String
   createdAt: String!
   updatedAt: String!
-}
-
-type Query {
-  allUsers: [User!]
-  allPages: [Page!]
 }

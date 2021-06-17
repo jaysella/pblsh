@@ -25,7 +25,7 @@ const request = async (req, res) => {
     const pages = await guestClient.query(
       q.Map(
         q.Paginate(
-          q.Match(q.Index("pages_by_user"), q.Ref(q.Collection("User"), id))
+          q.Match(q.Index("pages_by_owner"), q.Ref(q.Collection("People"), id))
         ),
         q.Lambda(
           "page",

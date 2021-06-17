@@ -21,7 +21,7 @@ const request = async (req, res) => {
 
   try {
     const report = await guestClient.query(
-      q.Create(q.Collection("Report"), {
+      q.Create(q.Collection("Reports"), {
         data: {
           type,
           url,

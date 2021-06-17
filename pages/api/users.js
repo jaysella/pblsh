@@ -13,7 +13,7 @@ const request = async (req, res) => {
   try {
     const users = await guestClient.query(
       q.Map(
-        q.Paginate(q.Documents(q.Collection("User"))),
+        q.Paginate(q.Documents(q.Collection("People"))),
         q.Lambda((user) => q.Get(user))
       )
     );

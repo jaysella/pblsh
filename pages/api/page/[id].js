@@ -31,7 +31,7 @@ const request = async (req, res) => {
   try {
     const page = await guestClient.query(
       q.Map(
-        q.Paginate(q.Ref(q.Collection("Page"), id)),
+        q.Paginate(q.Ref(q.Collection("Pages"), id)),
         q.Lambda(
           "page",
           q.Let(

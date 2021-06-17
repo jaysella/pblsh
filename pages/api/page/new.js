@@ -24,8 +24,8 @@ const request = async (req, res) => {
       q.Paginate(
         q.Intersection(
           q.Match(
-            q.Index("folders_by_user"),
-            q.Ref(q.Collection("User"), userId)
+            q.Index("folders_by_owner"),
+            q.Ref(q.Collection("People"), userId)
           ),
           q.Match(q.Index("folders_by_name"), "Uncategorized")
         )
@@ -42,11 +42,11 @@ const request = async (req, res) => {
     }
 
     const page = await guestClient.query(
-      q.Create(q.Collection("Page"), {
+      q.Create(q.Collection("Pages"), {
         data: {
           title,
           published: false,
-          owner: q.Ref(q.Collection("User"), userId),
+          owner: q.Ref(q.Collection("People"), userId),
           folder: defaultFolder.data[0],
           createdAt: q.Now(),
           updatedAt: q.Now(),

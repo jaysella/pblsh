@@ -25,7 +25,7 @@ const request = async (req, res) => {
 
   try {
     const user = await guestClient.query(
-      q.Update(q.Ref(q.Collection("User"), id), {
+      q.Update(q.Ref(q.Collection("People"), id), {
         data: { email, avatar, nickname, name },
       })
     );

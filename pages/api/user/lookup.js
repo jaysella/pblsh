@@ -21,7 +21,7 @@ const request = async (req, res) => {
 
   try {
     const user = await guestClient.query(
-      q.Get(q.Match(q.Index("user_by_email"), email))
+      q.Get(q.Match(q.Index("people_by_email"), email))
     );
 
     if (!user) {

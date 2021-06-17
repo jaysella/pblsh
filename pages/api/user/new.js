@@ -21,8 +21,7 @@ const request = async (req, res) => {
 
   try {
     const existingEmail = await guestClient.query(
-      // Exists returns boolean, Casefold returns normalize string
-      q.Exists(q.Match(q.Index("user_by_email"), q.Casefold(email)))
+      q.Exists(q.Match(q.Index("people_by_email"), q.Casefold(email)))
     );
 
     if (existingEmail) {
@@ -35,7 +34,7 @@ const request = async (req, res) => {
     }
 
     const user = await guestClient.query(
-      q.Create(q.Collection("User"), {
+      q.Create(q.Collection("People"), {
         data: {
           auth0Id,
           email,
@@ -54,7 +53,7 @@ const request = async (req, res) => {
       });
     } else {
       const defaultFolder = await guestClient.query(
-        q.Create(q.Collection("Folder"), {
+        q.Create(q.Collection("Folders"), {
           data: {
             name: "Uncategorized",
             owner: user.ref,

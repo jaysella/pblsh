@@ -38,7 +38,7 @@ const request = async (req, res) => {
 
   try {
     const page = await guestClient.query(
-      q.Delete(q.Ref(q.Collection("Page"), id))
+      q.Delete(q.Ref(q.Collection("Pages"), id))
     );
 
     if (!page.ref) {

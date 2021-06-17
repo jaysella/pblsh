@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }) {
     <div>
       <Header>
         <Left>
-          <Link href="/dashboard" passHref>
+          <Link href={faunaUserData ? "/dashboard" : "/"} passHref>
             <NavButton>
               <Image
                 src="/logo-light.svg"

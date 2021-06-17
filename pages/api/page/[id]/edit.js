@@ -27,11 +27,11 @@ const request = async (req, res) => {
 
   try {
     const page = await guestClient.query(
-      q.Update(q.Ref(q.Collection("Page"), id), {
+      q.Update(q.Ref(q.Collection("Pages"), id), {
         data: {
           contentTiptap,
           published,
-          // folder: q.Ref(q.Collection("Folder"), folderId),
+          // folder: q.Ref(q.Collection("Folders"), folderId),
           updatedAt: q.Now(),
         },
       })

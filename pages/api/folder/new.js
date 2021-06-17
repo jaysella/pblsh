@@ -21,10 +21,10 @@ const request = async (req, res) => {
 
   try {
     const folder = await guestClient.query(
-      q.Create(q.Collection("Folder"), {
+      q.Create(q.Collection("Folders"), {
         data: {
           name,
-          owner: q.Ref(q.Collection("User"), userId),
+          owner: q.Ref(q.Collection("People"), userId),
           createdAt: q.Now(),
           updatedAt: q.Now(),
         },

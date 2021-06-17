@@ -26,8 +26,8 @@ const request = async (req, res) => {
       q.Map(
         q.Paginate(
           q.Match(
-            q.Index("folder_pages_by_folder"),
-            q.Ref(q.Collection("Folder"), id)
+            q.Index("pages_by_folder"),
+            q.Ref(q.Collection("Folders"), id)
           )
         ),
         q.Lambda(["ref"], q.Get(q.Var("ref")))

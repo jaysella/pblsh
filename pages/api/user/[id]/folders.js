@@ -25,7 +25,10 @@ const request = async (req, res) => {
     const folders = await guestClient.query(
       q.Map(
         q.Paginate(
-          q.Match(q.Index("folders_by_user"), q.Ref(q.Collection("User"), id))
+          q.Match(
+            q.Index("folders_by_owner"),
+            q.Ref(q.Collection("People"), id)
+          )
         ),
         q.Lambda(["ref"], q.Get(q.Var("ref")))
       )
