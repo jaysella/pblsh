@@ -1,17 +1,10 @@
 import { useState } from "react";
 import { useFaunaUser } from "../hooks/useFaunaUser";
 import Router from "next/router";
-import {
-  FormWrapper,
-  InputGroup,
-  InputLabel,
-  Input,
-  InputError,
-} from "../components/Form";
-import Button, { ButtonIcon } from "../components/Button";
-import ArrowRightCircleIcon from "../components/svg/ArrowRightCircle";
-import AlertTriangleIcon from "../components/svg/AlertTriangle";
-import Loader from "../components/Loader";
+import { FormWrapper, InputGroup, InputLabel, Input, InputError } from "./Form";
+import Button, { ButtonIcon } from "./Button";
+import { ArrowRightCircleIcon, AlertTriangleIcon } from "./Icons";
+import Loader from "./Loader";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { css } from "@emotion/react";

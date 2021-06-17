@@ -37,7 +37,7 @@ export default function SearchBar() {
           type="text"
           id="query"
           name="query"
-          placeholder="Search (/)"
+          placeholder="Search (⌘/)"
           ref={inputRef}
         />
       </form>

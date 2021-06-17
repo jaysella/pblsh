@@ -5,8 +5,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
 import Loader from "../../components/Loader";
-import ClockIcon from "../../components/svg/Clock";
-import AlertTriangleIcon from "../../components/svg/AlertTriangle";
+import {
+  ArrowLeftCircleIcon,
+  ArrowRightCircleIcon,
+  AlertTriangleIcon,
+  // CheckCircleIcon,
+  ClockIcon,
+} from "../../components/Icons";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
@@ -25,9 +30,6 @@ import {
   InputError,
 } from "../../components/Form";
 import Button, { ButtonIcon } from "../../components/Button";
-import ArrowLeftCircleIcon from "../../components/svg/ArrowLeftCircle";
-import ArrowRightCircleIcon from "../../components/svg/ArrowRightCircle";
-// import CheckCircleIcon from "../../components/svg/CheckCircle";
 // import CheckmarkCircle from "../../components/CheckmarkCircle";
 import { Formik } from "formik";
 import * as Yup from "yup";

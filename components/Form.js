@@ -1,14 +1,9 @@
 import styled from "@emotion/styled";
 import { Form, Field } from "formik";
 import Select from "react-select";
-import AlertCircleIcon from "../components/svg/AlertCircle";
-import AlertTriangleIcon from "../components/svg/AlertTriangle";
+import { AlertCircleIcon, AlertTriangleIcon } from "./Icons";
 import { css } from "@emotion/react";
-import {
-  fadeInAnimation,
-  fadeInDownAnimation,
-  focusStyles,
-} from "../shared/styles";
+import { fadeInDownAnimation, focusStyles } from "../shared/styles";
 
 const customSelectStyles = {
   control: (styles, { isDisabled, isFocused }) => ({

@@ -6,7 +6,7 @@ import Head from "next/head";
 // import toast from "react-hot-toast";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import Loader from "../components/Loader";
-import AlertTriangleIcon from "../components/svg/AlertTriangle";
+import { AlertTriangleIcon } from "../components/Icons";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {

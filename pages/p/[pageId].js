@@ -34,7 +34,7 @@ import {
   CopyIcon,
   LockIcon,
   XCircleIcon,
-} from "../../components/svg/Icons";
+} from "../../components/Icons";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
 import {
   LoadingWrapper,

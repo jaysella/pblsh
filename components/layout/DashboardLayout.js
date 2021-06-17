@@ -9,8 +9,7 @@ import Dropdown, {
 } from "../Dropdown";
 import Avatar from "../Avatar";
 import SearchBar from "../SearchBar";
-import PlusCircleIcon from "../svg/PlusCircle";
-// import PersonIcon from "../svg/Person";
+import { PlusCircleIcon } from "../Icons";
 import Footer from "./Footer";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";

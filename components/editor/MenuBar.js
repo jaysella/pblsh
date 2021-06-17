@@ -8,7 +8,7 @@ import {
   QuoteRightIcon,
   UndoIcon,
   RedoIcon,
-} from "../svg/Icons";
+} from "../Icons";
 import { linkStyles, focusStyles } from "../../shared/styles";
 
 function MenuBar({ editor }) {

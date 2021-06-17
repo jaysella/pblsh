@@ -8,10 +8,12 @@ import toast from "react-hot-toast";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import { timeSinceFromTimestamp } from "../helpers/timeSince";
 import Loader from "../components/Loader";
-import ClockIcon from "../components/svg/Clock";
-import FolderIcon from "../components/svg/Folder";
-import PlusCircleIcon from "../components/svg/PlusCircle";
-import AlertTriangleIcon from "../components/svg/AlertTriangle";
+import {
+  ClockIcon,
+  FolderIcon,
+  PlusCircleIcon,
+  AlertTriangleIcon,
+} from "../components/Icons";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {

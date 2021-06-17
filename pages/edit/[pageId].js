@@ -6,7 +6,11 @@ import Head from "next/head";
 import { withDashboardLayout } from "../../components/layout/DashboardLayout";
 import Tiptap from "../../components/Tiptap";
 import Loader from "../../components/Loader";
-import AlertTriangleIcon from "../../components/svg/AlertTriangle";
+import {
+  ArrowRightCircleIcon,
+  AlertTriangleIcon,
+  CheckCircleIcon,
+} from "../../components/Icons";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { LoadingWrapper } from "../../shared/styles";
@@ -21,8 +25,6 @@ import {
   InputError,
 } from "../../components/Form";
 import Button, { ButtonIcon } from "../../components/Button";
-import ArrowRightCircleIcon from "../../components/svg/ArrowRightCircle";
-import CheckCircleIcon from "../../components/svg/CheckCircle";
 import CheckmarkCircle from "../../components/CheckmarkCircle";
 import { Formik } from "formik";
 import * as Yup from "yup";

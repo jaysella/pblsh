@@ -13,9 +13,7 @@ import {
   ActionGroup,
 } from "../Form";
 import Button, { ButtonIcon } from "../Button";
-import ArrowRightCircleIcon from "../svg/ArrowRightCircle";
-import XCircleIcon from "../svg/XCircle";
-import AlertTriangleIcon from "../svg/AlertTriangle";
+import { ArrowRightCircleIcon, XCircleIcon, AlertTriangleIcon } from "../Icons";
 import CheckmarkCircle from "../CheckmarkCircle";
 import Loader from "../Loader";
 import Modal, { ModalHeader } from "../Modal";

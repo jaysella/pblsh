@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Head from "next/head";
 import Link from "next/link";
 import { useFaunaUser } from "../hooks/useFaunaUser";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
-import AlertTriangleIcon from "../components/svg/AlertTriangle";
+import { AlertTriangleIcon, PlusCircleIcon } from "../components/Icons";
 import Loader from "../components/Loader";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -14,10 +14,8 @@ import {
   padStyles,
   LoadingWrapper,
 } from "../shared/styles";
-import PlusCircleIcon from "../components/svg/PlusCircle";
 
 function Folders() {
-  const { user } = useUser();
   const { faunaUserStatus, faunaUserData } = useFaunaUser();
 
   const [faunaFetchingError, setFaunaFetchingError] = useState(false);

@@ -12,8 +12,11 @@ import {
   InputInfo,
 } from "../components/Form";
 import Button, { ButtonIcon } from "../components/Button";
-import ArrowRightCircleIcon from "../components/svg/ArrowRightCircle";
-import CheckCircleIcon from "../components/svg/CheckCircle";
+import {
+  ArrowRightCircleIcon,
+  AlertTriangleIcon,
+  CheckCircleIcon,
+} from "../components/Icons";
 import Loader from "../components/Loader";
 import CheckmarkCircle from "../components/CheckmarkCircle";
 import { css } from "@emotion/react";
@@ -21,7 +24,6 @@ import styled from "@emotion/styled";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
-import AlertTriangleIcon from "../components/svg/AlertTriangle";
 
 const profileSchema = Yup.object().shape({
   name: Yup.string()

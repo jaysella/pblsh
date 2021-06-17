@@ -4,8 +4,7 @@ import Head from "next/head";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import NewPage from "../components/NewPage";
 import NewFolder from "../components/NewFolder";
-import PageIcon from "../components/svg/Page";
-import FolderIcon from "../components/svg/Folder";
+import { PageIcon, FolderIcon } from "../components/Icons";
 import styled from "@emotion/styled";
 import {
   linkStyles,

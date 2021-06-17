@@ -8,10 +8,12 @@ import { timeSinceFromTimestamp } from "../helpers/timeSince";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import Button, { ButtonIcon } from "../components/Button";
 import Loader from "../components/Loader";
-import ClockIcon from "../components/svg/Clock";
-import FolderIcon from "../components/svg/Folder";
-import ArrowRightCircleIcon from "../components/svg/ArrowRightCircle";
-import PlusCircleIcon from "../components/svg/PlusCircle";
+import {
+  ArrowRightCircleIcon,
+  ClockIcon,
+  FolderIcon,
+  PlusCircleIcon,
+} from "../components/Icons";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {

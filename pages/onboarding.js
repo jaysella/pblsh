@@ -5,7 +5,7 @@ import Head from "next/head";
 import { withSimpleLayout } from "../components/layout/SimpleLayout";
 import Button, { ButtonIcon } from "../components/Button";
 import LogoColored from "../components/svg/LogoColored";
-import ArrowRightCircleIcon from "../components/svg/ArrowRightCircle";
+import { ArrowRightCircleIcon } from "../components/Icons";
 import {
   FormWrapper,
   InputGroup,

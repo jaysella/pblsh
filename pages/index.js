@@ -4,7 +4,7 @@ import Router from "next/router";
 import Head from "next/head";
 import { withDashboardLayout } from "../components/layout/DashboardLayout";
 import Button, { ButtonIcon } from "../components/Button";
-import ArrowRightCircleIcon from "../components/svg/ArrowRightCircle";
+import { ArrowRightCircleIcon } from "../components/Icons";
 import Loader from "../components/Loader";
 import { LoadingWrapper } from "../shared/styles";
 import styled from "@emotion/styled";

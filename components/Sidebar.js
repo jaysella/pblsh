@@ -10,10 +10,6 @@ export function SidebarButton({ children, ...props }) {
   return <SidebarButtonWrapper {...props}>{children}</SidebarButtonWrapper>;
 }
 
-// export function SidebarPad({ children, ...props }) {
-//   return <SidebarPadWrapper {...props}>{children}</SidebarPadWrapper>;
-// }
-
 const sidebarPadStyles = css`
   ${linkStyles};
   --color-outline: var(--color-primary);
@@ -53,6 +49,14 @@ const SidebarWrapper = styled.div`
   gap: var(--base-border-width);
   border-radius: var(--base-border-radius) 0 0 var(--base-border-radius);
   background: var(--color-black-muted);
+  /* background: transparent; */
+  /* border: var(--base-border-width) solid var(--color-black-muted); */
+  /* border-right: none; */
+  /* transition: background var(--base-transition-in-duration) ease-out; */
+
+  /* &:hover {
+    background: var(--color-black-muted);
+  } */
 
   button {
     ${sidebarPadStyles}
@@ -62,7 +66,3 @@ const SidebarWrapper = styled.div`
 const SidebarButtonWrapper = styled.button`
   ${sidebarPadStyles};
 `;
-
-// const SidebarPadWrapper = styled.div`
-//   ${sidebarPadStyles};
-// `;
