@@ -1,16 +1,23 @@
-import { useEffect } from "react";
 import { useEditor, EditorContent, generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 import MenuBar from "./editor/MenuBar";
 import styled from "@emotion/styled";
 
 export default function Tiptap({
   editable,
+  placeholder,
   initialHtml,
   initialJson,
   sendTiptapData,
 }) {
-  const extensions = [StarterKit];
+  const extensions = [
+    StarterKit,
+    Placeholder.configure({
+      placeholder: placeholder ? placeholder : "Begin typing...",
+      showOnlyWhenEditable: true,
+    }),
+  ];
 
   let initialContent = "";
   if (initialHtml) {
@@ -56,6 +63,14 @@ const Editor = styled(EditorContent)`
   margin: 1.5rem;
   cursor: unset;
   font-weight: var(--font-weight-light);
+
+  p.is-editor-empty:first-of-type::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: var(--color-white-muted);
+    pointer-events: none;
+    height: 0;
+  }
 
   & > div > p {
     margin: 1rem 0;

@@ -21,6 +21,10 @@ export function disabledEventPropagation(e) {
  * @returns boolean
  */
 export function isEquivalent(a, b) {
+  if (!a || !b) {
+    return false;
+  }
+
   // Create arrays of property names
   var aProps = Object.getOwnPropertyNames(a);
   var bProps = Object.getOwnPropertyNames(b);

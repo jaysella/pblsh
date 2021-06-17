@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import styled from "@emotion/styled";
 
 import { useFaunaUser } from "../../hooks/useFaunaUser";
-import useHotkey from "../../hooks/useHotkey";
+// import useHotkey from "../../hooks/useHotkey";
 
 import { copyToClipboard, isEquivalent } from "../../helpers/utilities";
 import { timeSinceFromTimestamp } from "../../helpers/timeSince";
@@ -313,27 +313,11 @@ function Page() {
           {!isLoading && pageData && pageData?.page?.data && (
             <Tiptap
               editable={isEditing}
+              placeholder="Begin typing..."
               initialJson={pageData.page.data.contentTiptap || ""}
               sendTiptapData={sendTiptapData}
             />
           )}
-
-          {/* <Tiptap
-            editable={true}
-            initialHtml="
-              <h2>
-                Hi there,
-              </h2>
-              <p>
-                this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-              </p>
-              <blockquote>
-                Wow, that’s amazing. Good work! 👏
-                <br />
-                — Someone
-              </blockquote>
-            "
-          /> */}
         </Left>
 
         {isEditing && (
@@ -377,8 +361,6 @@ function Page() {
                         size="small"
                         color="secondary"
                         hoverColor="black"
-                        onClick={handlePageDelete}
-                        disabled={pageDelete.isDeleting}
                       >
                         Close
                         <ButtonIcon>
@@ -417,8 +399,6 @@ function Page() {
                         size="small"
                         color="secondary"
                         hoverColor="black"
-                        onClick={handlePageDelete}
-                        disabled={pageDelete.isDeleting}
                       >
                         Close
                         <ButtonIcon>
