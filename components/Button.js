@@ -8,6 +8,7 @@ export default function Button({
   children,
   href,
   color,
+  hoverColor,
   fullWidth,
   size,
   borderless,
@@ -20,7 +21,9 @@ export default function Button({
           <LinkWrapper
             fullWidth={fullWidth || false}
             borderless={borderless || false}
-            className={`color-${color || "default"} size-${size || "default"}`}
+            className={`color-${color || "default"} color-hover-${
+              hoverColor || "black-muted"
+            } size-${size || "default"}`}
             {...props}
           >
             {children}
@@ -30,7 +33,9 @@ export default function Button({
         <ButtonWrapper
           fullWidth={fullWidth || false}
           borderless={borderless || false}
-          className={`color-${color || "default"} size-${size || "default"}`}
+          className={`color-${color || "default"} color-hover-${
+            hoverColor || "black-muted"
+          } size-${size || "default"}`}
           {...props}
         >
           {children}
@@ -85,6 +90,16 @@ export const buttonStyles = css`
 
     &-warning {
       --button-color: var(--color-tertiary);
+    }
+  }
+
+  &.color-hover {
+    &-black-muted {
+      --button-color-hover: var(--color-black-muted);
+    }
+
+    &-black {
+      --button-color-hover: var(--color-black);
     }
   }
 

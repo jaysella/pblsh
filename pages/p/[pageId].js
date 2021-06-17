@@ -370,6 +370,7 @@ function Page() {
                         as={Button}
                         size="small"
                         color="secondary"
+                        hoverColor="black"
                         onClick={handlePageDelete}
                         disabled={pageDelete.isDeleting}
                       >
@@ -409,6 +410,7 @@ function Page() {
                         as={Button}
                         size="small"
                         color="secondary"
+                        hoverColor="black"
                         onClick={handlePageDelete}
                         disabled={pageDelete.isDeleting}
                       >
@@ -475,24 +477,22 @@ function Page() {
                     {pageData.page.data.published ? (
                       <>
                         <p>
-                          You can share this page with others by sending them a
-                          link:{" "}
-                          <code style={{ userSelect: `all` }}>
-                            {`${process.env.NEXT_PUBLIC_BASE_URL}/p/${pageData.page.ref["@ref"].id}`}
-                          </code>
+                          You can share this page with others by sending them
+                          the link.
                         </p>
                         <PopoverActions>
                           <PopoverClose
                             as={Button}
                             size="small"
                             color="secondary"
+                            hoverColor="black"
                             onClick={() =>
                               copyToClipboard(
                                 `${process.env.NEXT_PUBLIC_BASE_URL}/p/${pageData.page.ref["@ref"].id}`
                               )
                             }
                           >
-                            Copy
+                            Copy Link
                             <ButtonIcon>
                               <CopyIcon />
                             </ButtonIcon>
@@ -501,10 +501,8 @@ function Page() {
                           <PopoverClose
                             as={Button}
                             size="small"
-                            color="secondary"
+                            hoverColor="black"
                             borderless
-                            onClick={handlePageDelete}
-                            disabled={pageDelete.isDeleting}
                           >
                             Close
                             <ButtonIcon>
@@ -524,8 +522,7 @@ function Page() {
                             as={Button}
                             size="small"
                             color="secondary"
-                            onClick={handlePageDelete}
-                            disabled={pageDelete.isDeleting}
+                            hoverColor="black"
                           >
                             Close
                             <ButtonIcon>
@@ -574,6 +571,7 @@ function Page() {
                       <PopoverClose
                         as={Button}
                         color="warning"
+                        hoverColor="black"
                         size="small"
                         onClick={handlePageDelete}
                         disabled={pageDelete.isDeleting}
@@ -583,7 +581,12 @@ function Page() {
                           <TrashCanIcon />
                         </ButtonIcon>
                       </PopoverClose>
-                      <PopoverClose as={Button} size="small" borderless>
+                      <PopoverClose
+                        as={Button}
+                        size="small"
+                        hoverColor="black"
+                        borderless
+                      >
                         Cancel
                         <ButtonIcon>
                           <XCircleIcon />

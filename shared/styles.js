@@ -138,6 +138,14 @@ export const hoverStyles = css`
 
 export const buttonHoverStyles = css`
   ${hoverStyles};
+
+  &:hover,
+  &:focus {
+    &:not(:disabled) {
+      background: var(--button-color-hover);
+    }
+  }
+
   --color-outline: var(--color-highlight);
 `;
 
@@ -160,6 +168,7 @@ export const padWithBackgroundStyles = css`
 
 export const dropdownButtonStyles = css`
   ${buttonHoverStyles};
+  --button-color-hover: var(--color-black-muted);
 `;
 
 export const fadeInAnimation = keyframes`
