@@ -7,7 +7,7 @@ import { focusStyles } from "../shared/styles";
 export default function SearchBar() {
   const hasMounted = useHasMounted();
   const [focusInputs, setFocusInputs] = useState(0);
-  const keys = ["/"];
+  const keys = ["Meta", "/"];
 
   const handleHotKey = useCallback(() => {
     setFocusInputs(focusInputs + 1);

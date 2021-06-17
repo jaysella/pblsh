@@ -1,5 +1,4 @@
 // Adapted from https://github.com/arthurtyukayev/use-keyboard-shortcut/blob/master/lib/useKeyboardShortcut.js
-
 import { useEffect, useCallback, useReducer } from "react";
 import { disabledEventPropagation } from "../helpers/utilities";
 
@@ -98,7 +97,7 @@ const useHotkey = (shortcutKeys, callback, options) => {
     return () => {
       return null;
     };
-  }, [callback, keys]);
+  }, [callback, initialKeyMapping, keys]);
 
   useEffect(() => {
     shortcutKeys.forEach((k) =>
@@ -109,7 +108,7 @@ const useHotkey = (shortcutKeys, callback, options) => {
       shortcutKeys.forEach((k) =>
         window.removeEventListener("keydown", keydownListener(k))
       );
-  }, []);
+  }, [keydownListener, shortcutKeys]);
 
   useEffect(() => {
     shortcutKeys.forEach((k) =>
@@ -120,7 +119,7 @@ const useHotkey = (shortcutKeys, callback, options) => {
       shortcutKeys.forEach((k) =>
         window.removeEventListener("keyup", keyupListener(k))
       );
-  }, []);
+  }, [keyupListener, shortcutKeys]);
 };
 
 export default useHotkey;

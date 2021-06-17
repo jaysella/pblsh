@@ -1,17 +1,11 @@
-import { useFaunaUser } from "../hooks/useFaunaUser";
 import * as RadixAvatar from "@radix-ui/react-avatar";
 import styled from "@emotion/styled";
-import { getInitials } from "../helpers/utilities";
 
-export default function Avatar() {
-  const { faunaUserData } = useFaunaUser();
-
+export default function Avatar({ imageUrl, fallback }) {
   return (
     <AvatarWrapper>
-      <AvatarImage src={faunaUserData?.avatar} />
-      {faunaUserData && (
-        <AvatarFallback>{getInitials(faunaUserData?.name)}</AvatarFallback>
-      )}
+      {imageUrl && <AvatarImage src={imageUrl} />}
+      {fallback && <AvatarFallback>{fallback}</AvatarFallback>}
     </AvatarWrapper>
   );
 }

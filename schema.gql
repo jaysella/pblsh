@@ -4,6 +4,7 @@ type User {
   avatar: String
   nickname: String
   name: String
+  visible: Boolean!
   setupCompleted: Boolean!
   pages: [Page!] @relation
   createdAt: String!

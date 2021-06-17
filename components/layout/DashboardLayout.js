@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useFaunaUser } from "../../hooks/useFaunaUser";
+import { getInitials } from "../../helpers/utilities";
 import Dropdown, {
   DropdownButton,
   DropdownItems,
@@ -9,7 +10,7 @@ import Dropdown, {
 import Avatar from "../Avatar";
 import SearchBar from "../SearchBar";
 import PlusCircleIcon from "../svg/PlusCircle";
-import PersonIcon from "../svg/Person";
+// import PersonIcon from "../svg/Person";
 import Footer from "./Footer";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -20,7 +21,7 @@ import {
 } from "../../shared/styles";
 
 export default function DashboardLayout({ children }) {
-  const { faunaUserStatus, faunaUserData } = useFaunaUser();
+  const { faunaUserData } = useFaunaUser();
 
   return (
     <div>
@@ -42,6 +43,10 @@ export default function DashboardLayout({ children }) {
 
         {faunaUserData ? (
           <Right>
+            <Link href="/people" passHref>
+              <NavLink>People</NavLink>
+            </Link>
+
             <Link href="/pages" passHref>
               <NavLink>Pages</NavLink>
             </Link>
@@ -69,8 +74,10 @@ export default function DashboardLayout({ children }) {
             <Dropdown>
               <DropdownButton>
                 <NavPad>
-                  <Avatar />
-                  {/* <PersonIcon /> */}
+                  <Avatar
+                    imageUrl={faunaUserData?.avatar}
+                    fallback={getInitials(faunaUserData?.name)}
+                  />
                 </NavPad>
               </DropdownButton>
               <DropdownItems>
@@ -139,6 +146,7 @@ export const navElement = css`
   ${linkStyles};
   ${buttonHoverStyles};
 
+  --button-color-hover: var(--color-black-muted);
   display: flex;
   align-content: center;
   padding: 0.75rem;

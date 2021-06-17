@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
 import { useUser, isLoading } from "@auth0/nextjs-auth0";
-import { useFaunaUser } from "../../hooks/useFaunaUser";
 import Head from "next/head";
 import toast from "react-hot-toast";
 import styled from "@emotion/styled";
+
+import { useFaunaUser } from "../../hooks/useFaunaUser";
+import useHotkey from "../../hooks/useHotkey";
 
 import { copyToClipboard, isEquivalent } from "../../helpers/utilities";
 import { timeSinceFromTimestamp } from "../../helpers/timeSince";
@@ -60,6 +62,10 @@ function Page() {
   const [pageDelete, setPageDelete] = useState({
     isDeleting: false,
   });
+
+  // Sidebar Keyboard Shortcuts
+  // const detailsKeys = ["Meta", "i"];
+  // useHotkey(detailsKeys, () => console.log("shortcut"));
 
   // Fetch page
   useEffect(() => {
