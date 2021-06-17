@@ -6,9 +6,11 @@ import Head from "next/head";
 import toast from "react-hot-toast";
 import styled from "@emotion/styled";
 
-import { isEquivalent } from "../../helpers/utilities";
+import { copyToClipboard, isEquivalent } from "../../helpers/utilities";
+import { timeSinceFromTimestamp } from "../../helpers/timeSince";
 
 import Custom404 from "../404";
+import Link from "next/link";
 import Tiptap from "../../components/Tiptap";
 import { Sidebar, SidebarButton } from "../../components/Sidebar";
 import Button, { ButtonIcon } from "../../components/Button";
@@ -19,7 +21,6 @@ import Popover, {
   PopoverClose,
   PopoverActions,
 } from "../../components/Popover";
-import Modal, { ModalHeader } from "../../components/Modal";
 import Loader from "../../components/Loader";
 import {
   AlertTriangleIcon,
@@ -28,6 +29,7 @@ import {
   RocketIcon,
   ShareIcon,
   TrashCanIcon,
+  CopyIcon,
   LockIcon,
   XCircleIcon,
 } from "../../components/svg/Icons";
@@ -58,11 +60,6 @@ function Page() {
   const [pageDelete, setPageDelete] = useState({
     isDeleting: false,
   });
-
-  // MODALS
-  const [showShareModal, setShowShareModal] = useState(false);
-  const openShareModal = () => setShowShareModal(true);
-  const closeShareModal = () => setShowShareModal(false);
 
   // Fetch page
   useEffect(() => {
@@ -337,15 +334,92 @@ function Page() {
           <Right>
             <Sidebar>
               <Tooltip content="Details" placement="left">
-                <SidebarButton disabled>
-                  <AlertCircleIcon />
-                </SidebarButton>
+                <Popover>
+                  <PopoverTrigger>
+                    <AlertCircleIcon />
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    theme="secondary"
+                    side="left"
+                    align="start"
+                    sideOffset={9}
+                  >
+                    <h2>Page Details</h2>
+                    <p>
+                      {pageData.page.data.published
+                        ? "Published"
+                        : "Unpublished"}
+                    </p>
+                    <p>
+                      Last Edited:{" "}
+                      {timeSinceFromTimestamp(
+                        pageData.page.data.updatedAt["@ts"]
+                      )}{" "}
+                      ago
+                    </p>
+                    <p>
+                      Created:{" "}
+                      {timeSinceFromTimestamp(
+                        pageData.page.data.createdAt["@ts"]
+                      )}{" "}
+                      ago
+                    </p>
+                    <PopoverActions>
+                      <PopoverClose
+                        as={Button}
+                        size="small"
+                        color="secondary"
+                        onClick={handlePageDelete}
+                        disabled={pageDelete.isDeleting}
+                      >
+                        Close
+                        <ButtonIcon>
+                          <XCircleIcon />
+                        </ButtonIcon>
+                      </PopoverClose>
+                    </PopoverActions>
+                  </PopoverContent>
+                </Popover>
               </Tooltip>
 
               <Tooltip content="Folder" placement="left">
-                <SidebarButton disabled>
-                  <FolderIcon />
-                </SidebarButton>
+                <Popover>
+                  <PopoverTrigger>
+                    <FolderIcon />
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    theme="secondary"
+                    side="left"
+                    align="start"
+                    sideOffset={9}
+                  >
+                    <h2>Current Folder</h2>
+                    <p>
+                      This page is currently saved in your{" "}
+                      <Link href={`/folder/${pageData.folder.ref["@ref"].id}`}>
+                        {pageData.folder.data.name}
+                      </Link>{" "}
+                      folder.
+                    </p>
+
+                    <PopoverActions>
+                      <PopoverClose
+                        as={Button}
+                        size="small"
+                        color="secondary"
+                        onClick={handlePageDelete}
+                        disabled={pageDelete.isDeleting}
+                      >
+                        Close
+                        <ButtonIcon>
+                          <XCircleIcon />
+                        </ButtonIcon>
+                      </PopoverClose>
+                    </PopoverActions>
+                  </PopoverContent>
+                </Popover>
               </Tooltip>
 
               <Tooltip
@@ -386,12 +460,102 @@ function Page() {
               </Tooltip>
 
               <Tooltip content="Share" placement="left">
-                <SidebarButton onClick={openShareModal}>
-                  <ShareIcon />
-                </SidebarButton>
+                <Popover>
+                  <PopoverTrigger>
+                    <ShareIcon />
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    theme="secondary"
+                    side="left"
+                    align="start"
+                    sideOffset={9}
+                  >
+                    <h2>Share Page</h2>
+                    {pageData.page.data.published ? (
+                      <>
+                        <p>
+                          You can share this page with others by sending them a
+                          link:{" "}
+                          <code style={{ userSelect: `all` }}>
+                            {`${process.env.NEXT_PUBLIC_BASE_URL}/p/${pageData.page.ref["@ref"].id}`}
+                          </code>
+                        </p>
+                        <PopoverActions>
+                          <PopoverClose
+                            as={Button}
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                              copyToClipboard(
+                                `${process.env.NEXT_PUBLIC_BASE_URL}/p/${pageData.page.ref["@ref"].id}`
+                              )
+                            }
+                          >
+                            Copy
+                            <ButtonIcon>
+                              <CopyIcon />
+                            </ButtonIcon>
+                          </PopoverClose>
+
+                          <PopoverClose
+                            as={Button}
+                            size="small"
+                            color="secondary"
+                            borderless
+                            onClick={handlePageDelete}
+                            disabled={pageDelete.isDeleting}
+                          >
+                            Close
+                            <ButtonIcon>
+                              <XCircleIcon />
+                            </ButtonIcon>
+                          </PopoverClose>
+                        </PopoverActions>
+                      </>
+                    ) : (
+                      <>
+                        <p>
+                          In order to share this page, you must first publish
+                          it. Click the Edit button to post it!
+                        </p>
+                        <PopoverActions>
+                          <PopoverClose
+                            as={Button}
+                            size="small"
+                            color="secondary"
+                            onClick={handlePageDelete}
+                            disabled={pageDelete.isDeleting}
+                          >
+                            Close
+                            <ButtonIcon>
+                              <XCircleIcon />
+                            </ButtonIcon>
+                          </PopoverClose>
+                        </PopoverActions>
+                      </>
+                    )}
+                  </PopoverContent>
+                </Popover>
               </Tooltip>
 
-              <Tooltip content="Delete" placement="left">
+              <Tooltip
+                content={
+                  <>
+                    {pageDelete.isDeleting ? (
+                      <>
+                        Delete
+                        <TooltipIcon>
+                          <LockIcon />
+                        </TooltipIcon>
+                      </>
+                    ) : (
+                      <>Delete</>
+                    )}
+                  </>
+                }
+                placement="left"
+              >
                 <Popover>
                   <PopoverTrigger>
                     <TrashCanIcon />
@@ -410,6 +574,7 @@ function Page() {
                       <PopoverClose
                         as={Button}
                         color="warning"
+                        size="small"
                         onClick={handlePageDelete}
                         disabled={pageDelete.isDeleting}
                       >
@@ -418,7 +583,7 @@ function Page() {
                           <TrashCanIcon />
                         </ButtonIcon>
                       </PopoverClose>
-                      <PopoverClose as={Button} borderless>
+                      <PopoverClose as={Button} size="small" borderless>
                         Cancel
                         <ButtonIcon>
                           <XCircleIcon />
@@ -432,26 +597,6 @@ function Page() {
           </Right>
         )}
       </PageWrapper>
-
-      {/* Share Modal */}
-      <Modal isOpen={showShareModal} onDismiss={closeShareModal} label="Share">
-        <ModalHeader>
-          <h2>Share</h2>
-          <p>
-            This is not yet implemented{" "}
-            <span role="img" aria-label="sad face">
-              🙁
-            </span>
-          </p>
-        </ModalHeader>
-
-        <Button onClick={closeShareModal} style={{ marginTop: `2rem` }}>
-          Close
-          <ButtonIcon>
-            <XCircleIcon />
-          </ButtonIcon>
-        </Button>
-      </Modal>
     </>
   );
 }

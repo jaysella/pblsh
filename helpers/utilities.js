@@ -1,3 +1,7 @@
+/**
+ * Disable default event propagation
+ * @param {*} e Event
+ */
 export function disabledEventPropagation(e) {
   if (e) {
     if (e.stopPropagation) {
@@ -8,7 +12,14 @@ export function disabledEventPropagation(e) {
   }
 }
 
-// Thanks to http://adripofjavascript.com/blog/drips/object-equality-in-javascript.html
+/**
+ * Check if two objects are equivalent
+ *
+ * Thanks to http://adripofjavascript.com/blog/drips/object-equality-in-javascript.html
+ * @param {object} a First object
+ * @param {object} b Second object
+ * @returns boolean
+ */
 export function isEquivalent(a, b) {
   // Create arrays of property names
   var aProps = Object.getOwnPropertyNames(a);
@@ -29,9 +40,19 @@ export function isEquivalent(a, b) {
       return false;
     }
   }
+
+  // If we made it this far, objects
+  // are considered equivalent
+  return true;
 }
 
-// Thanks to https://stackoverflow.com/a/33076482
+/**
+ * Generate (a user's) initials given a full name
+ *
+ * Thanks to https://stackoverflow.com/a/33076482
+ * @param {*} string Name
+ * @returns {string} Deciphered initials
+ */
 export function getInitials(string) {
   let regex = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
 
@@ -42,4 +63,24 @@ export function getInitials(string) {
   ).toUpperCase();
 
   return initials;
+}
+
+/**
+ * Copy text to the user's clipboard
+ * @param {*} text Text to copy
+ * @returns null
+ */
+export function copyToClipboard(text) {
+  if (!navigator.clipboard) {
+    return;
+  }
+
+  navigator.clipboard.writeText(text).then(
+    function () {
+      console.log("[Clipboard] Copying to clipboard was successful!");
+    },
+    function (err) {
+      console.error("[Clipboard] Could not copy text: ", err);
+    }
+  );
 }

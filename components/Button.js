@@ -9,6 +9,7 @@ export default function Button({
   href,
   color,
   fullWidth,
+  size,
   borderless,
   ...props
 }) {
@@ -17,9 +18,9 @@ export default function Button({
       {href && href.length > 0 ? (
         <Link href={href} passHref>
           <LinkWrapper
-            color={color || "default"}
             fullWidth={fullWidth || false}
             borderless={borderless || false}
+            className={`color-${color || "default"} size-${size || "default"}`}
             {...props}
           >
             {children}
@@ -27,9 +28,9 @@ export default function Button({
         </Link>
       ) : (
         <ButtonWrapper
-          color={color || "default"}
           fullWidth={fullWidth || false}
           borderless={borderless || false}
+          className={`color-${color || "default"} size-${size || "default"}`}
           {...props}
         >
           {children}
@@ -50,8 +51,8 @@ export const IconWrapper = styled.div`
 
   svg {
     display: block;
-    height: 20px;
-    width: 20px;
+    height: var(--button-icon-size);
+    width: var(--button-icon-size);
   }
 `;
 
@@ -63,13 +64,46 @@ export const buttonStyles = css`
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.6rem 1rem calc(0.6rem - 1px);
   background: transparent;
   border: var(--base-border-width) solid transparent;
   border-radius: calc(var(--base-border-radius) / 1.5);
   color: var(--color-white);
   font-family: var(--font-sans-serif);
-  font-size: 14px;
+
+  &.color {
+    &-default {
+      --button-color: var(--color-primary);
+    }
+
+    &-primary {
+      --button-color: var(--color-primary);
+    }
+
+    &-secondary {
+      --button-color: var(--color-secondary);
+    }
+
+    &-warning {
+      --button-color: var(--color-tertiary);
+    }
+  }
+
+  &.size {
+    &-small {
+      --button-padding: 0.5rem 0.75rem calc(0.5rem - 1px);
+      --button-font-size: 12px;
+      --button-icon-size: 14px;
+    }
+
+    &-default {
+      --button-padding: 0.6rem 1rem calc(0.6rem - 1px);
+      --button-font-size: 14px;
+      --button-icon-size: 20px;
+    }
+  }
+
+  padding: var(--button-padding);
+  font-size: var(--button-font-size);
 
   &:hover:not(:disabled) {
     > div {
@@ -84,20 +118,12 @@ export const buttonStyles = css`
 `;
 
 export const ButtonWrapper = styled.button`
-  --button-color: ${(props) =>
-    props.color === "warning"
-      ? "var(--color-tertiary)"
-      : "var(--color-primary)"};
   ${buttonStyles};
   border-color: ${(props) => (props.borderless ? "" : "var(--button-color)")};
   width: ${(props) => (props.fullWidth ? "100%" : "max-content")};
 `;
 
 export const LinkWrapper = styled.a`
-  --button-color: ${(props) =>
-    props.color === "warning"
-      ? "var(--color-tertiary)"
-      : "var(--color-primary)"};
   ${buttonStyles};
   border-color: ${(props) => (props.borderless ? "" : "var(--button-color)")};
   width: ${(props) => (props.fullWidth ? "100%" : "max-content")};

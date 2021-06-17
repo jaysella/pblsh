@@ -12,7 +12,7 @@ export function PopoverTrigger({ children, ...props }) {
 
 export function PopoverContent({ theme, includeArrow, children, ...props }) {
   return (
-    <Content className={theme ? `theme-${theme}` : "info"} {...props}>
+    <Content className={theme ? `theme-${theme}` : "theme-info"} {...props}>
       {children}
       {includeArrow && <Arrow />}
     </Content>
@@ -32,17 +32,27 @@ const Content = styled(RadixPopover.Content)`
     &-info {
       --popover-color: var(--color-white-muted);
     }
+
+    &-primary {
+      --popover-color: var(--color-primary);
+    }
+
+    &-secondary {
+      --popover-color: var(--color-secondary);
+    }
+
     &-warning {
       --popover-color: var(--color-tertiary);
     }
   }
 
   padding: 1.5rem;
-  background: var(--color-black);
+  background: var(--color-black-muted);
   border-radius: var(--base-border-radius);
   border: var(--base-border-width) solid var(--popover-color);
   width: max-content;
   max-width: 400px;
+  overflow: hidden;
 
   &[data-side="left"] {
     animation: ${fadeInRightAnimation} 0.35s forwards ease-out;
@@ -59,6 +69,21 @@ const Content = styled(RadixPopover.Content)`
 
   p {
     font-weight: var(--font-weight-light);
+    font-size: 0.9em;
+    line-height: 1.5;
+
+    &:not(:last-of-type) {
+      margin-bottom: 0.25rem;
+    }
+
+    a {
+      color: var(--color-primary);
+      font-weight: var(--font-weight-bold);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 `;
 

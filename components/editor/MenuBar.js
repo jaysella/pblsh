@@ -121,7 +121,7 @@ function MenuBar({ editor }) {
           h6
         </MenuButton> */}
 
-        <Tooltip content="Bulleted List">
+        <Tooltip content="List">
           <MenuButton
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             className={editor.isActive("bulletList") ? "is-active" : ""}
@@ -141,7 +141,7 @@ function MenuBar({ editor }) {
       >
         code block
       </MenuButton> */}
-        <Tooltip content="Blockquote">
+        <Tooltip content="Quote">
           <MenuButton
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             className={editor.isActive("blockquote") ? "is-active" : ""}

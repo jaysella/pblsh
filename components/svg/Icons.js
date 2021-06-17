@@ -10,6 +10,7 @@ import FolderIcon from "./Folder";
 import RocketIcon from "./Rocket";
 import ShareIcon from "./Share";
 import TrashCanIcon from "./TrashCan";
+import CopyIcon from "./Copy";
 import LockIcon from "./Lock";
 
 import AlertCircleIcon from "./AlertCircle";
@@ -31,6 +32,7 @@ export {
   RocketIcon,
   ShareIcon,
   TrashCanIcon,
+  CopyIcon,
   LockIcon,
   AlertCircleIcon,
   AlertTriangleIcon,
