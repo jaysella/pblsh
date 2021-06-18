@@ -194,6 +194,10 @@ const MenuButton = styled.button`
   transition: background var(--base-transition-in-duration) ease-out,
     box-shadow var(--base-transition-in-duration) ease-out;
 
+  &.is-active {
+    ${focusStyles};
+  }
+
   &:hover,
   &:focus {
     &:not(:disabled) {
@@ -223,12 +227,14 @@ const Left = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 0.35rem;
 `;
 
 const Right = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 0.35rem;
 `;
 
 export default MenuBar;
